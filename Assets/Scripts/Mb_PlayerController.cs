@@ -1,18 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Mb_PlayerController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public int MoveLeft = 3;
+    Mb_Tile tileOn;
+
+    public void Move(Mb_Tile tileToMoveTo)
     {
+        transform.DOMove(tileToMoveTo.transform.position, 0.1f,true);
         
+        tileOn = tileToMoveTo;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void CheckMovement(Mb_Tile tileToMoveTo)
     {
-        
+        if(MoveLeft>= tileToMoveTo.cost)
+        {
+            MoveLeft -= tileToMoveTo.cost;
+            Move(tileToMoveTo);
+        }
     }
 }

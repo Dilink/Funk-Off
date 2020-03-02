@@ -5,7 +5,7 @@ using System;
 
 public class Mb_Tile : MonoBehaviour
 {
-    public float Cost;
+    public int cost;
 
     void AddModification(Modifier newModifier)
     {
