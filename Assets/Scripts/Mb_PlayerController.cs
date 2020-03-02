@@ -10,7 +10,7 @@ public class Mb_PlayerController : MonoBehaviour
 
     public void Move(Mb_Tile tileToMoveTo)
     {
-        transform.DOMove(tileToMoveTo.transform.position, 0.1f,true);
+        transform.DOMove(tileToMoveTo.transform.parent.position, 1,false);
         
         tileOn = tileToMoveTo;
     }

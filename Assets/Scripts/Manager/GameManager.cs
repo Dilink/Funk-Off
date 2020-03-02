@@ -10,7 +10,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (Input.GetMouseButtonDown(0))
         {
-
+            CastRayPlayer();
         }
         else if (currentPlayerSelectionned != null)
         {
@@ -24,8 +24,12 @@ public class GameManager : Singleton<GameManager>
     void CastRayPlayer()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, 9))
+        Ray ray;
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit))
         {
+            Debug.Log(hit);
             currentPlayerSelectionned = hit.collider.GetComponent<Mb_PlayerController>();
         }
     }
@@ -33,8 +37,12 @@ public class GameManager : Singleton<GameManager>
     void CastRayTile()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, 8))
+        Ray ray;
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit))
         {
+            Debug.Log(hit);
             currentPlayerSelectionned.CheckMovement(hit.collider.GetComponent<Mb_Tile>());
         }
     }
