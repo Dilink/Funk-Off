@@ -8,7 +8,7 @@ public class PatternModifier
 }
 
 
-[CreateAssetMenu(fileName = "New Pattern", menuName = "Custom")]
+[CreateAssetMenu(fileName = "New Pattern", menuName = "Custom/New Pattern")]
 public class Sc_Pattern : ScriptableObject
 {
     public Sprite sprite;

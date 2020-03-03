@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -95,5 +96,10 @@ public class GameManager : Singleton<GameManager>
             }
         }
         return null;
+    }
+
+    public void ResolvePattern(Sc_Pattern pattern)
+    {
+        throw new NotImplementedException();
     }
 }

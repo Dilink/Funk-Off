@@ -11,7 +11,7 @@ public class Mb_Tile : MonoBehaviour
 {
     public int posX=0, posZ=0;
     public bool avaible = true;
-    [SerializeField] Mb_PlayerController playerOnTile;
+    [SerializeField] public Mb_PlayerController playerOnTile;
     [InlineEditor] public Modifier tileProperties;
     
 
