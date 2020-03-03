@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class Ma_UiManager : MonoBehaviour
 {
@@ -22,6 +23,14 @@ public class Ma_UiManager : MonoBehaviour
     public Image FunkbarCursorImg;
     public RectTransform FunkbarCursorRect;
 
+    //[Header("PlayersStateBar elements")]
+
+    [Header("PauseMenus elements")]
+    public GameObject PauseMenu;
+    public Image PauseMenubackgroundImg;
+    public RectTransform PauseMainRect;
+    public RectTransform PauseSettingsRect;
+
     private void Reset()
     {
         // Turnsbar elements
@@ -36,6 +45,13 @@ public class Ma_UiManager : MonoBehaviour
         FunkbarCursorImg = GameObject.Find("Funkbar_Cursor").GetComponent<Image>();
         FunkbarCursorRect = GameObject.Find("Funkbar_Cursor").GetComponent<RectTransform>();
 
+        // PlayerStateBar elements
+
+        // Pausemenu elements
+        PauseMenu = GameObject.Find("PauseMenu");
+        PauseMenubackgroundImg = GameObject.Find("PauseMenu_BackgroundBlack").GetComponent<Image>();
+        PauseMainRect = GameObject.Find("PauseMain").GetComponent<RectTransform>();
+        PauseSettingsRect = GameObject.Find("PauseSettings").GetComponent<RectTransform>();
     }
 
     // ---------------------
@@ -81,6 +97,50 @@ public class Ma_UiManager : MonoBehaviour
             {
                 allPlayerUi[i].UpdateMoveLeftUi(MoveLeft, MaxMove);
             }
+        }
+    }
+
+    // ---------------------
+    // PAUSE MENUS UI FUNCTIONS
+    // ---------------------
+
+    // When the pause menu is open from the game
+    public void OpenPauseMenu()
+    {
+        EnableOrDisablePauseMenu();
+        PauseMenubackgroundImg.DOColor(new Color(0, 0, 0, 0.3f), 0.6f);
+        PauseMainRect.DOAnchorPosY(0, 0.6f, false);
+    }
+
+    // When the settings menu is open from the pause menu
+    public void OpenSettingsMenu()
+    {
+
+    }
+
+    // When the settings menu is closed and return to pause menu
+    public void CloseSettingsMenu()
+    {
+
+    }
+
+    // When the pause menu is closed and return to the game
+    public void ClosePauseMenu()
+    {
+        PauseMenubackgroundImg.DOColor(new Color(0, 0, 0, 0), 0.6f);
+        PauseMainRect.DOAnchorPosY(1200, 0.6f, false);
+        Invoke("EnableOrDisablePauseMenu", 0.6f);
+    }
+
+    private void EnableOrDisablePauseMenu()
+    {
+        if (PauseMenu.activeInHierarchy)
+        {
+            PauseMenu.SetActive(false);
+        }
+        else
+        {
+            PauseMenu.SetActive(true);
         }
     }
 }
