@@ -90,6 +90,7 @@ public class GameManager : Singleton<GameManager>
             if (allTiles[i].posX == x && allTiles[i].posZ == z)
             {
                 return allTiles[i];
+                
             }
         }
         return null;

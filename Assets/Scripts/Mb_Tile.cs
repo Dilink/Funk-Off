@@ -48,8 +48,8 @@ public class Mb_Tile : MonoBehaviour
         if ((tileProperties.type & TileModifier.Ice) == TileModifier.Ice)
         {
             print("ICE");
-            int x = posX;
-            int z = posZ;
+            int x = playerOnTile.oldTile.posX;
+            int z = playerOnTile.oldTile.posZ;
 
             if (playerOnTile.oldTile.posX != posX)
             {
@@ -61,6 +61,7 @@ public class Mb_Tile : MonoBehaviour
                 print("ZDifferent");
                 z = -z;
             }
+            print("X" + x + "Z" + z);
             print(GameManager.Instance.GetTile(x, z));
             playerOnTile.Move(GameManager.Instance.GetTile(x, z));
         }
