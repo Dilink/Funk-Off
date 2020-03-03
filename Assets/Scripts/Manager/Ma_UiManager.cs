@@ -30,6 +30,7 @@ public class Ma_UiManager : MonoBehaviour
     public Image PauseMenubackgroundImg;
     public RectTransform PauseMainRect;
     public RectTransform PauseSettingsRect;
+    public RectTransform PauseQuitConfirmRect;
 
     private void Reset()
     {
@@ -52,6 +53,7 @@ public class Ma_UiManager : MonoBehaviour
         PauseMenubackgroundImg = GameObject.Find("PauseMenu_BackgroundBlack").GetComponent<Image>();
         PauseMainRect = GameObject.Find("PauseMain").GetComponent<RectTransform>();
         PauseSettingsRect = GameObject.Find("PauseSettings").GetComponent<RectTransform>();
+        PauseQuitConfirmRect = GameObject.Find("QuitConfirm").GetComponent<RectTransform>();
     }
 
     // ---------------------
@@ -127,6 +129,24 @@ public class Ma_UiManager : MonoBehaviour
         PauseMainRect.rotation = Quaternion.Euler(0, 90, 0);
         PauseMainRect.DORotate(new Vector3(0, 0, 0), 0.5f);
         PauseSettingsRect.gameObject.SetActive(false);
+        PauseMainRect.gameObject.SetActive(true);
+    }
+
+    // When the quit confirm options appear
+    public void OpenConfirm()
+    {
+        PauseQuitConfirmRect.rotation = Quaternion.Euler(0, 90, 0);
+        PauseQuitConfirmRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseQuitConfirmRect.gameObject.SetActive(true);
+        PauseMainRect.gameObject.SetActive(false);
+    }
+
+    // When the quit confirm options disappear
+    public void CloseConfirm()
+    {
+        PauseMainRect.rotation = Quaternion.Euler(0, 90, 0);
+        PauseMainRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseQuitConfirmRect.gameObject.SetActive(false);
         PauseMainRect.gameObject.SetActive(true);
     }
 
