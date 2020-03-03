@@ -36,9 +36,11 @@ public class GameManager : Singleton<GameManager>
 
         if (Physics.Raycast(ray, out hit))
         {
-            Debug.Log(hit);
             currentPlayerSelectionned = hit.collider.GetComponent<Mb_PlayerController>();
         }
+        else
+            currentPlayerSelectionned = null;
+
     }
 
     void CastRayTile()
