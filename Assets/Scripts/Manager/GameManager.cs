@@ -55,5 +55,4 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
-
 }
