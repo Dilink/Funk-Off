@@ -14,16 +14,12 @@ public class Ma_TurnManager : MonoBehaviour
     [Header("Moves stats")]
     public int MaxMoves; // Max moves per character and per turn
 
-    [Header("Debug")]
-    //[HideInInspector]
-    public List<Mb_PlayerController> PlayersList; // A list of all the player characters
-
     public void BeginTurn()
     {
         // Reset all player characters move number
-        for(int i =0; i < PlayersList.Count; i++)
+        for(int i =0; i < GameManager.Instance.allPlayers.Length; i++)
         {
-             PlayersList[i].MoveLeft = MaxMoves;
+            GameManager.Instance.allPlayers[i].ResetMove();
         }
 
         Debug.LogError("Turn " + CurrentTurn + " has begun");

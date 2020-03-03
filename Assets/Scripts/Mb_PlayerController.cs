@@ -10,8 +10,7 @@ public class Mb_PlayerController : MonoBehaviour
 
     private void Start()
     {
-        moveLeft = basicMoves;
-        GameManager.Instance.uiManager.UpdateCharacterUi(this, moveLeft, basicMoves);
+        ResetMove();
     }
 
     public void Move(Mb_Tile tileToMoveTo)
@@ -27,5 +26,11 @@ public class Mb_PlayerController : MonoBehaviour
             moveLeft -= tileToMoveTo.cost;
             Move(tileToMoveTo);
         }
+    }
+
+    public void ResetMove()
+    {
+        moveLeft = basicMoves;
+        GameManager.Instance.uiManager.UpdateCharacterUi(this, moveLeft, basicMoves);
     }
 }

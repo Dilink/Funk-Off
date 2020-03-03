@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     public Mb_PlayerController currentPlayerSelectionned;
-    Mb_PlayerController[] allPlayers;
+    public Mb_PlayerController[] allPlayers;
 
     public Ma_UiManager uiManager;
 
