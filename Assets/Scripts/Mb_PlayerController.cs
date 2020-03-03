@@ -6,6 +6,7 @@ using DG.Tweening;
 public class Mb_PlayerController : MonoBehaviour
 {
     [SerializeField] int basicMoves = 3;
+    private List<Mb_Tile> tileToGo;
     private int moveLeft;
 
     private void Start()
@@ -16,7 +17,6 @@ public class Mb_PlayerController : MonoBehaviour
     public void Move(Mb_Tile tileToMoveTo)
     {
         transform.DOMove(tileToMoveTo.transform.parent.position, 1,false);
-       
     } 
 
     public void CheckMovement(Mb_Tile tileToMoveTo)
@@ -26,6 +26,11 @@ public class Mb_PlayerController : MonoBehaviour
             moveLeft -= tileToMoveTo.cost;
             Move(tileToMoveTo);
         }
+    }
+
+    public void PreviewMove()
+    {
+
     }
 
     public void ResetMove()
