@@ -18,25 +18,39 @@ public class Mb_PlayerController : MonoBehaviour
 
     public void Move(Mb_Tile tileToMoveTo)
     {
+        //reset de la vieille tuile
         currentTile.avaible = true;
         currentTile.ResetOccupent();
         oldTile = currentTile;
-        transform.DOMove(tileToMoveTo.transform.parent.position, 1,false);
 
+        //set de la nouvelle tuile
         currentTile = tileToMoveTo;
         currentTile.setOccupent(this);
         currentTile.avaible = false;
+
+        //bouger le joueur
+        transform.DOMove(tileToMoveTo.transform.parent.position, 1,false);
+        
+        //declenchement parametre de la tuile
         currentTile.OnMove();
-       // GameManager.Instance.patternManager.CheckGridForPattern();
+        // GameManager.Instance.patternManager.CheckGridForPattern();
     } 
 
-    public void CheckMovement(Mb_Tile tileToMoveTo)
+    public void CheckCostingMovement(Mb_Tile tileToMoveTo)
     {
-        if(moveLeft>= tileToMoveTo.tileProperties.cost &&
+        if (moveLeft>= tileToMoveTo.tileProperties.cost &&
             tileToMoveTo.avaible == true &&
             Vector3.Distance(tileToMoveTo.transform.position, currentTile.transform.position)<1.2f)
         {
             moveLeft -= tileToMoveTo.tileProperties.cost;
+            Move(tileToMoveTo);
+        }
+    }
+
+    public void CheckFreeMovement(Mb_Tile tileToMoveTo)
+    {
+        if (tileToMoveTo.avaible == true)
+        {
             Move(tileToMoveTo);
         }
     }

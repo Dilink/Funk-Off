@@ -40,6 +40,7 @@ public class Mb_Tile : MonoBehaviour
 
     public void OnMove()
     {
+        print("OnMove");
         if ((tileProperties.type & TileModifier.Damaging) == TileModifier.Damaging)
         {
 
@@ -51,19 +52,22 @@ public class Mb_Tile : MonoBehaviour
             int x = playerOnTile.oldTile.posX;
             int z = playerOnTile.oldTile.posZ;
 
-            if (playerOnTile.oldTile.posX != posX)
+            if (playerOnTile.oldTile.posX == posX)
             {
-                print("XDifferent");
-                x = -x;
+                z = - z;
             }
-            if (playerOnTile.oldTile.posX != posX)
+            if (playerOnTile.oldTile.posZ == posZ)
             {
-                print("ZDifferent");
-                z = -z;
+                x = - x;
             }
             print("X" + x + "Z" + z);
+
             print(GameManager.Instance.GetTile(x, z));
-            playerOnTile.Move(GameManager.Instance.GetTile(x, z));
+            if (GameManager.Instance.GetTile(x, z)!= null)
+            {
+                playerOnTile.CheckFreeMovement(GameManager.Instance.GetTile(x, z));
+            }
+
         }
 
         if ((tileProperties.type & TileModifier.Tp) == TileModifier.Tp)

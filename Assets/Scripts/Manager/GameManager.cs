@@ -25,7 +25,7 @@ public class GameManager : Singleton<GameManager>
         }
         else if (currentPlayerSelectionned != null)
         {
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButtonDown(1))
             {
                 CastRayTile();
             }
@@ -57,7 +57,8 @@ public class GameManager : Singleton<GameManager>
 
         if (Physics.Raycast(ray, out hit))
         {
-            currentPlayerSelectionned.CheckMovement(hit.collider.GetComponent<Mb_Tile>());
+            currentPlayerSelectionned.CheckCostingMovement(hit.collider.GetComponent<Mb_Tile>());
+            
         }
     }
     #endregion
