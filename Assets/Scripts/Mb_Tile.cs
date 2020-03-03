@@ -47,19 +47,22 @@ public class Mb_Tile : MonoBehaviour
 
         if ((tileProperties.type & TileModifier.Ice) == TileModifier.Ice)
         {
-            int x = 0;
-            int z = 0;
+            print("ICE");
+            int x = posX;
+            int z = posZ;
 
-            if (playerOnTile.oldTile.posX == posX)
+            if (playerOnTile.oldTile.posX != posX)
             {
+                print("XDifferent");
                 x = -x;
             }
-            if (playerOnTile.oldTile.posX == posX)
+            if (playerOnTile.oldTile.posX != posX)
             {
+                print("ZDifferent");
                 z = -z;
             }
-
-            playerOnTile.CheckTp(GameManager.Instance.GetTile(x, z));
+            print(GameManager.Instance.GetTile(x, z));
+            playerOnTile.Move(GameManager.Instance.GetTile(x, z));
         }
 
         if ((tileProperties.type & TileModifier.Tp) == TileModifier.Tp)
