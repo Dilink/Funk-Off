@@ -7,12 +7,12 @@ public class Mb_Tile : MonoBehaviour
 {
     public int cost=1;
 
-    void AddModification(Modifier newModifier)
+    void AddModification(TileModifier newModifier)
     {
 
     }
 
-    void RemoveModification(Modifier removedModifier)
+    void RemoveModification(TileModifier removedModifier)
     {
 
     }
@@ -24,14 +24,14 @@ public class Mb_Tile : MonoBehaviour
 
 }
 
-class Modifier : ScriptableObject
+class TileModifier : ScriptableObject
 {
     public float cost;
-    public TileModifier type;
+    public TileCostModifier type;
 }
 
 [System.Flags]
-public enum TileModifier
+public enum TileCostModifier
 {
     Base = 1<<0,
     Fire = 1<<1,

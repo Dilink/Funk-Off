@@ -15,7 +15,7 @@ public class Ma_PatternManager : MonoBehaviour
 
     bool PatternValidation(Sc_Pattern pattern)
     {
-        return currentPatternsList.Contains(pattern.matrix);
+        return currentPatternsList.Contains(pattern.Matrix);
     }
     
     void GenerateStartPattern()
