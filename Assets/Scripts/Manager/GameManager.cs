@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    [Header("PLAYER PARAMETERS")]
     public Mb_PlayerController currentPlayerSelectionned;
     public Mb_PlayerController[] allPlayers;
 
+    [Header("GRID PARAMETERS")]
+    public Mb_Tile[] allTiles;
+
+    [Header("MANAGERS")]
     public Ma_UiManager uiManager;
+    public Ma_PatternManager patternManager;
 
 
     private void Update()
@@ -19,7 +25,7 @@ public class GameManager : Singleton<GameManager>
         }
         else if (currentPlayerSelectionned != null)
         {
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButton(1))
             {
                 CastRayTile();
             }
@@ -51,10 +57,42 @@ public class GameManager : Singleton<GameManager>
 
         if (Physics.Raycast(ray, out hit))
         {
-            Debug.Log(hit);
             currentPlayerSelectionned.CheckMovement(hit.collider.GetComponent<Mb_Tile>());
         }
     }
     #endregion
 
+    //PREVIEW
+    /*
+    public void SetPreviewLine(List<Mb_Tile> allTilesToMove, Mb_PlayerController currentPlayer)
+    {
+        linePreview.gameObject.SetActive(true);
+        linePreview.positionCount = allTilesToMove.Count + 1;
+        linePreview.SetPosition(0,currentPlayer.currentTile.transform.position);
+
+        for (int i = 1; i < allTilesToMove.Count; i++)
+        {
+            linePreview.SetPosition(i,allTilesToMove[i].transform.position);
+        }
+    }
+
+    public void EndPreviewLine()
+    {
+        linePreview.gameObject.SetActive(false);
+        linePreview.positionCount = 0;
+
+    }*/
+
+    public Mb_Tile GetTile(int x, int z)
+    {
+        for (int i =0; i < allTiles.Length; i++)
+        {
+            if (allTiles[i].posX == x && allTiles[i].posZ == z)
+            {
+                return allTiles[i];
+                
+            }
+        }
+        return null;
+    }
 }
