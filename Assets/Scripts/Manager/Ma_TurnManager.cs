@@ -22,7 +22,7 @@ public class Ma_TurnManager : MonoBehaviour
             GameManager.Instance.allPlayers[i].ResetMove();
         }
 
-        Debug.LogError("Turn " + CurrentTurn + " has begun");
+        Debug.LogWarning("Turn " + CurrentTurn + " has begun");
     }
 
     public void EndTurn()
@@ -37,6 +37,6 @@ public class Ma_TurnManager : MonoBehaviour
             // End the level
         }
 
-        Debug.LogError("Turn " + CurrentTurn + " has ended");
+        Debug.LogWarning("Turn " + CurrentTurn + " has ended");
     }
 }
