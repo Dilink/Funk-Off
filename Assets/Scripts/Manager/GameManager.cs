@@ -5,9 +5,14 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     public Mb_PlayerController currentPlayerSelectionned;
+    Mb_PlayerController[] allPlayers;
+
+    public Ma_UiManager uiManager;
+
 
     private void Update()
     {
+        //INPUTSOURIS
         if (Input.GetMouseButtonDown(0))
         {
             CastRayPlayer();
@@ -21,6 +26,8 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    //SELECTION
+    #region
     void CastRayPlayer()
     {
         RaycastHit hit;
@@ -46,5 +53,7 @@ public class GameManager : Singleton<GameManager>
             currentPlayerSelectionned.CheckMovement(hit.collider.GetComponent<Mb_Tile>());
         }
     }
+    #endregion
+
 
 }
