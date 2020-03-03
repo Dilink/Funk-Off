@@ -23,7 +23,7 @@ public class Ma_TurnManager : MonoBehaviour
         // Reset all player characters move number
         for(int i =0; i < PlayersList.Count; i++)
         {
-            // PlayersList[i].moves? = MaxMoves;
+             PlayersList[i].MoveLeft = MaxMoves;
         }
 
         Debug.LogError("Turn " + CurrentTurn + " has begun");
