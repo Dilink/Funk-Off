@@ -108,20 +108,26 @@ public class Ma_UiManager : MonoBehaviour
     public void OpenPauseMenu()
     {
         EnableOrDisablePauseMenu();
-        PauseMenubackgroundImg.DOColor(new Color(0, 0, 0, 0.3f), 0.6f);
+        PauseMenubackgroundImg.DOColor(new Color(0, 0, 0, 0.5f), 0.6f);
         PauseMainRect.DOAnchorPosY(0, 0.6f, false);
     }
 
     // When the settings menu is open from the pause menu
     public void OpenSettingsMenu()
     {
-
+        PauseSettingsRect.rotation = Quaternion.Euler(0, 90, 0);
+        PauseSettingsRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseSettingsRect.gameObject.SetActive(true);
+        PauseMainRect.gameObject.SetActive(false);
     }
 
     // When the settings menu is closed and return to pause menu
     public void CloseSettingsMenu()
     {
-
+        PauseMainRect.rotation = Quaternion.Euler(0, 90, 0);
+        PauseMainRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseSettingsRect.gameObject.SetActive(false);
+        PauseMainRect.gameObject.SetActive(true);
     }
 
     // When the pause menu is closed and return to the game
@@ -141,6 +147,6 @@ public class Ma_UiManager : MonoBehaviour
         else
         {
             PauseMenu.SetActive(true);
-        }
+        }       
     }
 }
