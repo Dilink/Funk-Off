@@ -8,7 +8,7 @@ public class Ma_PatternManager : MonoBehaviour
 {
     public OrderedDictionary currentPatternsList = new OrderedDictionary();
 
-    void CheckGridForPattern()
+    public void CheckGridForPattern()
     {
         throw new NotImplementedException();
     }
