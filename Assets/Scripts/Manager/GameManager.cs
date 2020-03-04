@@ -15,6 +15,7 @@ public class GameManager : Singleton<GameManager>
     [Header("MANAGERS")]
     public Ma_UiManager uiManager;
     public Ma_PatternManager patternManager;
+    public Ma_ComboManager comboManager;
 
     [Header("FunkRule")]
     private float funkMultiplier=1;
@@ -123,10 +124,10 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    //A FAIRE AVEC FLO
     public void OnPatternResolved(int indexInList, Sc_Pattern pattern)
     {
-        patternManager.RotatePattern(indexInList, pattern);
+        patternManager.RotatePattern(indexInList);
+        comboManager.RotateMultipliers(indexInList);
     }
 
     //FUNK 

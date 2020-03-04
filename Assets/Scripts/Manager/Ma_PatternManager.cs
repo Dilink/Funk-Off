@@ -9,6 +9,9 @@ public class Ma_PatternManager : MonoBehaviour
     public List<Sc_Pattern> currentPatternsList = new List<Sc_Pattern>();
     [ReadOnly]
     public List<Sc_Pattern> availablePatternList = new List<Sc_Pattern>();
+    [ReadOnly]
+    public Sc_Pattern futurePattern;
+    public readonly int patternCount = 5;
 
     private void Awake()
     {
@@ -112,7 +115,7 @@ public class Ma_PatternManager : MonoBehaviour
         int count = 0;
         foreach (var item in availablePatternList)
         {
-            if (++count > 1)
+            if (++count > patternCount + 1)
             {
                 break;
             }
@@ -120,41 +123,46 @@ public class Ma_PatternManager : MonoBehaviour
             currentPatternsList.Add(item);
         }
 
+        futurePattern = currentPatternsList[currentPatternsList.Count() - 1];
+        currentPatternsList.RemoveAt(currentPatternsList.Count() - 1);
+
         for (int i = 0; i < currentPatternsList.Count(); i++)
         {
             Sc_Pattern pattern = currentPatternsList[i];
             GameManager.Instance.uiManager.UpdatePatternsBarIcon(i, pattern);
         }
+        GameManager.Instance.uiManager.UpdatePatternsBarIcon(5, futurePattern);
     }
 
-    private Sc_Pattern GetNextPatternDifferentOf(Sc_Pattern pattern)
+    private Sc_Pattern GetRandomPatternDifferentOfCurrents()
     {
-        if (availablePatternList.Count() <= 1)
+        List<Sc_Pattern> copy = new List<Sc_Pattern>(availablePatternList);
+        foreach (var item in currentPatternsList)
         {
-            return null;
+            copy.Remove(item);
         }
+        // Randomize list
+        System.Random rnd = new System.Random();
+        copy = copy.OrderBy(x => rnd.Next()).ToList();
 
-        Queue<Sc_Pattern> copy = new Queue<Sc_Pattern>(availablePatternList);
-        Sc_Pattern tmp;
-        while (tmp = copy.Dequeue())
+        if (copy.Count() > 0)
         {
-            if (tmp != pattern && !currentPatternsList.Contains(tmp))
-            {
-                return tmp;
-            }
+            return copy[0];
         }
         return null;
     }
 
-    public void RotatePattern(int indexInList, Sc_Pattern pattern)
+    public void RotatePattern(int indexInList)
     {
         currentPatternsList.RemoveAt(indexInList);
-        Sc_Pattern newPattern = GetNextPatternDifferentOf(pattern);
-        currentPatternsList.Add(newPattern);
+        currentPatternsList.Add(futurePattern);
 
         for (int i = 0; i < currentPatternsList.Count(); i++)
         {
             GameManager.Instance.uiManager.UpdatePatternsBarIcon(i, currentPatternsList[i]);
         }
+
+        futurePattern = GetRandomPatternDifferentOfCurrents();
+        GameManager.Instance.uiManager.UpdatePatternsBarIcon(5, futurePattern);
     }
 }

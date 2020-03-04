@@ -4,18 +4,61 @@ using UnityEngine;
 
 public class Ma_ComboManager : MonoBehaviour
 {
+    public List<int> Multipliers = new List<int>(5);
 
-    public void AddMultiplier(int emplacement, int mult)
+    private void Awake()
     {
-        
-    }
-
-    public void RemovePattern(int emplacement)
-    {
-        for(int i = emplacement; i< GameManager.Instance.uiManager.PatternsbarIconsImg.Length; i++)
+        for(int i = 0; i< GameManager.Instance.uiManager.PatternsbarMultipliersImg.Length; i++)
         {
-            //GameManager.Instance.uiManager.UpdatePatternsBarIcon(i, GameManager.Instance.patternManager.currentPatternsList[i]);
+            Multipliers[i] = 1;
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(i, Color.clear);
         }
     }
 
+    public void RotateMultipliers(int index)
+    {
+        // Add the multiplier to the removed pattern
+        GameManager.Instance.comboManager.AddMultiplier(index);
+
+        // Remove all multipliers from moved patterns
+        if (index <= GameManager.Instance.comboManager.Multipliers.Count)
+        {
+            for (int j = index + 1; j < GameManager.Instance.comboManager.Multipliers.Count; j++)
+            {
+                GameManager.Instance.comboManager.RemoveMultiplier(j);
+            }
+        }
+    }
+
+    public void AddMultiplier(int emplacement)
+    {
+        int mult = Multipliers[emplacement];
+
+        if (mult < 2)
+        {
+            Multipliers[emplacement] = 2;
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.green);
+        }
+        else if (mult < 3)
+        {
+            Multipliers[emplacement] = 3;
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.yellow);
+        }
+        else if (mult < 4)
+        {
+            Multipliers[emplacement] = 4;
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.red);
+        }
+        else if (mult < 5)
+        {
+            Multipliers[emplacement] = 5;
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.magenta);
+        }
+    }
+
+    public void RemoveMultiplier(int emplacement)
+    {
+        Multipliers[emplacement] = 1;
+        GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.clear);
+    }
 }
