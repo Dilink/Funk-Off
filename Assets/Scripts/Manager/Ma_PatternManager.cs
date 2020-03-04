@@ -112,7 +112,7 @@ public class Ma_PatternManager : MonoBehaviour
         int count = 0;
         foreach (var item in availablePatternList)
         {
-            if (++count > 5)
+            if (++count > 1)
             {
                 break;
             }
@@ -134,16 +134,16 @@ public class Ma_PatternManager : MonoBehaviour
             return null;
         }
 
-        Sc_Pattern result = null;
-        while (!result)
+        Queue<Sc_Pattern> copy = new Queue<Sc_Pattern>(availablePatternList);
+        Sc_Pattern tmp;
+        while (tmp = copy.Dequeue())
         {
-            var tmp = availablePatternList.First();
-            if (tmp != pattern)
+            if (tmp != pattern && !currentPatternsList.Contains(tmp))
             {
-                result = tmp;
+                return tmp;
             }
         }
-        return result;
+        return null;
     }
 
     public void RotatePattern(int indexInList, Sc_Pattern pattern)
