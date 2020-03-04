@@ -7,8 +7,6 @@ using DG.Tweening;
 
 public class Ma_UiManager : MonoBehaviour
 {
-    public static Ma_UiManager instance;
-
     [SerializeField] Mb_PlayerCard[] allPlayerUi;
 
     [Header("Turnsbar elements")]

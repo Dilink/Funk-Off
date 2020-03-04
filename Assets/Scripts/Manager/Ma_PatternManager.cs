@@ -69,7 +69,7 @@ public class Ma_PatternManager : MonoBehaviour
             if (PatternValidation(GameManager.Instance.allTiles, pattern))
             {
                 Debug.Log("Pattern matched: " + pattern.Name);
-                GameManager.Instance.ResolvePattern(pattern);
+                GameManager.Instance.OnResolvePattern(pattern);
                 break;
             }
         }

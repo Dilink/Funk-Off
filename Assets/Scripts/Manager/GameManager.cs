@@ -104,7 +104,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     //A FAIRE AVEC FLO
-    public void ResolvePattern(Sc_Pattern pattern)
+    public void OnResolvePattern(Sc_Pattern pattern)
     {
         throw new NotImplementedException();
     }
