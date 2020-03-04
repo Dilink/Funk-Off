@@ -120,5 +120,11 @@ public class Ma_PatternManager : MonoBehaviour
             Debug.Log("Create pattern: " + item.Name);
             currentPatternsList.Add(item);
         }
+
+        for (int i = 0; i < currentPatternsList.Count(); i++)
+        {
+            Sc_Pattern pattern = currentPatternsList[i];
+            GameManager.Instance.uiManager.UpdatePatternsBarIcon(i, pattern);
+        }
     }
 }
