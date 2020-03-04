@@ -78,8 +78,9 @@ public class Mb_PlayerController : MonoBehaviour
         currentTile.setOccupent(this);
         currentTile.avaible = false;
 
-        transform.DOMove(tileToTp.transform.position,0,true).OnComplete(OnTpCallBack);
-        tileToTp.OnMove(true);
+        transform.position = tileToTp.transform.parent.position;
+        OnTpCallBack();
+  
     }
 
     void OnTpCallBack()
