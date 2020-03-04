@@ -162,6 +162,18 @@ public class Ma_PatternManager : MonoBehaviour
             GameManager.Instance.uiManager.UpdatePatternsBarIcon(i, currentPatternsList[i]);
         }
 
+        // Add the multiplier to the removed pattern
+        GameManager.Instance.comboManager.AddMultiplier(indexInList);
+
+        // Remove all multipliers from moved patterns
+        if (indexInList <= GameManager.Instance.comboManager.Multipliers.Count)
+        {
+            for (int j = indexInList + 1; j < GameManager.Instance.comboManager.Multipliers.Count; j++)
+            {
+                GameManager.Instance.comboManager.RemoveMultiplier(j);
+            }
+        }
+
         futurePattern = GetRandomPatternDifferentOfCurrents();
         GameManager.Instance.uiManager.UpdatePatternsBarIcon(5, futurePattern);
     }
