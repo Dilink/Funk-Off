@@ -69,7 +69,7 @@ public class Ma_PatternManager : MonoBehaviour
             {
                 Debug.Log("Pattern matched: " + pattern.Name);
                 GameManager.Instance.OnPatternResolved(i, pattern);
-                break;
+                return;
             }
         }
         Debug.Log("No pattern matched.");
