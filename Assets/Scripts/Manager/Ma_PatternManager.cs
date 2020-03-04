@@ -7,8 +7,6 @@ using Sirenix.OdinInspector;
 public class Ma_PatternManager : MonoBehaviour
 {
     public List<Sc_Pattern> currentPatternsList = new List<Sc_Pattern>();
-    [InlineEditor]
-    public Sc_Pattern obj;
     [ReadOnly]
     public List<Sc_Pattern> availablePatternList = new List<Sc_Pattern>();
 
@@ -64,12 +62,13 @@ public class Ma_PatternManager : MonoBehaviour
     public void CheckGridForPattern()
     {
         // take scene grid and check each pattern if currentPatternsList if it matches
-        foreach (var pattern in currentPatternsList)
+        for (int i = 0; i < currentPatternsList.Count(); i++)
         {
+            Sc_Pattern pattern = currentPatternsList[i];
             if (PatternValidation(GameManager.Instance.allTiles, pattern))
             {
                 Debug.Log("Pattern matched: " + pattern.Name);
-                GameManager.Instance.ResolvePattern(pattern);
+                GameManager.Instance.OnPatternResolved(i, pattern);
                 break;
             }
         }
@@ -113,7 +112,7 @@ public class Ma_PatternManager : MonoBehaviour
         int count = 0;
         foreach (var item in availablePatternList)
         {
-            if (++count > 5)
+            if (++count > 1)
             {
                 break;
             }
@@ -125,6 +124,37 @@ public class Ma_PatternManager : MonoBehaviour
         {
             Sc_Pattern pattern = currentPatternsList[i];
             GameManager.Instance.uiManager.UpdatePatternsBarIcon(i, pattern);
+        }
+    }
+
+    private Sc_Pattern GetNextPatternDifferentOf(Sc_Pattern pattern)
+    {
+        if (availablePatternList.Count() <= 1)
+        {
+            return null;
+        }
+
+        Queue<Sc_Pattern> copy = new Queue<Sc_Pattern>(availablePatternList);
+        Sc_Pattern tmp;
+        while (tmp = copy.Dequeue())
+        {
+            if (tmp != pattern && !currentPatternsList.Contains(tmp))
+            {
+                return tmp;
+            }
+        }
+        return null;
+    }
+
+    public void RotatePattern(int indexInList, Sc_Pattern pattern)
+    {
+        currentPatternsList.RemoveAt(indexInList);
+        Sc_Pattern newPattern = GetNextPatternDifferentOf(pattern);
+        currentPatternsList.Add(newPattern);
+
+        for (int i = 0; i < currentPatternsList.Count(); i++)
+        {
+            GameManager.Instance.uiManager.UpdatePatternsBarIcon(i, currentPatternsList[i]);
         }
     }
 }
