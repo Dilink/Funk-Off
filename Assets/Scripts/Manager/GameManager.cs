@@ -16,6 +16,10 @@ public class GameManager : Singleton<GameManager>
     public Ma_UiManager uiManager;
     public Ma_PatternManager patternManager;
 
+    [Header("FunkRule")]
+    private float funkMultiplier=1;
+    private float funkAmount;
+    public float funkDamages;
 
     private void Update()
     {
@@ -84,7 +88,8 @@ public class GameManager : Singleton<GameManager>
         linePreview.positionCount = 0;
 
     }*/
-
+    
+    //
     public Mb_Tile GetTile(int x, int z)
     {
         for (int i =0; i < allTiles.Length; i++)
@@ -98,8 +103,45 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
+    //A FAIRE AVEC FLO
     public void ResolvePattern(Sc_Pattern pattern)
     {
         throw new NotImplementedException();
+    }
+
+    public void FunkVariation(float funkToAdd)
+    {
+        funkAmount += funkToAdd * funkMultiplier;
+        funkAmount = Mathf.Clamp(funkAmount, 0, 1);
+        uiManager.UpdateFunkBar(funkAmount);
+    }
+
+    public void SetFunkMultiplier(float newModifier)
+    {
+        funkMultiplier = newModifier;
+    }
+
+    //DAMAGES PART
+    void SetFunkDamages(float newDamages)
+    {
+        funkDamages = newDamages;
+    }
+
+    public float funkDamagesToDeal()
+    {
+        return -funkDamages;
+    }
+
+    //TILE SPE
+    public Mb_Tile TpTile(Mb_Tile currentTpUsed)
+    {
+        for (int i = 0; i < allTiles.Length; i++)
+        {
+            if ((allTiles[i].tileProperties.type & TileModifier.Tp) == TileModifier.Tp && currentTpUsed!= allTiles[i])
+            {
+                return allTiles[i];
+            }
+        }
+        return null;
     }
 }

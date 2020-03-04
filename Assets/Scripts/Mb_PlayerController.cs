@@ -16,7 +16,7 @@ public class Mb_PlayerController : MonoBehaviour
         ResetMove();
     }
 
-    public void Move(Mb_Tile tileToMoveTo)
+    private void Move(Mb_Tile tileToMoveTo)
     {
         //reset de la vieille tuile
         currentTile.avaible = true;
@@ -28,13 +28,18 @@ public class Mb_PlayerController : MonoBehaviour
         currentTile.setOccupent(this);
         currentTile.avaible = false;
 
-        //bouger le joueur
-        transform.DOMove(tileToMoveTo.transform.parent.position, 1,false);
+        //bouger le joueur                                               //declenchement parametre de la tuile
+        transform.DOMove(tileToMoveTo.transform.parent.position, 1,false).OnComplete(OnMoveCallBack);
         
-        //declenchement parametre de la tuile
-        currentTile.OnMove();
+   
+       
         // GameManager.Instance.patternManager.CheckGridForPattern();
     } 
+
+    void OnMoveCallBack()
+    {
+        currentTile.OnMove(false);
+    }
 
     public void CheckCostingMovement(Mb_Tile tileToMoveTo)
     {
@@ -65,14 +70,27 @@ public class Mb_PlayerController : MonoBehaviour
 
     void Tp(Mb_Tile tileToTp)
     {
-        transform.position = tileToTp.transform.position;
+        currentTile.avaible = true;
+        currentTile.ResetOccupent();
+        oldTile = currentTile;
+
+        currentTile = tileToTp;
+        currentTile.setOccupent(this);
+        currentTile.avaible = false;
+
+        transform.DOMove(tileToTp.transform.position,0,true).OnComplete(OnTpCallBack);
+        tileToTp.OnMove(true);
     }
 
-  /*  public void PreviewMove()
+    void OnTpCallBack()
     {
-        GameManager.Instance.SetPreviewLine(tileToGo,this);
+        currentTile.OnMove(true);
+    }
+    /*  public void PreviewMove()
+      {
+          GameManager.Instance.SetPreviewLine(tileToGo,this);
 
-    }*/
+      }*/
 
     public void ResetMove()
     {

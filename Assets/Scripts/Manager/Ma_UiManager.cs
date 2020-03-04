@@ -83,7 +83,7 @@ public class Ma_UiManager : MonoBehaviour
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        FunkbarFillImg.fillAmount = funkPercentage / 100;
+        FunkbarFillImg.fillAmount = funkPercentage;
         FunkbarCursorRect.anchoredPosition = new Vector2(FunkbarFillRect.sizeDelta.x * FunkbarFillImg.fillAmount, FunkbarCursorRect.anchoredPosition.y);
     }
 

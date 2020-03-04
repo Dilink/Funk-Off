@@ -38,12 +38,12 @@ public class Mb_Tile : MonoBehaviour
         tileProperties.type = (removedModifier & tileProperties.type) | tileProperties.type;
     }
 
-    public void OnMove()
+    public void OnMove(bool fromTP)
     {
         print("OnMove");
         if ((tileProperties.type & TileModifier.Damaging) == TileModifier.Damaging)
         {
-
+            GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal());
         }
 
         if ((tileProperties.type & TileModifier.Ice) == TileModifier.Ice)
@@ -70,9 +70,9 @@ public class Mb_Tile : MonoBehaviour
 
         }
 
-        if ((tileProperties.type & TileModifier.Tp) == TileModifier.Tp)
+        if ((tileProperties.type & TileModifier.Tp) == TileModifier.Tp && fromTP == false)
         {
-
+            playerOnTile.CheckTp(GameManager.Instance.TpTile(this));
         }
     }
 
@@ -97,8 +97,8 @@ public class Modifier : ScriptableObject
 [System.Serializable]
 public enum TileModifier
 {
-    Base = 1<<0,
-    Damaging = 1<<1,
-    Ice = 1<<2,
-    Tp = 1<<3,
+    Damaging = 1<<0,
+    Ice = 1<<1,
+    Tp = 1<<2,
+    Slow = 1<<3,
 }
