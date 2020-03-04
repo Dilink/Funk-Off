@@ -104,11 +104,12 @@ public class GameManager : Singleton<GameManager>
     }
 
     //A FAIRE AVEC FLO
-    public void OnResolvePattern(Sc_Pattern pattern)
+    public void OnPatternResolved(int indexInList, Sc_Pattern pattern)
     {
-        throw new NotImplementedException();
+        patternManager.RotatePattern(indexInList, pattern);
     }
 
+    //FUNK 
     public void FunkVariation(float funkToAdd)
     {
         funkAmount += funkToAdd * funkMultiplier;
@@ -122,7 +123,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     //DAMAGES PART
-    void SetFunkDamages(float newDamages)
+    public void SetFunkDamages(float newDamages)
     {
         funkDamages = newDamages;
     }

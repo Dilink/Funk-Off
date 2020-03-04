@@ -117,15 +117,15 @@ public class Matrix3x3Bool : IEquatable<Matrix3x3Bool>
     {
         switch (index)
         {
-            case 0: return new Vector2Int(0, 0); // m00
-            case 1: return new Vector2Int(1, 0); // m10
-            case 2: return new Vector2Int(2, 0); // m20
-            case 3: return new Vector2Int(0, 1); // m01
-            case 4: return new Vector2Int(1, 1); // m11
-            case 5: return new Vector2Int(2, 1); // m21
-            case 6: return new Vector2Int(0, 2); // m02
-            case 7: return new Vector2Int(1, 2); // m12
-            case 8: return new Vector2Int(2, 2); // m22
+            case 0: return new Vector2Int(-1,  1); // m00
+            case 1: return new Vector2Int( 0,  1); // m10
+            case 2: return new Vector2Int( 1,  1); // m20
+            case 3: return new Vector2Int(-1,  0); // m01
+            case 4: return new Vector2Int( 0,  0); // m11
+            case 5: return new Vector2Int( 1,  0); // m21
+            case 6: return new Vector2Int(-1, -1); // m02
+            case 7: return new Vector2Int( 0, -1); // m12
+            case 8: return new Vector2Int( 1, -1); // m22
             default:
                 throw new IndexOutOfRangeException("Invalid matrix index!");
         }

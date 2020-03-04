@@ -11,7 +11,7 @@ public class Mb_PlayerController : MonoBehaviour
     public Mb_Tile oldTile;
     private int moveLeft;
 
-    private void Start()
+    private void Awake()
     {
         ResetMove();
     }
@@ -29,7 +29,7 @@ public class Mb_PlayerController : MonoBehaviour
         currentTile.avaible = false;
 
         //bouger le joueur                                               //declenchement parametre de la tuile
-        transform.DOMove(tileToMoveTo.transform.parent.position, 1,false).OnComplete(OnMoveCallBack);
+        transform.DOMove(tileToMoveTo.transform.parent.position, .33f,false).OnComplete(OnMoveCallBack);
     } 
 
     void OnMoveCallBack()
@@ -45,6 +45,7 @@ public class Mb_PlayerController : MonoBehaviour
             Vector3.Distance(tileToMoveTo.transform.position, currentTile.transform.position)<1.2f)
         {
             moveLeft -= tileToMoveTo.tileProperties.cost;
+            GameManager.Instance.uiManager.UpdateCharacterUi(this,moveLeft,basicMoves);
             Move(tileToMoveTo);
         }
     }
@@ -92,6 +93,7 @@ public class Mb_PlayerController : MonoBehaviour
 
     public void ResetMove()
     {
+        
         moveLeft = basicMoves;
         oldTile = currentTile;
         GameManager.Instance.uiManager.UpdateCharacterUi(this, moveLeft, basicMoves);

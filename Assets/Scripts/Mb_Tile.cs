@@ -40,7 +40,6 @@ public class Mb_Tile : MonoBehaviour
 
     public void OnMove(bool fromTP)
     {
-        print("OnMove");
         if ((tileProperties.type & TileModifier.Damaging) == TileModifier.Damaging)
         {
             GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal());
@@ -60,9 +59,6 @@ public class Mb_Tile : MonoBehaviour
             {
                 x = - x;
             }
-            print("X" + x + "Z" + z);
-
-            print(GameManager.Instance.GetTile(x, z));
             if (GameManager.Instance.GetTile(x, z)!= null)
             {
                 playerOnTile.CheckFreeMovement(GameManager.Instance.GetTile(x, z));
