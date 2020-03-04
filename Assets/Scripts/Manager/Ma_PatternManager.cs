@@ -76,12 +76,6 @@ public class Ma_PatternManager : MonoBehaviour
         Debug.Log("No pattern matched.");
     }
 
-    [Button]
-    void test()
-    {
-        CheckGridForPattern();
-    }
-
     private Mb_Tile[] getAllTileWithPlayer(Mb_Tile[] allTiles)
     {
         List<Mb_Tile> tiles = new List<Mb_Tile>();
@@ -94,6 +88,7 @@ public class Ma_PatternManager : MonoBehaviour
             }
         }
 
+        // Sort tiles by position
         return tiles.OrderBy(o => o.posX).ThenBy(o => o.posZ).ToArray();
     }
 
@@ -102,7 +97,7 @@ public class Ma_PatternManager : MonoBehaviour
         Mb_Tile[] playerTiles = getAllTileWithPlayer(allTiles);
         int[] patternKeyPointsIndices = pattern.Matrix.GetTrueValuesIndices().OrderBy(i => pattern.Matrix.GetLocation(i).x).ThenBy(i => pattern.Matrix.GetLocation(i).y).ToArray();
 
-
+        // Check for keypoints distance in patterns
         bool flagX1 = playerTiles[0].posX - playerTiles[1].posX == pattern.Matrix.GetLocation(patternKeyPointsIndices[0]).x - pattern.Matrix.GetLocation(patternKeyPointsIndices[1]).x;
         bool flagX2 = playerTiles[0].posX - playerTiles[2].posX == pattern.Matrix.GetLocation(patternKeyPointsIndices[0]).x - pattern.Matrix.GetLocation(patternKeyPointsIndices[2]).x;
 
@@ -114,6 +109,7 @@ public class Ma_PatternManager : MonoBehaviour
     
     void GenerateStartPattern()
     {
+        // Load the first 5 patterns available
         int count = 0;
         foreach (var item in availablePatternList)
         {
