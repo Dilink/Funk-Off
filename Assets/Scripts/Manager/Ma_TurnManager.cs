@@ -31,12 +31,15 @@ public class Ma_TurnManager : MonoBehaviour
         if(CurrentTurn <= MaxTurn)
         {
             CurrentTurn++;
+            for(int i =0; i < GameManager.Instance.allPlayers.Length;i++)
+            {
+                GameManager.Instance.allPlayers[i].ResetMove();
+            }
         }
         else // End the level
         {
             // End the level
         }
-
-        Debug.LogWarning("Turn " + CurrentTurn + " has ended");
+        
     }
 }

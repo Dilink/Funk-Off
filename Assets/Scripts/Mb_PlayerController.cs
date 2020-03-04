@@ -18,6 +18,7 @@ public class Mb_PlayerController : MonoBehaviour
 
     private void Move(Mb_Tile tileToMoveTo)
     {
+        GameManager.Instance.DisableActing();
         //reset de la vieille tuile
         currentTile.avaible = true;
         currentTile.ResetOccupent();
@@ -35,14 +36,17 @@ public class Mb_PlayerController : MonoBehaviour
     void OnMoveCallBack()
     {
         currentTile.OnMove(false);
+        GameManager.Instance.EnableActing();
         GameManager.Instance.patternManager.CheckGridForPattern();
     }
 
     public void CheckCostingMovement(Mb_Tile tileToMoveTo)
     {
+        print(GameManager.Instance.canAct);
         if (moveLeft>= tileToMoveTo.tileProperties.cost &&
             tileToMoveTo.avaible == true &&
-            Vector3.Distance(tileToMoveTo.transform.position, currentTile.transform.position)<1.2f)
+            Vector3.Distance(tileToMoveTo.transform.position, currentTile.transform.position)<1.2f &&
+            GameManager.Instance.canAct==true)
         {
             moveLeft -= tileToMoveTo.tileProperties.cost;
             GameManager.Instance.uiManager.UpdateCharacterUi(this,moveLeft,basicMoves);
@@ -68,6 +72,7 @@ public class Mb_PlayerController : MonoBehaviour
 
     void Tp(Mb_Tile tileToTp)
     {
+        GameManager.Instance.DisableActing();
         currentTile.avaible = true;
         currentTile.ResetOccupent();
         oldTile = currentTile;
@@ -83,6 +88,7 @@ public class Mb_PlayerController : MonoBehaviour
     void OnTpCallBack()
     {
         currentTile.OnMove(true);
+        GameManager.Instance.EnableActing();
         GameManager.Instance.patternManager.CheckGridForPattern();
     }
     /*  public void PreviewMove()
