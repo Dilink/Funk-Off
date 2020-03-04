@@ -33,6 +33,9 @@ public class Ma_UiManager : MonoBehaviour
 
     private void Reset()
     {
+        // PlayerCards elements
+        allPlayerUi = FindObjectsOfType<Mb_PlayerCard>();
+
         // Turnsbar elements
         TurnsbarText = GameObject.Find("TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
 

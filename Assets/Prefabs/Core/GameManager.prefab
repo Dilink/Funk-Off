@@ -418,7 +418,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPatternsList: []
-  obj: {fileID: 11400000, guid: e8dfe8599a693a44ca6f389413398faf, type: 2}
   availablePatternList: []
 --- !u!1 &565886726994531045
 GameObject:
@@ -452,6 +451,7 @@ Transform:
   - {fileID: 565886727164404433}
   - {fileID: 565886726453099460}
   - {fileID: 6594439747402110064}
+  - {fileID: 4123405457519320121}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2112,25 +2112,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allPlayerUi:
-  - {fileID: 341974456733108963}
-  - {fileID: 4516114659152034276}
-  - {fileID: 4046397300373418281}
-  TurnsbarText: {fileID: 3143978516478751787}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  TurnsbarText: {fileID: 0}
   PatternsbarIconsImg:
-  - {fileID: 8886734186672881031}
-  - {fileID: 5644272162857884458}
-  - {fileID: 2680184261419672983}
-  - {fileID: 8537683988620291012}
-  - {fileID: 4775260286458098043}
-  FunkbarFillImg: {fileID: 9019059221004427484}
-  FunkbarFillRect: {fileID: 4672135441756561562}
-  FunkbarCursorImg: {fileID: 463972110206663293}
-  FunkbarCursorRect: {fileID: 7511236466168606942}
-  PauseMenu: {fileID: 5701799985158588202}
-  PauseMenubackgroundImg: {fileID: 1790319989625926073}
-  PauseMainRect: {fileID: 5834669014619810257}
-  PauseSettingsRect: {fileID: 6755778106295434940}
-  PauseQuitConfirmRect: {fileID: 5555969907245043900}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  FunkbarFillImg: {fileID: 0}
+  FunkbarFillRect: {fileID: 0}
+  FunkbarCursorImg: {fileID: 0}
+  FunkbarCursorRect: {fileID: 0}
+  PauseMenu: {fileID: 0}
+  PauseMenubackgroundImg: {fileID: 0}
+  PauseMainRect: {fileID: 0}
+  PauseSettingsRect: {fileID: 0}
+  PauseQuitConfirmRect: {fileID: 0}
 --- !u!1 &2061629842314892557
 GameObject:
   m_ObjectHideFlags: 0
@@ -5259,6 +5260,49 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &5414992987003832861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4123405457519320121}
+  - component: {fileID: 2427050970976729256}
+  m_Layer: 0
+  m_Name: ComboManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4123405457519320121
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5414992987003832861}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 565886726994531043}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2427050970976729256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5414992987003832861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 690a1b7a18b5dbd468b75d41a06229f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5474931577518512187
 GameObject:
   m_ObjectHideFlags: 0

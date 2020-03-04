@@ -10,11 +10,20 @@ public class Ma_ComboManager : MonoBehaviour
         
     }
 
+    public void RemoveMultiplier(int emplacement)
+    {
+
+    }
+
     public void RemovePattern(int emplacement)
     {
-        for(int i = emplacement; i< GameManager.Instance.uiManager.PatternsbarIconsImg.Length; i++)
+        GameManager.Instance.uiManager.PatternsbarIconsImg[emplacement].sprite = null;
+
+        for (int i = emplacement + 1; i< GameManager.Instance.uiManager.PatternsbarIconsImg.Length; i++)
         {
-            //GameManager.Instance.uiManager.UpdatePatternsBarIcon(i, GameManager.Instance.patternManager.currentPatternsList[i]);
+
+            GameManager.Instance.uiManager.UpdatePatternsBarIcon(i, GameManager.Instance.patternManager.currentPatternsList[i]);
+
         }
     }
 
