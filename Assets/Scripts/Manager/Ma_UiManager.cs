@@ -71,9 +71,9 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
 
     // Update the Icon of the patternsbar at the emplacement indicated
-    public void UpdatePatternsBarIcon(int emplacement) // + Pattern class file
+    public void UpdatePatternsBarIcon(int emplacement,Sc_Pattern pattern)
     {
-        //PatternsbarIconsImg[Emplacement].sprite = PatternClassFile.sprite
+        PatternsbarIconsImg[emplacement].sprite = pattern.sprite;
     }
 
     // ---------------------
@@ -158,6 +158,7 @@ public class Ma_UiManager : MonoBehaviour
         Invoke("EnableOrDisablePauseMenu", 0.6f);
     }
 
+    // System, enable or disable the pause menu
     private void EnableOrDisablePauseMenu()
     {
         if (PauseMenu.activeInHierarchy)
