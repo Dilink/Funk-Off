@@ -30,15 +30,12 @@ public class Mb_PlayerController : MonoBehaviour
 
         //bouger le joueur                                               //declenchement parametre de la tuile
         transform.DOMove(tileToMoveTo.transform.parent.position, 1,false).OnComplete(OnMoveCallBack);
-        
-   
-       
-        // GameManager.Instance.patternManager.CheckGridForPattern();
     } 
 
     void OnMoveCallBack()
     {
         currentTile.OnMove(false);
+        GameManager.Instance.patternManager.CheckGridForPattern();
     }
 
     public void CheckCostingMovement(Mb_Tile tileToMoveTo)
@@ -80,12 +77,12 @@ public class Mb_PlayerController : MonoBehaviour
 
         transform.position = tileToTp.transform.parent.position;
         OnTpCallBack();
-  
     }
 
     void OnTpCallBack()
     {
         currentTile.OnMove(true);
+        GameManager.Instance.patternManager.CheckGridForPattern();
     }
     /*  public void PreviewMove()
       {
