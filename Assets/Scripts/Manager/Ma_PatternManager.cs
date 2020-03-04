@@ -1,8 +1,7 @@
 ﻿using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using UnityEditor;
 using Sirenix.OdinInspector;
 
 public class Ma_PatternManager : MonoBehaviour
@@ -10,11 +9,31 @@ public class Ma_PatternManager : MonoBehaviour
     public List<Sc_Pattern> currentPatternsList = new List<Sc_Pattern>();
     [InlineEditor]
     public Sc_Pattern obj;
+    [ReadOnly]
     public List<Sc_Pattern> availablePatternList = new List<Sc_Pattern>();
 
     private void Awake()
     {
+        LoadAvailablePatterns();
         GenerateStartPattern();
+    }
+
+    private void LoadAvailablePatterns()
+    {
+        availablePatternList.Clear();
+
+        // Load all assets of type Sc_Pattern that are located in Assets/Patterns folder
+        string[] guids2 = AssetDatabase.FindAssets("t:Sc_Pattern", new[] { "Assets/Patterns" });
+        foreach (var i in guids2)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(i);
+            Sc_Pattern pattern = AssetDatabase.LoadAssetAtPath<Sc_Pattern>(path);
+            availablePatternList.Add(pattern);
+        }
+
+        // Randomize list
+        System.Random rnd = new System.Random();
+        availablePatternList = availablePatternList.OrderBy(x => rnd.Next()).ToList();
     }
 
     /*private Tuple<int, int> getSizeOfPattern(Sc_Pattern pattern)
@@ -57,12 +76,6 @@ public class Ma_PatternManager : MonoBehaviour
         Debug.Log("No pattern matched.");
     }
 
-    [Button]
-    void test()
-    {
-        CheckGridForPattern();
-    }
-
     private Mb_Tile[] getAllTileWithPlayer(Mb_Tile[] allTiles)
     {
         List<Mb_Tile> tiles = new List<Mb_Tile>();
@@ -75,6 +88,7 @@ public class Ma_PatternManager : MonoBehaviour
             }
         }
 
+        // Sort tiles by position
         return tiles.OrderBy(o => o.posX).ThenBy(o => o.posZ).ToArray();
     }
 
@@ -83,7 +97,7 @@ public class Ma_PatternManager : MonoBehaviour
         Mb_Tile[] playerTiles = getAllTileWithPlayer(allTiles);
         int[] patternKeyPointsIndices = pattern.Matrix.GetTrueValuesIndices().OrderBy(i => pattern.Matrix.GetLocation(i).x).ThenBy(i => pattern.Matrix.GetLocation(i).y).ToArray();
 
-
+        // Check for keypoints distance in patterns
         bool flagX1 = playerTiles[0].posX - playerTiles[1].posX == pattern.Matrix.GetLocation(patternKeyPointsIndices[0]).x - pattern.Matrix.GetLocation(patternKeyPointsIndices[1]).x;
         bool flagX2 = playerTiles[0].posX - playerTiles[2].posX == pattern.Matrix.GetLocation(patternKeyPointsIndices[0]).x - pattern.Matrix.GetLocation(patternKeyPointsIndices[2]).x;
 
@@ -95,6 +109,7 @@ public class Ma_PatternManager : MonoBehaviour
     
     void GenerateStartPattern()
     {
+        // Load the first 5 patterns available
         int count = 0;
         foreach (var item in availablePatternList)
         {
