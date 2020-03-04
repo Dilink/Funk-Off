@@ -15,6 +15,21 @@ public class Ma_ComboManager : MonoBehaviour
         }
     }
 
+    public void RotateMultipliers(int index)
+    {
+        // Add the multiplier to the removed pattern
+        GameManager.Instance.comboManager.AddMultiplier(index);
+
+        // Remove all multipliers from moved patterns
+        if (index <= GameManager.Instance.comboManager.Multipliers.Count)
+        {
+            for (int j = index + 1; j < GameManager.Instance.comboManager.Multipliers.Count; j++)
+            {
+                GameManager.Instance.comboManager.RemoveMultiplier(j);
+            }
+        }
+    }
+
     public void AddMultiplier(int emplacement)
     {
         int mult = Multipliers[emplacement];

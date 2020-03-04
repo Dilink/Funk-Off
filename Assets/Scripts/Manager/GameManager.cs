@@ -107,6 +107,7 @@ public class GameManager : Singleton<GameManager>
     public void OnPatternResolved(int indexInList, Sc_Pattern pattern)
     {
         patternManager.RotatePattern(indexInList);
+        comboManager.RotateMultipliers(indexInList);
     }
 
     //FUNK 
