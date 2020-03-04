@@ -117,7 +117,7 @@ public class Ma_PatternManager : MonoBehaviour
             {
                 break;
             }
-            Debug.Log("Create pattern: " + item.Name);
+           // Debug.Log("Create pattern: " + item.Name);
             currentPatternsList.Add(item);
         }
 

@@ -109,6 +109,7 @@ public class GameManager : Singleton<GameManager>
         throw new NotImplementedException();
     }
 
+    //FUNK 
     public void FunkVariation(float funkToAdd)
     {
         funkAmount += funkToAdd * funkMultiplier;
@@ -122,7 +123,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     //DAMAGES PART
-    void SetFunkDamages(float newDamages)
+    public void SetFunkDamages(float newDamages)
     {
         funkDamages = newDamages;
     }
