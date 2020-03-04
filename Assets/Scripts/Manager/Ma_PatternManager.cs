@@ -1,8 +1,7 @@
 ﻿using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using UnityEditor;
 using Sirenix.OdinInspector;
 
 public class Ma_PatternManager : MonoBehaviour
@@ -10,11 +9,31 @@ public class Ma_PatternManager : MonoBehaviour
     public List<Sc_Pattern> currentPatternsList = new List<Sc_Pattern>();
     [InlineEditor]
     public Sc_Pattern obj;
+    [ReadOnly]
     public List<Sc_Pattern> availablePatternList = new List<Sc_Pattern>();
 
     private void Awake()
     {
+        LoadAvailablePatterns();
         GenerateStartPattern();
+    }
+
+    private void LoadAvailablePatterns()
+    {
+        availablePatternList.Clear();
+
+        // Load all assets of type Sc_Pattern that are located in Assets/Patterns folder
+        string[] guids2 = AssetDatabase.FindAssets("t:Sc_Pattern", new[] { "Assets/Patterns" });
+        foreach (var i in guids2)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(i);
+            Sc_Pattern pattern = AssetDatabase.LoadAssetAtPath<Sc_Pattern>(path);
+            availablePatternList.Add(pattern);
+        }
+
+        // Randomize list
+        System.Random rnd = new System.Random();
+        availablePatternList = availablePatternList.OrderBy(x => rnd.Next()).ToList();
     }
 
     /*private Tuple<int, int> getSizeOfPattern(Sc_Pattern pattern)
