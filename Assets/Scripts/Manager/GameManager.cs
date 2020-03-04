@@ -103,10 +103,9 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    //A FAIRE AVEC FLO
     public void OnPatternResolved(int indexInList, Sc_Pattern pattern)
     {
-        patternManager.RotatePattern(indexInList, pattern);
+        patternManager.RotatePattern(indexInList);
     }
 
     //FUNK 
