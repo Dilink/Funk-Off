@@ -32,6 +32,7 @@ public class Ma_UiManager : MonoBehaviour
     public RectTransform PauseSettingsRect;
     public RectTransform PauseQuitConfirmRect;
 
+
     private void Reset()
     {
         // Turnsbar elements
@@ -56,6 +57,11 @@ public class Ma_UiManager : MonoBehaviour
         PauseQuitConfirmRect = GameObject.Find("QuitConfirm").GetComponent<RectTransform>();
     }
 
+    private void Awake()
+    {
+        for (int i = 0; i < allPlayerUi.Length; i++)
+            allPlayerUi[i].playerAssigned = GameManager.Instance.allPlayers[i];
+    }
     // ---------------------
     // TURNSBAR FUNCTIONS
     // ---------------------
@@ -93,6 +99,7 @@ public class Ma_UiManager : MonoBehaviour
 
     public void UpdateCharacterUi(Mb_PlayerController playerConcerned, int MoveLeft, int MaxMove)
     {
+   
         for (int i =0; i < allPlayerUi.Length; i++)
         {
             if (allPlayerUi[i].playerAssigned == playerConcerned)

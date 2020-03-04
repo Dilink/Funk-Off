@@ -12,6 +12,7 @@ public class Mb_PlayerCard : MonoBehaviour
 
     public void UpdateMoveLeftUi(int MoveLeft, int MaxMove)
     {
+        print(MoveLeft);
         moveText.text = MoveLeft + "/" + MaxMove;
     }
 
