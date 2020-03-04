@@ -15,6 +15,7 @@ public class GameManager : Singleton<GameManager>
     [Header("MANAGERS")]
     public Ma_UiManager uiManager;
     public Ma_PatternManager patternManager;
+    public Ma_ComboManager comboManager;
 
     [Header("FunkRule")]
     private float funkMultiplier=1;
