@@ -1,7 +1,7 @@
 ﻿#if UNITY_EDITOR
 using Sirenix.OdinInspector.Editor;
 using Sirenix.Utilities;
-using Sirenix.Utilities.Editor;
+using UnityEngine;
 using UnityEditor;
 
 public class Matrix3x3BoolDrawer : OdinValueDrawer<Matrix3x3Bool>
@@ -21,34 +21,35 @@ public class Matrix3x3BoolDrawer : OdinValueDrawer<Matrix3x3Bool>
         return count >= 3;
     }
 
-    protected override void DrawPropertyLayout(UnityEngine.GUIContent label)
+    protected override void DrawPropertyLayout(GUIContent label)
     {
         Matrix3x3Bool value = this.ValueEntry.SmartValue;
 
-        UnityEngine.Color defaultColor = UnityEngine.GUI.color;
-        UnityEngine.Rect iniRect = EditorGUILayout.GetControlRect(UnityEngine.GUILayout.Height(0));
+        Color defaultColor = GUI.color;
+        Rect iniRect = EditorGUILayout.GetControlRect(GUILayout.Height(0));
 
-        if (UnityEngine.Event.current.type == UnityEngine.EventType.Repaint)
+        if (Event.current.type == EventType.Repaint)
         {
             validSize = iniRect.width;
         }
 
-        EditorGUILayout.GetControlRect(UnityEngine.GUILayout.Height(validSize));
+        EditorGUILayout.GetControlRect(GUILayout.Height(validSize));
 
         for (int i = 0; i < 3; i++)
         {
             EditorGUILayout.BeginHorizontal();
             for (int j = 0; j < 3; j++)
             {
-                UnityEngine.Color color = value[i, j] ? UnityEngine.Color.black : UnityEngine.Color.white;
-                UnityEngine.GUI.color = color;
-                UnityEngine.Rect rect = new UnityEngine.Rect();
+                Color color = value[i, j] ? Color.black : Color.white;
+                GUI.color = color;
+                Rect rect = new Rect();
 
                 rect.width = rect.height = iniRect.width / 3.0f;
                 rect.x = iniRect.x + i * rect.width;
                 rect.y = iniRect.y + j * rect.height;
-                
-                if (UnityEngine.Event.current.type == UnityEngine.EventType.MouseDown && rect.Contains(UnityEngine.Event.current.mousePosition))
+                rect = rect.Padding(rect.width / 3.0f * 0.1f);
+
+                if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
                 {
                     if (value[i, j])
                     {
@@ -58,12 +59,12 @@ public class Matrix3x3BoolDrawer : OdinValueDrawer<Matrix3x3Bool>
                     {
                         value[i, j] = true;
                     }
-                    UnityEngine.GUI.changed = true;
-                    UnityEngine.Event.current.Use();
+                    GUI.changed = true;
+                    Event.current.Use();
                 }
-                EditorGUI.DrawRect(rect.Padding(rect.width / 3.0f * 0.1f), color);
+                EditorGUI.DrawRect(rect, color);
 
-                UnityEngine.GUI.color = defaultColor;
+                GUI.color = defaultColor;
             }
             EditorGUILayout.EndHorizontal();
         }

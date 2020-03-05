@@ -11,6 +11,7 @@ using DG.Tweening;
 public class Ma_PatternManager : MonoBehaviour
 {
     //static int randomSeed=1;
+    [ReadOnly]
     public List<Sc_Pattern> currentPatternsList = new List<Sc_Pattern>();
     [ReadOnly]
     public List<Sc_Pattern> availablePatternList = new List<Sc_Pattern>();
@@ -19,7 +20,8 @@ public class Ma_PatternManager : MonoBehaviour
     public Sc_Pattern futurePattern;
     public readonly int patternCount = 5;
 
-    public LevelConfig levelConfig;
+    [InlineEditor]
+    public Sc_LevelConfig levelConfig;
 
     private void Awake()
     {
@@ -32,7 +34,7 @@ public class Ma_PatternManager : MonoBehaviour
         availablePatternList.Clear();
 
         // Load all assets of type Sc_Pattern that are located in Assets/Patterns folder
-        string[] guids2 = AssetDatabase.FindAssets("t:Sc_Pattern", new[] { "Assets/Patterns" });
+        string[] guids2 = AssetDatabase.FindAssets("t:Sc_Pattern", new[] { "Assets/Patterns/Player" });
         foreach (var i in guids2)
         {
             string path = AssetDatabase.GUIDToAssetPath(i);
@@ -84,12 +86,12 @@ public class Ma_PatternManager : MonoBehaviour
         return new Tuple<int, int>(maxW - minW + 1, maxH - minH + 1);
     }*/
 
-    public void CheckGridForPattern()
+    public void CheckGridForPatternAndReact()
     {
         var res = JustCheckGridForPattern();
         if (res.HasValue)
         {
-            GameManager.Instance.OnPatternResolved(res.Value.Item1, res.Value.Item2);
+            GameManager.Instance.OnPatternResolved(res.Value.Item1);
             return;
         }
     }
@@ -153,13 +155,38 @@ public class Ma_PatternManager : MonoBehaviour
             currentPatternsList.Add(item);
         }*/
 
+
         for (int i = 0; i < 5; i++)
         {
-            currentPatternsList.Add(GetRandomPatternDifferentOfCurrents());
+            while (true)
+            {
+                var pattern = GetRandomPatternDifferentOfCurrents();
+                var check = PatternValidation(GameManager.Instance.allTiles, pattern);
+                if (!check)
+                {
+                    currentPatternsList.Add(pattern);
+                    break;
+                }
+            }
         }
-        Debug.LogError("Go");
-        futurePattern = GetRandomPatternDifferentOfCurrents();
-        Debug.LogError(futurePattern);
+
+        // Legacy way to add start patterns
+        /*for (int i = 0; i < 5; i++)
+        {
+            currentPatternsList.Add(GetRandomPatternDifferentOfCurrents());
+        }*/
+
+        while (true)
+        {
+            var pattern = GetRandomPatternDifferentOfCurrents();
+            var check = PatternValidation(GameManager.Instance.allTiles, pattern);
+            if (!check)
+            {
+                futurePattern = pattern;
+                break;
+            }
+        }
+
         for (int i = 0; i < currentPatternsList.Count(); i++)
         {
             Sc_Pattern pattern = currentPatternsList[i];
@@ -197,7 +224,7 @@ public class Ma_PatternManager : MonoBehaviour
             //TIRER UNE RANDOM ENTRE 0 ET CE POID
             total -= 1;
             //var pond = Mathf.RoundToInt(random()*total);
-            var pond = rnd.Next(total);
+            var pond = Mathf.Clamp(rnd.Next(total), 0, 80);
 
             if (result != null)
                 result.Clear();
@@ -211,7 +238,6 @@ public class Ma_PatternManager : MonoBehaviour
                 pond -= entry.Value;
                 if ( pond  <=0 )
                 {
-                    Debug.LogError("BEFORE" +result);
                     result = dic[entry.Key].Item2;
                     
                     break;
@@ -228,7 +254,7 @@ public class Ma_PatternManager : MonoBehaviour
             }
             result.Remove(futurePattern);
 
-            if (!( result.Count() == 0))
+            if (result.Count() != 0)
             {
                 break;
             }
