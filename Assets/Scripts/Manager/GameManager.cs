@@ -15,11 +15,32 @@ public class GameManager : Singleton<GameManager>
     [Header("MANAGERS")]
     public Ma_UiManager uiManager;
     public Ma_PatternManager patternManager;
+    public Ma_ComboManager comboManager;
 
     [Header("FunkRule")]
     private float funkMultiplier=1;
     private float funkAmount;
     public float funkDamages;
+
+    private void Start()
+    {
+        EnableActing();
+    }
+    //ACTING
+    #region
+
+    public bool canAct=true;
+
+    public void EnableActing()
+    {
+        canAct = true;
+    }
+
+    public void DisableActing()
+    {
+        canAct = false;
+    }
+    #endregion
 
     private void Update()
     {
@@ -89,7 +110,7 @@ public class GameManager : Singleton<GameManager>
 
     }*/
     
-    //
+    //CHOPPER LA TILE QUE L ON VEUT
     public Mb_Tile GetTile(int x, int z)
     {
         for (int i =0; i < allTiles.Length; i++)
@@ -106,6 +127,7 @@ public class GameManager : Singleton<GameManager>
     public void OnPatternResolved(int indexInList, Sc_Pattern pattern)
     {
         patternManager.RotatePattern(indexInList);
+        comboManager.RotateMultipliers(indexInList);
     }
 
     //FUNK 

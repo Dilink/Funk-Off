@@ -24,6 +24,7 @@ public class Mb_Tile : MonoBehaviour
         }
 
         Modifier newParamaters = new Modifier();
+        print(newParamaters);
         tileProperties = newParamaters;
 
     }
@@ -47,20 +48,22 @@ public class Mb_Tile : MonoBehaviour
 
         if ((tileProperties.type & TileModifier.Ice) == TileModifier.Ice)
         {
-            print("ICE");
-            int x = playerOnTile.oldTile.posX;
-            int z = playerOnTile.oldTile.posZ;
+            int x = posX;
+            int z = posZ;
 
-            if (playerOnTile.oldTile.posX == posX)
-            {
-                z = - z;
-            }
-            if (playerOnTile.oldTile.posZ == posZ)
-            {
-                x = - x;
-            }
+
+            x += posX - playerOnTile.oldTile.posX;
+
+      
+            z += posZ - playerOnTile.oldTile.posZ;
+
+
+            x = Mathf.Clamp(x, -1, 1);
+            z = Mathf.Clamp(z, -1, 1);
             if (GameManager.Instance.GetTile(x, z)!= null)
             {
+                print(z);
+                print(x);
                 playerOnTile.CheckFreeMovement(GameManager.Instance.GetTile(x, z));
             }
 
