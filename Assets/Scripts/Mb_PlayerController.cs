@@ -42,8 +42,7 @@ public class Mb_PlayerController : MonoBehaviour
 
     public void CheckCostingMovement(Mb_Tile tileToMoveTo)
     {
-        print(GameManager.Instance.canAct);
-        if (moveLeft>= tileToMoveTo.tileProperties.cost &&
+        if (moveLeft >= tileToMoveTo.tileProperties.cost &&
             tileToMoveTo.avaible == true &&
             Vector3.Distance(tileToMoveTo.transform.position, currentTile.transform.position)<1.2f &&
             GameManager.Instance.canAct==true)

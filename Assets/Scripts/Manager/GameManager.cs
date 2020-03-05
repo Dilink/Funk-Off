@@ -19,12 +19,15 @@ public class GameManager : Singleton<GameManager>
 
     [Header("FunkRule")]
     private float funkMultiplier=1;
-    private float funkAmount;
-    public float funkDamages;
+    private float funkAmount = 0.5f;
+
+    [SerializeField] float funkDamagesEnemi;
+    [SerializeField] float funkAddingPlayer;
 
     private void Start()
     {
         EnableActing();
+        uiManager.UpdateFunkBar(funkAmount);
     }
     //ACTING
     #region
@@ -124,13 +127,14 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    public void OnPatternResolved(int indexInList, Sc_Pattern pattern)
+    public void OnPatternResolved(int indexInList)
     {
         patternManager.RotatePattern(indexInList);
         comboManager.RotateMultipliers(indexInList);
+        FunkVariation(funkAddingPlayer * funkMultiplier);
     }
 
-    //FUNK 
+    //FUNK adding
     public void FunkVariation(float funkToAdd)
     {
         funkAmount += funkToAdd * funkMultiplier;
@@ -146,12 +150,12 @@ public class GameManager : Singleton<GameManager>
     //DAMAGES PART
     public void SetFunkDamages(float newDamages)
     {
-        funkDamages = newDamages;
+        funkDamagesEnemi = newDamages;
     }
 
     public float funkDamagesToDeal()
     {
-        return -funkDamages;
+        return -funkDamagesEnemi;
     }
 
     //TILE SPE
