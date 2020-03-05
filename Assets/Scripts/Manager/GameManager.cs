@@ -129,11 +129,17 @@ public class GameManager : Singleton<GameManager>
 
     public void OnPatternResolved(int indexInList)
     {
+        //ANIM ET AUTRE FEEDBACKS DE COMPLETION
         foreach (Mb_PlayerController player in allPlayers)
             player.anim.SetTrigger("Dance");
 
+        //DECOULEMENT DES PATTERNS
 ;        patternManager.RotatePattern(indexInList);
+
+        //INCREMENTATION DU MULTIPLIER ICI
         comboManager.RotateMultipliers(indexInList);
+
+        // VARIATION DU FUUUUUUUUUUUUNK
         FunkVariation(funkAddingPlayer * funkMultiplier);
     }
 
@@ -145,6 +151,7 @@ public class GameManager : Singleton<GameManager>
         uiManager.UpdateFunkBar(funkAmount);
     }
 
+    //FUNK MULTIPLIER SET
     public void SetFunkMultiplier(float newModifier)
     {
         funkMultiplier = newModifier;

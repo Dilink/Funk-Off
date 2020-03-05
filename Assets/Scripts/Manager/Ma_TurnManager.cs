@@ -11,9 +11,6 @@ public class Ma_TurnManager : MonoBehaviour
     public int MaxTurn; // Max number of turns for this level
     public int CurrentTurn; // Current turn number
 
-    [Header("Moves stats")]
-    public int MaxMoves; // Max moves per character and per turn
-
     public void BeginTurn()
     {
         // Reset all player characters move number
@@ -38,7 +35,7 @@ public class Ma_TurnManager : MonoBehaviour
         }
         else // End the level
         {
-            // End the level
+          //  GameManager.Instance.uiManager.EndLevelPannelAppearence();
         }
         
     }
