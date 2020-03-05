@@ -89,7 +89,7 @@ public class Ma_PatternManager : MonoBehaviour
         var res = JustCheckGridForPattern();
         if (res.HasValue)
         {
-            GameManager.Instance.OnPatternResolved(res.Value.Item1, res.Value.Item2);
+            GameManager.Instance.OnPatternResolved(res.Value.Item1);
             return;
         }
     }
@@ -157,9 +157,8 @@ public class Ma_PatternManager : MonoBehaviour
         {
             currentPatternsList.Add(GetRandomPatternDifferentOfCurrents());
         }
-        Debug.LogError("Go");
         futurePattern = GetRandomPatternDifferentOfCurrents();
-        Debug.LogError(futurePattern);
+
         for (int i = 0; i < currentPatternsList.Count(); i++)
         {
             Sc_Pattern pattern = currentPatternsList[i];
@@ -211,7 +210,6 @@ public class Ma_PatternManager : MonoBehaviour
                 pond -= entry.Value;
                 if ( pond  <=0 )
                 {
-                    Debug.LogError("BEFORE" +result);
                     result = dic[entry.Key].Item2;
                     
                     break;
