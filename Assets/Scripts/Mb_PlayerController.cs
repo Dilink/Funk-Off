@@ -48,10 +48,7 @@ public class Mb_PlayerController : MonoBehaviour
     {
         currentTile.OnMove(false);
         GameManager.Instance.EnableActing();
-        if((characterBaseCharacteristics.characterSkills & CharacterSkills.Finisher) == CharacterSkills.Finisher)
-            GameManager.Instance.patternManager.CheckGridForPatternAndReact(1.5f);
-        else
-            GameManager.Instance.patternManager.CheckGridForPatternAndReact(1);
+        CheckPatternCallBack();
 
     }
 
@@ -134,7 +131,7 @@ public class Mb_PlayerController : MonoBehaviour
         currentTile.setOccupent(this);
         currentTile.avaible = false;
 
-        transform.position = tileToTp.transform.parent.position;
+        transform.position = tileToTp.transform.position + new Vector3(0, .5f, 0);
         OnTpCallBack();
     }
 
@@ -142,7 +139,12 @@ public class Mb_PlayerController : MonoBehaviour
     {
         currentTile.OnMove(true);
         GameManager.Instance.EnableActing();
+        CheckPatternCallBack();
 
+    }
+
+    void CheckPatternCallBack()
+    {
         if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Finisher) == CharacterSkills.Finisher)
             GameManager.Instance.patternManager.CheckGridForPatternAndReact(1.5f);
         else
