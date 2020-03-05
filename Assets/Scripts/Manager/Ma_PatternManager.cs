@@ -19,7 +19,7 @@ public class Ma_PatternManager : MonoBehaviour
     public Sc_Pattern futurePattern;
     public readonly int patternCount = 5;
 
-    public LevelConfig levelConfig;
+    public Sc_LevelConfig levelConfig;
 
     private void Awake()
     {
@@ -84,7 +84,7 @@ public class Ma_PatternManager : MonoBehaviour
         return new Tuple<int, int>(maxW - minW + 1, maxH - minH + 1);
     }*/
 
-    public void CheckGridForPattern()
+    public void CheckGridForPatternAndReact()
     {
         var res = JustCheckGridForPattern();
         if (res.HasValue)
@@ -153,11 +153,37 @@ public class Ma_PatternManager : MonoBehaviour
             currentPatternsList.Add(item);
         }*/
 
+
         for (int i = 0; i < 5; i++)
         {
-            currentPatternsList.Add(GetRandomPatternDifferentOfCurrents());
+            while (true)
+            {
+                var pattern = GetRandomPatternDifferentOfCurrents();
+                var check = PatternValidation(GameManager.Instance.allTiles, pattern);
+                if (!check)
+                {
+                    currentPatternsList.Add(pattern);
+                    break;
+                }
+            }
         }
-        futurePattern = GetRandomPatternDifferentOfCurrents();
+
+        // Legacy way to add start patterns
+        /*for (int i = 0; i < 5; i++)
+        {
+            currentPatternsList.Add(GetRandomPatternDifferentOfCurrents());
+        }*/
+
+        while (true)
+        {
+            var pattern = GetRandomPatternDifferentOfCurrents();
+            var check = PatternValidation(GameManager.Instance.allTiles, pattern);
+            if (!check)
+            {
+                futurePattern = pattern;
+                break;
+            }
+        }
 
         for (int i = 0; i < currentPatternsList.Count(); i++)
         {
@@ -196,7 +222,7 @@ public class Ma_PatternManager : MonoBehaviour
             //TIRER UNE RANDOM ENTRE 0 ET CE POID
             total -= 1;
             //var pond = Mathf.RoundToInt(random()*total);
-            var pond = rnd.Next(total);
+            var pond = Mathf.Clamp(rnd.Next(total), 0, 80);
 
             if (result != null)
                 result.Clear();
@@ -226,7 +252,7 @@ public class Ma_PatternManager : MonoBehaviour
             }
             result.Remove(futurePattern);
 
-            if (!( result.Count() == 0))
+            if (result.Count() != 0)
             {
                 break;
             }

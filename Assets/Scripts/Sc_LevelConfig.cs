@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 
 [CreateAssetMenu(fileName = "New Level Config", menuName = "Custom/Level Configuration")]
-public class LevelConfig : SerializedScriptableObject
+public class Sc_LevelConfig : SerializedScriptableObject
 {
     // Key: Pattern category type
     // Value: Pattern category weight
