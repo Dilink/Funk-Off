@@ -6,7 +6,7 @@ public class Ma_CameraManager : MonoBehaviour
 {
     [SerializeField] Transform center;
 
-    void Update()
+  /*  void Update()
     {
         if (GameManager.Instance.currentPlayerSelectionned == null)
         {
@@ -19,5 +19,5 @@ public class Ma_CameraManager : MonoBehaviour
                 center.Rotate(new Vector3(0, -1 + center.rotation.y, 0));
             }
         }
-    }
+    }*/
 }

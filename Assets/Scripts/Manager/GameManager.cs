@@ -1,14 +1,49 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    [Header("PLAYER PARAMETERS")]
     public Mb_PlayerController currentPlayerSelectionned;
     public Mb_PlayerController[] allPlayers;
 
-    public Ma_UiManager uiManager;
+    [Header("GRID PARAMETERS")]
+    public Mb_Tile[] allTiles;
 
+    [Header("MANAGERS")]
+    public Ma_UiManager uiManager;
+    public Ma_PatternManager patternManager;
+    public Ma_ComboManager comboManager;
+
+    [Header("FunkRule")]
+    private float funkMultiplier=1;
+    private float funkAmount = 0.5f;
+
+    [SerializeField] float funkDamagesEnemi;
+    [SerializeField] float funkAddingPlayer;
+
+    private void Start()
+    {
+        EnableActing();
+        uiManager.UpdateFunkBar(funkAmount);
+    }
+    //ACTING
+    #region
+
+    public bool canAct=true;
+
+    public void EnableActing()
+    {
+        canAct = true;
+    }
+
+    public void DisableActing()
+    {
+        canAct = false;
+    }
+    #endregion
 
     private void Update()
     {
@@ -51,10 +86,88 @@ public class GameManager : Singleton<GameManager>
 
         if (Physics.Raycast(ray, out hit))
         {
-            Debug.Log(hit);
-            currentPlayerSelectionned.CheckMovement(hit.collider.GetComponent<Mb_Tile>());
+            currentPlayerSelectionned.CheckCostingMovement(hit.collider.GetComponent<Mb_Tile>());
+            
         }
     }
     #endregion
 
+    //PREVIEW
+    /*
+    public void SetPreviewLine(List<Mb_Tile> allTilesToMove, Mb_PlayerController currentPlayer)
+    {
+        linePreview.gameObject.SetActive(true);
+        linePreview.positionCount = allTilesToMove.Count + 1;
+        linePreview.SetPosition(0,currentPlayer.currentTile.transform.position);
+
+        for (int i = 1; i < allTilesToMove.Count; i++)
+        {
+            linePreview.SetPosition(i,allTilesToMove[i].transform.position);
+        }
+    }
+
+    public void EndPreviewLine()
+    {
+        linePreview.gameObject.SetActive(false);
+        linePreview.positionCount = 0;
+
+    }*/
+    
+    //CHOPPER LA TILE QUE L ON VEUT
+    public Mb_Tile GetTile(int x, int z)
+    {
+        for (int i =0; i < allTiles.Length; i++)
+        {
+            if (allTiles[i].posX == x && allTiles[i].posZ == z)
+            {
+                return allTiles[i];
+                
+            }
+        }
+        return null;
+    }
+
+    public void OnPatternResolved(int indexInList)
+    {
+        patternManager.RotatePattern(indexInList);
+        comboManager.RotateMultipliers(indexInList);
+        FunkVariation(funkAddingPlayer * funkMultiplier);
+    }
+
+    //FUNK adding
+    public void FunkVariation(float funkToAdd)
+    {
+        funkAmount += funkToAdd * funkMultiplier;
+        funkAmount = Mathf.Clamp(funkAmount, 0, 1);
+        uiManager.UpdateFunkBar(funkAmount);
+    }
+
+    public void SetFunkMultiplier(float newModifier)
+    {
+        funkMultiplier = newModifier;
+    }
+
+    //DAMAGES PART
+    public void SetFunkDamages(float newDamages)
+    {
+        funkDamagesEnemi = newDamages;
+    }
+
+    public float funkDamagesToDeal()
+    {
+        return -funkDamagesEnemi;
+    }
+
+    //TILE SPE
+    public Mb_Tile TpTile(Mb_Tile currentTpUsed)
+    {
+        for (int i = 0; i < allTiles.Length; i++)
+        {
+            if ((allTiles[i].tileProperties.type & TileModifier.Tp) == TileModifier.Tp && currentTpUsed!= allTiles[i])
+            {
+                return allTiles[i];
+            }
+        }
+        return null;
+    }
 }

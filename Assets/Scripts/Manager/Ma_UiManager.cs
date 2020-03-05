@@ -7,8 +7,6 @@ using DG.Tweening;
 
 public class Ma_UiManager : MonoBehaviour
 {
-    public static Ma_UiManager instance;
-
     [SerializeField] Mb_PlayerCard[] allPlayerUi;
 
     [Header("Turnsbar elements")]
@@ -16,6 +14,7 @@ public class Ma_UiManager : MonoBehaviour
 
     [Header("Patternsbar elements")]
     public Image[] PatternsbarIconsImg;
+    public Image[] PatternsbarMultipliersImg;
 
     [Header("Funkbar elements")]
     public Image FunkbarFillImg;
@@ -30,14 +29,20 @@ public class Ma_UiManager : MonoBehaviour
     public Image PauseMenubackgroundImg;
     public RectTransform PauseMainRect;
     public RectTransform PauseSettingsRect;
+    public RectTransform PauseQuitConfirmRect;
+
 
     private void Reset()
     {
+        // PlayerCards elements
+        allPlayerUi = FindObjectsOfType<Mb_PlayerCard>();
+
         // Turnsbar elements
         TurnsbarText = GameObject.Find("TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
 
         // Patternsbar elements
         PatternsbarIconsImg = GameObject.Find("PatternsBar_PatternsIcons").GetComponentsInChildren<Image>();
+        PatternsbarMultipliersImg = GameObject.Find("PatternsBar_Multipliers").GetComponentsInChildren<Image>();
 
         // Funkbar elements
         FunkbarFillImg = GameObject.Find("Funkbar_Fill").GetComponent<Image>();
@@ -52,8 +57,14 @@ public class Ma_UiManager : MonoBehaviour
         PauseMenubackgroundImg = GameObject.Find("PauseMenu_BackgroundBlack").GetComponent<Image>();
         PauseMainRect = GameObject.Find("PauseMain").GetComponent<RectTransform>();
         PauseSettingsRect = GameObject.Find("PauseSettings").GetComponent<RectTransform>();
+        PauseQuitConfirmRect = GameObject.Find("QuitConfirm").GetComponent<RectTransform>();
     }
 
+    private void Awake()
+    {
+        for (int i = 0; i < allPlayerUi.Length; i++)
+            allPlayerUi[i].playerAssigned = GameManager.Instance.allPlayers[i];
+    }
     // ---------------------
     // TURNSBAR FUNCTIONS
     // ---------------------
@@ -69,9 +80,14 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
 
     // Update the Icon of the patternsbar at the emplacement indicated
-    public void UpdatePatternsBarIcon(int emplacement) // + Pattern class file
+    public void UpdatePatternsBarIcon(int emplacement,Sc_Pattern pattern)
     {
-        //PatternsbarIconsImg[Emplacement].sprite = PatternClassFile.sprite
+        PatternsbarIconsImg[emplacement].sprite = pattern.sprite;
+    }
+
+    public void UpdateMultiplierIcon(int emplacement, Color color)
+    {
+        PatternsbarMultipliersImg[emplacement].color = color;
     }
 
     // ---------------------
@@ -81,7 +97,7 @@ public class Ma_UiManager : MonoBehaviour
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        FunkbarFillImg.fillAmount = funkPercentage / 100;
+        FunkbarFillImg.fillAmount = funkPercentage;
         FunkbarCursorRect.anchoredPosition = new Vector2(FunkbarFillRect.sizeDelta.x * FunkbarFillImg.fillAmount, FunkbarCursorRect.anchoredPosition.y);
     }
 
@@ -91,6 +107,7 @@ public class Ma_UiManager : MonoBehaviour
 
     public void UpdateCharacterUi(Mb_PlayerController playerConcerned, int MoveLeft, int MaxMove)
     {
+   
         for (int i =0; i < allPlayerUi.Length; i++)
         {
             if (allPlayerUi[i].playerAssigned == playerConcerned)
@@ -108,20 +125,44 @@ public class Ma_UiManager : MonoBehaviour
     public void OpenPauseMenu()
     {
         EnableOrDisablePauseMenu();
-        PauseMenubackgroundImg.DOColor(new Color(0, 0, 0, 0.3f), 0.6f);
+        PauseMenubackgroundImg.DOColor(new Color(0, 0, 0, 0.5f), 0.6f);
         PauseMainRect.DOAnchorPosY(0, 0.6f, false);
     }
 
     // When the settings menu is open from the pause menu
     public void OpenSettingsMenu()
     {
-
+        PauseSettingsRect.rotation = Quaternion.Euler(0, 90, 0);
+        PauseSettingsRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseSettingsRect.gameObject.SetActive(true);
+        PauseMainRect.gameObject.SetActive(false);
     }
 
     // When the settings menu is closed and return to pause menu
     public void CloseSettingsMenu()
     {
+        PauseMainRect.rotation = Quaternion.Euler(0, 90, 0);
+        PauseMainRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseSettingsRect.gameObject.SetActive(false);
+        PauseMainRect.gameObject.SetActive(true);
+    }
 
+    // When the quit confirm options appear
+    public void OpenConfirm()
+    {
+        PauseQuitConfirmRect.rotation = Quaternion.Euler(0, 90, 0);
+        PauseQuitConfirmRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseQuitConfirmRect.gameObject.SetActive(true);
+        PauseMainRect.gameObject.SetActive(false);
+    }
+
+    // When the quit confirm options disappear
+    public void CloseConfirm()
+    {
+        PauseMainRect.rotation = Quaternion.Euler(0, 90, 0);
+        PauseMainRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseQuitConfirmRect.gameObject.SetActive(false);
+        PauseMainRect.gameObject.SetActive(true);
     }
 
     // When the pause menu is closed and return to the game
@@ -132,6 +173,7 @@ public class Ma_UiManager : MonoBehaviour
         Invoke("EnableOrDisablePauseMenu", 0.6f);
     }
 
+    // System, enable or disable the pause menu
     private void EnableOrDisablePauseMenu()
     {
         if (PauseMenu.activeInHierarchy)
@@ -141,6 +183,6 @@ public class Ma_UiManager : MonoBehaviour
         else
         {
             PauseMenu.SetActive(true);
-        }
+        }       
     }
 }
