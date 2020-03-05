@@ -37,7 +37,7 @@ public class Mb_PlayerController : MonoBehaviour
     {
         currentTile.OnMove(false);
         GameManager.Instance.EnableActing();
-        GameManager.Instance.patternManager.CheckGridForPattern();
+        GameManager.Instance.patternManager.CheckGridForPatternAndReact();
     }
 
     public void CheckCostingMovement(Mb_Tile tileToMoveTo)
@@ -89,7 +89,7 @@ public class Mb_PlayerController : MonoBehaviour
     {
         currentTile.OnMove(true);
         GameManager.Instance.EnableActing();
-        GameManager.Instance.patternManager.CheckGridForPattern();
+        GameManager.Instance.patternManager.CheckGridForPatternAndReact();
     }
     /*  public void PreviewMove()
       {
