@@ -11,6 +11,7 @@ using DG.Tweening;
 public class Ma_PatternManager : MonoBehaviour
 {
     //static int randomSeed=1;
+    [ReadOnly]
     public List<Sc_Pattern> currentPatternsList = new List<Sc_Pattern>();
     [ReadOnly]
     public List<Sc_Pattern> availablePatternList = new List<Sc_Pattern>();
@@ -19,6 +20,7 @@ public class Ma_PatternManager : MonoBehaviour
     public Sc_Pattern futurePattern;
     public readonly int patternCount = 5;
 
+    [InlineEditor]
     public Sc_LevelConfig levelConfig;
 
     private void Awake()
