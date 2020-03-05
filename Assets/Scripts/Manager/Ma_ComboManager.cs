@@ -33,6 +33,7 @@ public class Ma_ComboManager : MonoBehaviour
         {
             for(int k = index -1; k > 0; k--)
             {
+                Debug.Log("removed before mult");
                 GameManager.Instance.comboManager.RemoveMultiplier(k);
             }
         }
