@@ -92,7 +92,6 @@ public class Ma_PatternManager : MonoBehaviour
             Sc_Pattern pattern = currentPatternsList[i];
             if (PatternValidation(GameManager.Instance.allTiles, pattern))
             {
-                Debug.Log("Pattern matched: " + pattern.Name);
                 GameManager.Instance.OnPatternResolved(i, pattern);
                 return;
             }
@@ -229,10 +228,8 @@ public class Ma_PatternManager : MonoBehaviour
         
 
         //TIRER UNE RANDOM DANS LA LISTE QUI A ARRETE LA VALEUR DE POID
-        Debug.LogError("BEFORE" + result.Count());
-        Debug.LogError("BEFORE total list" + currentPatternsList.Count());
         Sc_Pattern stock = result[rnd.Next( result.Count())];
-        Debug.LogError("AFTER" + stock);
+
         //REMETTRE LES PATTERNS QU ON VIENT DE RETIRER
         result.AddRange(backupCurrentPatternsList);
 
