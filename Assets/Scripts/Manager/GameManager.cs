@@ -6,8 +6,10 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     [Header("PLAYER PARAMETERS")]
-    [SerializeField] int movePerTurn=8;
+    private int movePerTurn;
+    [SerializeField] int maxMovesPerTurn;
     private int moveLeft;
+    int totalMoveReseted = 0;
 
     public Mb_PlayerController currentPlayerSelectionned;
     public Mb_PlayerController[] allPlayers;
@@ -19,7 +21,7 @@ public class GameManager : Singleton<GameManager>
     public Ma_UiManager uiManager;
     public Ma_PatternManager patternManager;
     public Ma_ComboManager comboManager;
-
+    
     [Header("FunkRule")]
     private float funkMultiplier=1;
     private float funkAmount = 0.5f;
@@ -29,9 +31,11 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        ResetMove();
-        EnableActing();
+      
         uiManager.UpdateFunkBar(funkAmount);
+        SetupMovementLimit();
+        EnableActing();
+        ResetMove();
     }
     //ACTING
     #region
@@ -97,6 +101,19 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     //MOVEPART
+    //definir la limte de début
+    private void SetupMovementLimit()
+    {
+       
+        foreach (Mb_PlayerController player in allPlayers)
+        {
+            totalMoveReseted += player.characterBaseCharacteristics.movementGiven;
+        }
+        totalMoveReseted = Mathf.Clamp(totalMoveReseted, totalMoveReseted, maxMovesPerTurn);              
+    }
+
+
+
     public int moveLeftForTurn()
     {
         return moveLeft;
@@ -110,8 +127,9 @@ public class GameManager : Singleton<GameManager>
 
     public void ResetMove()
     {
-        moveLeft = movePerTurn;
-        uiManager.UpdateMovesUi(moveLeft, movePerTurn);
+        int reservedMoves = moveLeft;
+        moveLeft = Mathf.Clamp(totalMoveReseted + reservedMoves, 0, maxMovesPerTurn);              
+        uiManager.UpdateMovesUi(moveLeft, maxMovesPerTurn);
     }
     //PREVIEW
     /*
