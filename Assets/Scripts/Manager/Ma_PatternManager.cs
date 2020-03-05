@@ -12,6 +12,8 @@ public class Ma_PatternManager : MonoBehaviour
     public List<Sc_Pattern> currentPatternsList = new List<Sc_Pattern>();
     [ReadOnly]
     public List<Sc_Pattern> availablePatternList = new List<Sc_Pattern>();
+    [ReadOnly]
+    public List<Sc_Pattern> patternsForCancellation = new List<Sc_Pattern>();
 
     [ReadOnly]
     public Sc_Pattern futurePattern;
@@ -23,6 +25,43 @@ public class Ma_PatternManager : MonoBehaviour
     {
         LoadAvailablePatterns();
         GenerateStartPattern();
+        OnTurnStart();
+    }
+
+    private void OnTurnStart()
+    {
+        patternsForCancellation.Clear();
+        var level = GameManager.Instance.levelConfig;
+        int count = rand.Next(level.minPatternsToCancelAttack, level.maxPatternsToCancelAttack);
+        var copy = new List<Sc_Pattern>(currentPatternsList);
+        RandomizeList(ref copy);
+        var queue = new Queue<Sc_Pattern>(copy);
+
+        for (int i = 0; i < count; i++)
+        {
+            var pattern = queue.Dequeue();
+            UpdateCancelMarker(currentPatternsList.IndexOf(pattern));
+            patternsForCancellation.Add(pattern);
+        }
+    }
+
+    private void UpdateCancelMarker(int index)
+    {
+        bool flag = patternsForCancellation.Contains(currentPatternsList[index]);
+        GameManager.Instance.uiManager.UpdateCancelMarkerIcon(index, flag);
+    }
+
+    public void OnTurnEnd(bool isLevelFinished = false)
+    {
+        if (patternsForCancellation.Count() != 0)
+        {
+            GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal());
+        }
+
+        if (!isLevelFinished)
+        {
+            OnTurnStart();
+        }
     }
 
     private void LoadAvailablePatterns()
@@ -80,6 +119,8 @@ public class Ma_PatternManager : MonoBehaviour
         var res = JustCheckGridForPattern();
         if (res.HasValue)
         {
+            patternsForCancellation.Remove(res.Value.Item2);
+            UpdateCancelMarker(res.Value.Item1);
             GameManager.Instance.OnPatternResolved(res.Value.Item1, multiplier);
             return;
         }
@@ -241,6 +282,7 @@ public class Ma_PatternManager : MonoBehaviour
         for (int i = 0; i < currentPatternsList.Count(); i++)
         {
             GameManager.Instance.uiManager.UpdatePatternsBarIcon(i, currentPatternsList[i]);
+            UpdateCancelMarker(i);
         }
 
         futurePattern = GetRandomPatternDifferentOfCurrents();
