@@ -7,7 +7,8 @@ using DG.Tweening;
 
 public class Ma_UiManager : MonoBehaviour
 {
-    [SerializeField] Mb_PlayerCard[] allPlayerUi;
+    //   [SerializeField] Mb_PlayerCard[] allPlayerUi;
+    [SerializeField] TextMeshProUGUI moveLeftText;
 
     [Header("Turnsbar elements")]
     public TMP_Text TurnsbarText;
@@ -36,7 +37,7 @@ public class Ma_UiManager : MonoBehaviour
     private void Reset()
     {
         // PlayerCards elements
-        allPlayerUi = FindObjectsOfType<Mb_PlayerCard>();
+        //allPlayerUi = FindObjectsOfType<Mb_PlayerCard>();
 
         // Turnsbar elements
         TurnsbarText = GameObject.Find("TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
@@ -64,34 +65,43 @@ public class Ma_UiManager : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < allPlayerUi.Length; i++)
-            allPlayerUi[i].playerAssigned = GameManager.Instance.allPlayers[i];
+        //OLD MOVEMENT SYSTEM
+      /*  for (int i = 0; i < allPlayerUi.Length; i++)
+            allPlayerUi[i].playerAssigned = GameManager.Instance.allPlayers[i];*/
     }
     // ---------------------
     // TURNSBAR FUNCTIONS
     // ---------------------
 
     // Update the text of the Turnsbar to display current turn / Max turns
-    public void UpdateTurnsbarText()
+    public void UpdateTurnsbarText(int currentTurn, int maxTurn)
     {
-        TurnsbarText.text = Ma_TurnManager.instance.CurrentTurn.ToString() + "/" + Ma_TurnManager.instance.MaxTurn.ToString();
+        TurnsbarText.text = currentTurn + "/" + maxTurn;
     }
 
     // ---------------------
     // PATTERNSBAR FUNCTIONS
     // ---------------------
 
-    // Update the Icon of the patternsbar at the emplacement indicated
+    // Update the Icon of the patternsbar
     public void UpdatePatternsBarIcon(int emplacement,Sc_Pattern pattern)
     {
         PatternsbarIconsImg[emplacement].sprite = pattern.sprite;
     }
 
+    // Update the multipliers visuals
     public void UpdateMultiplierIcon(int emplacement, Color color, string text)
     {
         PatternsbarMultipliersImg[emplacement].color = color;
         PatternsbarMultipliersTexts[emplacement].text = text;
         PatternsbarMultipliersTexts[emplacement].color = Color.black;
+    }
+
+    // Remove the multiplier visual
+    public void RemoveMultiplierIcon(int emplacement)
+    {
+        GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.clear, "x1");
+        GameManager.Instance.uiManager.PatternsbarMultipliersTexts[emplacement].color = Color.clear;
     }
 
     // ---------------------
@@ -108,17 +118,35 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
     // CHARACTERS UI FUNCTIONS
     // ---------------------
-
+    //OLD MOVEMENT SYSTEM
+    /*
     public void UpdateCharacterUi(Mb_PlayerController playerConcerned, int MoveLeft, int MaxMove)
     {
-   
         for (int i =0; i < allPlayerUi.Length; i++)
         {
             if (allPlayerUi[i].playerAssigned == playerConcerned)
             {
-                allPlayerUi[i].UpdateMoveLeftUi(MoveLeft, MaxMove);
+                //allPlayerUi[i].UpdateMoveLeftUi(MoveLeft, MaxMove);
             }
         }
+    }
+
+    public void UpdateCharacterIcons(Mb_PlayerController playerConcerned , Sprite icon, Sprite item, Sprite passive)
+    {
+        for (int i = 0; i < allPlayerUi.Length; i++)
+        {
+            if (allPlayerUi[i].playerAssigned == playerConcerned)
+            {
+                allPlayerUi[i].UpdateCardIcon(icon);
+                allPlayerUi[i].UpdateCardItem(item);
+                allPlayerUi[i].UpdateCardPassive(passive);
+            }
+        }
+    }*/
+
+    public void UpdateMovesUi(int movesReturning, int moveForTheTurn)
+    {
+        moveLeftText.text = movesReturning + " / " + moveForTheTurn;
     }
 
     // ---------------------

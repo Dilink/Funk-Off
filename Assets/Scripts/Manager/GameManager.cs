@@ -6,6 +6,9 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     [Header("PLAYER PARAMETERS")]
+    [SerializeField] int movePerTurn=8;
+    private int moveLeft;
+
     public Mb_PlayerController currentPlayerSelectionned;
     public Mb_PlayerController[] allPlayers;
 
@@ -26,6 +29,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        ResetMove();
         EnableActing();
         uiManager.UpdateFunkBar(funkAmount);
     }
@@ -69,7 +73,7 @@ public class GameManager : Singleton<GameManager>
         Ray ray;
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit,Mathf.Infinity,1 << 9))
         {
             currentPlayerSelectionned = hit.collider.GetComponent<Mb_PlayerController>();
         }
@@ -84,7 +88,7 @@ public class GameManager : Singleton<GameManager>
         Ray ray;
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 8))
         {
             currentPlayerSelectionned.CheckCostingMovement(hit.collider.GetComponent<Mb_Tile>());
             
@@ -92,6 +96,23 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
+    //MOVEPART
+    public int moveLeftForTurn()
+    {
+        return moveLeft;
+    }
+
+    public void DecreaseMovesLeft(int toDecrease)
+    {
+        moveLeft -= toDecrease;
+        uiManager.UpdateMovesUi(moveLeft, movePerTurn);
+    }
+
+    public void ResetMove()
+    {
+        moveLeft = movePerTurn;
+        uiManager.UpdateMovesUi(moveLeft, movePerTurn);
+    }
     //PREVIEW
     /*
     public void SetPreviewLine(List<Mb_Tile> allTilesToMove, Mb_PlayerController currentPlayer)
@@ -112,7 +133,7 @@ public class GameManager : Singleton<GameManager>
         linePreview.positionCount = 0;
 
     }*/
-    
+
     //CHOPPER LA TILE QUE L ON VEUT
     public Mb_Tile GetTile(int x, int z)
     {

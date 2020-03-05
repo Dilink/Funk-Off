@@ -12,13 +12,14 @@ public class Ma_TurnManager : MonoBehaviour
     public int CurrentTurn; // Current turn number
 
     public void BeginTurn()
-    {
+    { 
+        /*
         // Reset all player characters move number
         for(int i =0; i < GameManager.Instance.allPlayers.Length; i++)
         {
-            GameManager.Instance.allPlayers[i].ResetMove();
+            GameManager.Instance.allPlayers[i]..ResetMove();
         }
-
+        */
         Debug.LogWarning("Turn " + CurrentTurn + " has begun");
     }
 
@@ -28,10 +29,14 @@ public class Ma_TurnManager : MonoBehaviour
         if(CurrentTurn <= MaxTurn)
         {
             CurrentTurn++;
-            for(int i =0; i < GameManager.Instance.allPlayers.Length;i++)
+
+            //old deplacement System
+            /*
+            for (int i =0; i < GameManager.Instance.allPlayers.Length;i++)
             {
                 GameManager.Instance.allPlayers[i].ResetMove();
-            }
+            }*/
+            GameManager.Instance.ResetMove();
         }
         else // End the level
         {
