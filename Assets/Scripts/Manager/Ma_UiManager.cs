@@ -38,6 +38,9 @@ public class Ma_UiManager : MonoBehaviour
     public RectTransform EndGameScreen_winRect;
     public RectTransform EndGameScreen_looseRect;
 
+    [Header("Loadscreen elements")]
+    public GameObject Loadscreen;
+    public RectTransform LoadscreenRect;
 
     private void Reset()
     {
@@ -71,7 +74,11 @@ public class Ma_UiManager : MonoBehaviour
         EndGameScreen = GameObject.Find("EndGameScreen");
         EndGameScreen_winRect = GameObject.Find("EndGameScreen_Win").GetComponent<RectTransform>();
         EndGameScreen_looseRect = GameObject.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
-    }
+
+        // Loadscreen elements
+        Loadscreen = GameObject.Find("LoadScreen");
+        LoadscreenRect = Loadscreen.GetComponent<RectTransform>();
+}
 
     private void Awake()
     {
@@ -174,6 +181,35 @@ public class Ma_UiManager : MonoBehaviour
         else
         {
             EndGameScreen_looseRect.DOAnchorPosY(0, 0.4f, false);
+        }
+    }
+
+    // ---------------------
+    // LOADSCREEN FUNCTIONS
+    // ---------------------
+
+    public void DisplayLoadscreen()
+    {
+        EnableOrDisableLoadScreen();
+        LoadscreenRect.anchoredPosition = new Vector2(-2225, 0);
+        LoadscreenRect.DOAnchorPosX(0, 0.8f, false);
+    }
+
+    public void HideLoadscreen()
+    {
+        LoadscreenRect.DOAnchorPosX(2225, 0.8f, false);
+        Invoke("EnableOrDisableLoadScreen", 0.8f);
+    }
+
+    private void EnableOrDisableLoadScreen()
+    {
+        if (Loadscreen.activeInHierarchy)
+        {
+            Loadscreen.SetActive(false);
+        }
+        else
+        {
+            Loadscreen.SetActive(true);
         }
     }
 
