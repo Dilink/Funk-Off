@@ -10,10 +10,12 @@ public class Mb_PlayerController : MonoBehaviour
     public Mb_Tile currentTile;
     public Mb_Tile oldTile;
     private int moveLeft;
+    [HideInInspector] public Animator anim;
 
     private void Awake()
     {
         ResetMove();
+        anim = GetComponent<Animator>();
     }
 
     private void Move(Mb_Tile tileToMoveTo)
@@ -30,7 +32,7 @@ public class Mb_PlayerController : MonoBehaviour
         currentTile.avaible = false;
 
         //bouger le joueur                                               //declenchement parametre de la tuile
-        transform.DOMove(tileToMoveTo.transform.parent.position, .33f,false).OnComplete(OnMoveCallBack);
+        transform.DOMove(tileToMoveTo.transform.position + new Vector3(0,.5f,0), .33f,false).OnComplete(OnMoveCallBack);
     } 
 
     void OnMoveCallBack()
@@ -42,12 +44,15 @@ public class Mb_PlayerController : MonoBehaviour
 
     public void CheckCostingMovement(Mb_Tile tileToMoveTo)
     {
-        print(GameManager.Instance.canAct);
-        if (moveLeft>= tileToMoveTo.tileProperties.cost &&
+        int distanceBetweenTiles = Mathf.Abs(currentTile.posX - tileToMoveTo.posX) + Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
+
+        if (moveLeft >= tileToMoveTo.tileProperties.cost &&
             tileToMoveTo.avaible == true &&
-            Vector3.Distance(tileToMoveTo.transform.position, currentTile.transform.position)<1.2f &&
+            distanceBetweenTiles <=1 &&
             GameManager.Instance.canAct==true)
         {
+            print(tileToMoveTo);
+
             moveLeft -= tileToMoveTo.tileProperties.cost;
             GameManager.Instance.uiManager.UpdateCharacterUi(this,moveLeft,basicMoves);
             Move(tileToMoveTo);
