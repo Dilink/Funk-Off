@@ -19,12 +19,21 @@ public class Ma_ComboManager : MonoBehaviour
         // Add the multiplier to the removed pattern
         GameManager.Instance.comboManager.AddMultiplier(index);
 
-        // Remove all multipliers from moved patterns
+        // Remove all multipliers from patterns after
         if (index <= GameManager.Instance.comboManager.Multipliers.Count)
         {
             for (int j = index + 1; j < GameManager.Instance.comboManager.Multipliers.Count; j++)
             {
                 GameManager.Instance.comboManager.RemoveMultiplier(j);
+            }
+        }
+
+        // Remove all multipliers from patterns before
+        if (index > 0)
+        {
+            for(int k = index -1; k > 0; k--)
+            {
+                GameManager.Instance.comboManager.RemoveMultiplier(k);
             }
         }
     }
