@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -200,5 +202,12 @@ public class GameManager : Singleton<GameManager>
             }
         }
         return null;
+    }
+
+    [Button(ButtonSizes.Medium), GUIColor(0.89f, 0.14f, 0.14f)]
+    private void UpdateReferences()
+    {
+        allPlayers = GameObject.FindObjectsOfType<Mb_PlayerController>();
+        allTiles = GameObject.FindObjectsOfType<Mb_Tile>();
     }
 }
