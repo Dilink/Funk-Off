@@ -40,7 +40,7 @@ public class Ma_PatternManager : MonoBehaviour
             string path = AssetDatabase.GUIDToAssetPath(i);
             Sc_Pattern pattern = AssetDatabase.LoadAssetAtPath<Sc_Pattern>(path);
 
-            pattern.Name = Path.GetFileName(path);
+            pattern.Name = Path.GetFileNameWithoutExtension(path);
             pattern.Category = Directory.GetParent(path).Name;
             pattern.CategoryWeight = levelConfig.patternCategories[pattern.Category];
 
