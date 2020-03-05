@@ -129,7 +129,10 @@ public class GameManager : Singleton<GameManager>
 
     public void OnPatternResolved(int indexInList)
     {
-        patternManager.RotatePattern(indexInList);
+        foreach (Mb_PlayerController player in allPlayers)
+            player.anim.SetTrigger("Dance");
+
+;        patternManager.RotatePattern(indexInList);
         comboManager.RotateMultipliers(indexInList);
         FunkVariation(funkAddingPlayer * funkMultiplier);
     }
