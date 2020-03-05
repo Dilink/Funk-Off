@@ -31,9 +31,8 @@ public class Ma_ComboManager : MonoBehaviour
         // Remove all multipliers from patterns before
         if (index > 0)
         {
-            for(int k = index -1; k > 0; k--)
+            for(int k = index -1; k >= 0; k--)
             {
-                Debug.Log("removed before mult");
                 GameManager.Instance.comboManager.RemoveMultiplier(k);
             }
         }
@@ -68,7 +67,6 @@ public class Ma_ComboManager : MonoBehaviour
     public void RemoveMultiplier(int emplacement)
     {
         Multipliers[emplacement] = 1;
-        GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.clear, "x1");
-        GameManager.Instance.uiManager.PatternsbarMultipliersTexts[emplacement].color = Color.clear;
+        GameManager.Instance.uiManager.RemoveMultiplierIcon(emplacement);
     }
 }
