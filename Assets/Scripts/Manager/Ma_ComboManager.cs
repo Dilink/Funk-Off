@@ -28,10 +28,13 @@ public class Ma_ComboManager : MonoBehaviour
             }
         }
 
+        Debug.Log("Index = " + index);
+        Debug.Log("Index > 0 = " + (index>0));
+
         // Remove all multipliers from patterns before
         if (index > 0)
         {
-            for(int k = index -1; k > 0; k--)
+            for(int k = index -1; k >= 0; k--)
             {
                 Debug.Log("removed before mult");
                 GameManager.Instance.comboManager.RemoveMultiplier(k);
