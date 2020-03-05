@@ -8,7 +8,6 @@ public class PatternModifier
 
 }
 
-
 [CreateAssetMenu(fileName = "New Pattern", menuName = "Custom/Pattern")]
 public class Sc_Pattern : ScriptableObject
 {
@@ -21,6 +20,4 @@ public class Sc_Pattern : ScriptableObject
     public string Name;
     [ReadOnly]
     public string Category;
-    [ReadOnly]
-    public int CategoryWeight;
 }

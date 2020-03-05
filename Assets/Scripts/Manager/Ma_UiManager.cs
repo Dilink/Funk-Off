@@ -7,7 +7,8 @@ using DG.Tweening;
 
 public class Ma_UiManager : MonoBehaviour
 {
-    [SerializeField] Mb_PlayerCard[] allPlayerUi;
+    //   [SerializeField] Mb_PlayerCard[] allPlayerUi;
+    [SerializeField] TextMeshProUGUI moveLeftText;
 
     [Header("Turnsbar elements")]
     public TMP_Text TurnsbarText;
@@ -32,11 +33,19 @@ public class Ma_UiManager : MonoBehaviour
     public RectTransform PauseSettingsRect;
     public RectTransform PauseQuitConfirmRect;
 
+    [Header("EndgameScreen elements")]
+    public GameObject EndGameScreen;
+    public RectTransform EndGameScreen_winRect;
+    public RectTransform EndGameScreen_looseRect;
+
+    [Header("Loadscreen elements")]
+    public GameObject Loadscreen;
+    public RectTransform LoadscreenRect;
 
     private void Reset()
     {
         // PlayerCards elements
-        allPlayerUi = FindObjectsOfType<Mb_PlayerCard>();
+        //allPlayerUi = FindObjectsOfType<Mb_PlayerCard>();
 
         // Turnsbar elements
         TurnsbarText = GameObject.Find("TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
@@ -60,38 +69,56 @@ public class Ma_UiManager : MonoBehaviour
         PauseMainRect = GameObject.Find("PauseMain").GetComponent<RectTransform>();
         PauseSettingsRect = GameObject.Find("PauseSettings").GetComponent<RectTransform>();
         PauseQuitConfirmRect = GameObject.Find("QuitConfirm").GetComponent<RectTransform>();
-    }
+
+        // EndgameScreen elements
+        EndGameScreen = GameObject.Find("EndGameScreen");
+        EndGameScreen_winRect = GameObject.Find("EndGameScreen_Win").GetComponent<RectTransform>();
+        EndGameScreen_looseRect = GameObject.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
+
+        // Loadscreen elements
+        Loadscreen = GameObject.Find("LoadScreen");
+        LoadscreenRect = Loadscreen.GetComponent<RectTransform>();
+}
 
     private void Awake()
     {
-        for (int i = 0; i < allPlayerUi.Length; i++)
-            allPlayerUi[i].playerAssigned = GameManager.Instance.allPlayers[i];
+        //OLD MOVEMENT SYSTEM
+      /*  for (int i = 0; i < allPlayerUi.Length; i++)
+            allPlayerUi[i].playerAssigned = GameManager.Instance.allPlayers[i];*/
     }
     // ---------------------
     // TURNSBAR FUNCTIONS
     // ---------------------
 
     // Update the text of the Turnsbar to display current turn / Max turns
-    public void UpdateTurnsbarText()
+    public void UpdateTurnsbarText(int currentTurn, int maxTurn)
     {
-        TurnsbarText.text = Ma_TurnManager.instance.CurrentTurn.ToString() + "/" + Ma_TurnManager.instance.MaxTurn.ToString();
+        TurnsbarText.text = currentTurn + "/" + maxTurn;
     }
 
     // ---------------------
     // PATTERNSBAR FUNCTIONS
     // ---------------------
 
-    // Update the Icon of the patternsbar at the emplacement indicated
+    // Update the Icon of the patternsbar
     public void UpdatePatternsBarIcon(int emplacement,Sc_Pattern pattern)
     {
         PatternsbarIconsImg[emplacement].sprite = pattern.sprite;
     }
 
+    // Update the multipliers visuals
     public void UpdateMultiplierIcon(int emplacement, Color color, string text)
     {
         PatternsbarMultipliersImg[emplacement].color = color;
         PatternsbarMultipliersTexts[emplacement].text = text;
         PatternsbarMultipliersTexts[emplacement].color = Color.black;
+    }
+
+    // Remove the multiplier visual
+    public void RemoveMultiplierIcon(int emplacement)
+    {
+        GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.clear, "x1");
+        GameManager.Instance.uiManager.PatternsbarMultipliersTexts[emplacement].color = Color.clear;
     }
 
     // ---------------------
@@ -108,16 +135,81 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
     // CHARACTERS UI FUNCTIONS
     // ---------------------
-
+    //OLD MOVEMENT SYSTEM
+    /*
     public void UpdateCharacterUi(Mb_PlayerController playerConcerned, int MoveLeft, int MaxMove)
     {
-   
         for (int i =0; i < allPlayerUi.Length; i++)
         {
             if (allPlayerUi[i].playerAssigned == playerConcerned)
             {
-                allPlayerUi[i].UpdateMoveLeftUi(MoveLeft, MaxMove);
+                //allPlayerUi[i].UpdateMoveLeftUi(MoveLeft, MaxMove);
             }
+        }
+    }
+
+    public void UpdateCharacterIcons(Mb_PlayerController playerConcerned , Sprite icon, Sprite item, Sprite passive)
+    {
+        for (int i = 0; i < allPlayerUi.Length; i++)
+        {
+            if (allPlayerUi[i].playerAssigned == playerConcerned)
+            {
+                allPlayerUi[i].UpdateCardIcon(icon);
+                allPlayerUi[i].UpdateCardItem(item);
+                allPlayerUi[i].UpdateCardPassive(passive);
+            }
+        }
+    }*/
+
+    public void UpdateMovesUi(int movesReturning, int moveForTheTurn)
+    {
+        moveLeftText.text = movesReturning + " / " + moveForTheTurn;
+    }
+
+    // ---------------------
+    // ENDGAME SCREEN UI FUNCTIONS
+    // ---------------------
+
+    public void DisplayEndgameScreen(bool issue)
+    {
+        EndGameScreen.SetActive(true);
+
+        if (issue)
+        {
+            EndGameScreen_winRect.DOAnchorPosY(0, 0.4f, false);
+        }
+        else
+        {
+            EndGameScreen_looseRect.DOAnchorPosY(0, 0.4f, false);
+        }
+    }
+
+    // ---------------------
+    // LOADSCREEN FUNCTIONS
+    // ---------------------
+
+    public void DisplayLoadscreen()
+    {
+        EnableOrDisableLoadScreen();
+        LoadscreenRect.anchoredPosition = new Vector2(-2225, 0);
+        LoadscreenRect.DOAnchorPosX(0, 0.8f, false);
+    }
+
+    public void HideLoadscreen()
+    {
+        LoadscreenRect.DOAnchorPosX(2225, 0.8f, false);
+        Invoke("EnableOrDisableLoadScreen", 0.8f);
+    }
+
+    private void EnableOrDisableLoadScreen()
+    {
+        if (Loadscreen.activeInHierarchy)
+        {
+            Loadscreen.SetActive(false);
+        }
+        else
+        {
+            Loadscreen.SetActive(true);
         }
     }
 

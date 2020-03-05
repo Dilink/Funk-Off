@@ -1,11 +1,18 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
     [Header("PLAYER PARAMETERS")]
+    private int movePerTurn;
+    [SerializeField] int maxMovesPerTurn;
+    private int moveLeft;
+    int totalMoveReseted = 0;
+
     public Mb_PlayerController currentPlayerSelectionned;
     public Mb_PlayerController[] allPlayers;
 
@@ -16,7 +23,7 @@ public class GameManager : Singleton<GameManager>
     public Ma_UiManager uiManager;
     public Ma_PatternManager patternManager;
     public Ma_ComboManager comboManager;
-
+    
     [Header("FunkRule")]
     private float funkMultiplier=1;
     private float funkAmount = 0.5f;
@@ -24,10 +31,16 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] float funkDamagesEnemi;
     [SerializeField] float funkAddingPlayer;
 
+    [InlineEditor]
+    public Sc_LevelConfig levelConfig;
+
     private void Start()
     {
-        EnableActing();
+      
         uiManager.UpdateFunkBar(funkAmount);
+        SetupMovementLimit();
+        EnableActing();
+        ResetMove();
     }
     //ACTING
     #region
@@ -69,7 +82,7 @@ public class GameManager : Singleton<GameManager>
         Ray ray;
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit,Mathf.Infinity,1 << 9))
         {
             currentPlayerSelectionned = hit.collider.GetComponent<Mb_PlayerController>();
         }
@@ -84,7 +97,7 @@ public class GameManager : Singleton<GameManager>
         Ray ray;
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 8))
         {
             currentPlayerSelectionned.CheckCostingMovement(hit.collider.GetComponent<Mb_Tile>());
             
@@ -92,6 +105,37 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
+    //MOVEPART
+    //definir la limte de début
+    private void SetupMovementLimit()
+    {
+       
+        foreach (Mb_PlayerController player in allPlayers)
+        {
+            totalMoveReseted += player.characterBaseCharacteristics.movementGiven;
+        }
+        totalMoveReseted = Mathf.Clamp(totalMoveReseted, totalMoveReseted, maxMovesPerTurn);              
+    }
+
+
+
+    public int moveLeftForTurn()
+    {
+        return moveLeft;
+    }
+
+    public void DecreaseMovesLeft(int toDecrease)
+    {
+        moveLeft -= toDecrease;
+        uiManager.UpdateMovesUi(moveLeft, movePerTurn);
+    }
+
+    public void ResetMove()
+    {
+        int reservedMoves = moveLeft;
+        moveLeft = Mathf.Clamp(totalMoveReseted + reservedMoves, 0, maxMovesPerTurn);              
+        uiManager.UpdateMovesUi(moveLeft, maxMovesPerTurn);
+    }
     //PREVIEW
     /*
     public void SetPreviewLine(List<Mb_Tile> allTilesToMove, Mb_PlayerController currentPlayer)
@@ -112,7 +156,7 @@ public class GameManager : Singleton<GameManager>
         linePreview.positionCount = 0;
 
     }*/
-    
+
     //CHOPPER LA TILE QUE L ON VEUT
     public Mb_Tile GetTile(int x, int z)
     {
@@ -127,7 +171,7 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    public void OnPatternResolved(int indexInList)
+    public void OnPatternResolved(int indexInList, float otherMultiplier)
     {
         //ANIM ET AUTRE FEEDBACKS DE COMPLETION
         foreach (Mb_PlayerController player in allPlayers)
@@ -140,7 +184,7 @@ public class GameManager : Singleton<GameManager>
         comboManager.RotateMultipliers(indexInList);
 
         // VARIATION DU FUUUUUUUUUUUUNK
-        FunkVariation(funkAddingPlayer * funkMultiplier);
+        FunkVariation(funkAddingPlayer * funkMultiplier * otherMultiplier);
     }
 
     //FUNK adding
@@ -179,5 +223,12 @@ public class GameManager : Singleton<GameManager>
             }
         }
         return null;
+    }
+
+    [Button(ButtonSizes.Medium), GUIColor(0.89f, 0.14f, 0.14f)]
+    private void UpdateReferences()
+    {
+        allPlayers = GameObject.FindObjectsOfType<Mb_PlayerController>();
+        allTiles = GameObject.FindObjectsOfType<Mb_Tile>();
     }
 }

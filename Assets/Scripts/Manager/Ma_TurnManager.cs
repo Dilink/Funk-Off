@@ -8,17 +8,23 @@ public class Ma_TurnManager : MonoBehaviour
     public static Ma_TurnManager instance; // Static instance
 
     [Header("Turns stats")]
-    public int MaxTurn; // Max number of turns for this level
-    public int CurrentTurn; // Current turn number
+    [SerializeField] int MaxTurn; // Max number of turns for this level
+    private int CurrentTurn=1; // Current turn number
+
+    private void Start()
+    {
+        GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
+    }
 
     public void BeginTurn()
-    {
+    { 
+        /*
         // Reset all player characters move number
         for(int i =0; i < GameManager.Instance.allPlayers.Length; i++)
         {
-            GameManager.Instance.allPlayers[i].ResetMove();
+            GameManager.Instance.allPlayers[i]..ResetMove();
         }
-
+        */
         Debug.LogWarning("Turn " + CurrentTurn + " has begun");
     }
 
@@ -28,10 +34,16 @@ public class Ma_TurnManager : MonoBehaviour
         if(CurrentTurn <= MaxTurn)
         {
             CurrentTurn++;
-            for(int i =0; i < GameManager.Instance.allPlayers.Length;i++)
+
+            //old deplacement System
+            /*
+            for (int i =0; i < GameManager.Instance.allPlayers.Length;i++)
             {
                 GameManager.Instance.allPlayers[i].ResetMove();
-            }
+            }*/
+            GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
+            GameManager.Instance.ResetMove();
+            GameManager.Instance.comboManager.RemoveAllMultipliers();
         }
         else // End the level
         {
