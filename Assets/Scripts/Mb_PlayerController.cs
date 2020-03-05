@@ -5,15 +5,23 @@ using DG.Tweening;
 
 public class Mb_PlayerController : MonoBehaviour
 {
-    [SerializeField] int basicMoves = 3;
   //  private List<Mb_Tile> tileToGo = new List<Mb_Tile>();
     public Mb_Tile currentTile;
     public Mb_Tile oldTile;
-    private int moveLeft;
+
+    // OLD MOVEMENT SYSTEM
+    //[SerializeField] int basicMoves = 3;
+    // private int moveLeft;
+
+
+
+//ANIM ET FEEDBACKS
+[HideInInspector] public Animator anim;
 
     private void Awake()
     {
-        ResetMove();
+       // ResetMove();
+        anim = GetComponent<Animator>();
     }
 
     private void Move(Mb_Tile tileToMoveTo)
@@ -30,26 +38,29 @@ public class Mb_PlayerController : MonoBehaviour
         currentTile.avaible = false;
 
         //bouger le joueur                                               //declenchement parametre de la tuile
-        transform.DOMove(tileToMoveTo.transform.parent.position, .33f,false).OnComplete(OnMoveCallBack);
+        transform.DOMove(tileToMoveTo.transform.position + new Vector3(0,.5f,0), .33f,false).OnComplete(OnMoveCallBack);
     } 
 
     void OnMoveCallBack()
     {
         currentTile.OnMove(false);
         GameManager.Instance.EnableActing();
-        GameManager.Instance.patternManager.CheckGridForPattern();
+        GameManager.Instance.patternManager.CheckGridForPatternAndReact();
     }
 
     public void CheckCostingMovement(Mb_Tile tileToMoveTo)
     {
-        print(GameManager.Instance.canAct);
-        if (moveLeft>= tileToMoveTo.tileProperties.cost &&
+        int distanceBetweenTiles = Mathf.Abs(currentTile.posX - tileToMoveTo.posX) + Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
+
+        if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
             tileToMoveTo.avaible == true &&
-            Vector3.Distance(tileToMoveTo.transform.position, currentTile.transform.position)<1.2f &&
+            distanceBetweenTiles <=1 &&
             GameManager.Instance.canAct==true)
         {
-            moveLeft -= tileToMoveTo.tileProperties.cost;
-            GameManager.Instance.uiManager.UpdateCharacterUi(this,moveLeft,basicMoves);
+            print(tileToMoveTo);
+
+            GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
+            //GameManager.Instance.uiManager.UpdateCharacterUi(this,moveLeft,basicMoves);
             Move(tileToMoveTo);
         }
     }
@@ -89,19 +100,12 @@ public class Mb_PlayerController : MonoBehaviour
     {
         currentTile.OnMove(true);
         GameManager.Instance.EnableActing();
-        GameManager.Instance.patternManager.CheckGridForPattern();
+        GameManager.Instance.patternManager.CheckGridForPatternAndReact();
     }
     /*  public void PreviewMove()
       {
           GameManager.Instance.SetPreviewLine(tileToGo,this);
 
       }*/
-
-    public void ResetMove()
-    {
         
-        moveLeft = basicMoves;
-        oldTile = currentTile;
-        GameManager.Instance.uiManager.UpdateCharacterUi(this, moveLeft, basicMoves);
-    }
 }

@@ -6,6 +6,9 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     [Header("PLAYER PARAMETERS")]
+    [SerializeField] int movePerTurn=8;
+    private int moveLeft;
+
     public Mb_PlayerController currentPlayerSelectionned;
     public Mb_PlayerController[] allPlayers;
 
@@ -19,12 +22,16 @@ public class GameManager : Singleton<GameManager>
 
     [Header("FunkRule")]
     private float funkMultiplier=1;
-    private float funkAmount;
-    public float funkDamages;
+    private float funkAmount = 0.5f;
+
+    [SerializeField] float funkDamagesEnemi;
+    [SerializeField] float funkAddingPlayer;
 
     private void Start()
     {
+        ResetMove();
         EnableActing();
+        uiManager.UpdateFunkBar(funkAmount);
     }
     //ACTING
     #region
@@ -66,7 +73,7 @@ public class GameManager : Singleton<GameManager>
         Ray ray;
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit,Mathf.Infinity,1 << 9))
         {
             currentPlayerSelectionned = hit.collider.GetComponent<Mb_PlayerController>();
         }
@@ -81,7 +88,7 @@ public class GameManager : Singleton<GameManager>
         Ray ray;
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 8))
         {
             currentPlayerSelectionned.CheckCostingMovement(hit.collider.GetComponent<Mb_Tile>());
             
@@ -89,6 +96,23 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
+    //MOVEPART
+    public int moveLeftForTurn()
+    {
+        return moveLeft;
+    }
+
+    public void DecreaseMovesLeft(int toDecrease)
+    {
+        moveLeft -= toDecrease;
+        uiManager.UpdateMovesUi(moveLeft, movePerTurn);
+    }
+
+    public void ResetMove()
+    {
+        moveLeft = movePerTurn;
+        uiManager.UpdateMovesUi(moveLeft, movePerTurn);
+    }
     //PREVIEW
     /*
     public void SetPreviewLine(List<Mb_Tile> allTilesToMove, Mb_PlayerController currentPlayer)
@@ -109,7 +133,7 @@ public class GameManager : Singleton<GameManager>
         linePreview.positionCount = 0;
 
     }*/
-    
+
     //CHOPPER LA TILE QUE L ON VEUT
     public Mb_Tile GetTile(int x, int z)
     {
@@ -124,13 +148,23 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    public void OnPatternResolved(int indexInList, Sc_Pattern pattern)
+    public void OnPatternResolved(int indexInList)
     {
-        patternManager.RotatePattern(indexInList);
+        //ANIM ET AUTRE FEEDBACKS DE COMPLETION
+        foreach (Mb_PlayerController player in allPlayers)
+            player.anim.SetTrigger("Dance");
+
+        //DECOULEMENT DES PATTERNS
+;        patternManager.RotatePattern(indexInList);
+
+        //INCREMENTATION DU MULTIPLIER ICI
         comboManager.RotateMultipliers(indexInList);
+
+        // VARIATION DU FUUUUUUUUUUUUNK
+        FunkVariation(funkAddingPlayer * funkMultiplier);
     }
 
-    //FUNK 
+    //FUNK adding
     public void FunkVariation(float funkToAdd)
     {
         funkAmount += funkToAdd * funkMultiplier;
@@ -138,6 +172,7 @@ public class GameManager : Singleton<GameManager>
         uiManager.UpdateFunkBar(funkAmount);
     }
 
+    //FUNK MULTIPLIER SET
     public void SetFunkMultiplier(float newModifier)
     {
         funkMultiplier = newModifier;
@@ -146,12 +181,12 @@ public class GameManager : Singleton<GameManager>
     //DAMAGES PART
     public void SetFunkDamages(float newDamages)
     {
-        funkDamages = newDamages;
+        funkDamagesEnemi = newDamages;
     }
 
     public float funkDamagesToDeal()
     {
-        return -funkDamages;
+        return -funkDamagesEnemi;
     }
 
     //TILE SPE
