@@ -17,8 +17,8 @@ public class Mb_PlayerController : MonoBehaviour
 
 
 
-//ANIM ET FEEDBACKS
-[HideInInspector] public Animator anim;
+    //ANIM ET FEEDBACKS
+    [HideInInspector] public Animator anim;
 
     private void Awake()
     {
@@ -55,23 +55,58 @@ public class Mb_PlayerController : MonoBehaviour
 
     }
 
+    //MOUVEMENT PAYANT
     public void CheckCostingMovement(Mb_Tile tileToMoveTo)
     {
-        int distanceBetweenTiles = Mathf.Abs(currentTile.posX - tileToMoveTo.posX) + Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
+        int distanceBetweenTilesX = Mathf.Abs(currentTile.posX - tileToMoveTo.posX);
+        int distanceBetweenTilesZ = Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
+        int distanceBetweenTilesXZ = Mathf.Abs(currentTile.posX - tileToMoveTo.posX) + Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
 
-        if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
-            tileToMoveTo.avaible == true &&
-            distanceBetweenTiles <=1 &&
-            GameManager.Instance.canAct==true)
+        if(tileToMoveTo.avaible == false)
         {
-            print(tileToMoveTo);
+            int directionX = tileToMoveTo.posX - currentTile.posX ;
+            int directionZ= tileToMoveTo.posZ - currentTile.posZ ;
+          
+            if ((characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff &&
+                GameManager.Instance.GetTile(currentTile.posX + directionX * 2, currentTile.posZ + directionZ * 2).avaible == true &&
+                GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost)
+            {
+                    GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
 
-            GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
-            //GameManager.Instance.uiManager.UpdateCharacterUi(this,moveLeft,basicMoves);
-            Move(tileToMoveTo);
+                    Move(GameManager.Instance.GetTile(currentTile.posX + directionX * 2, currentTile.posZ + directionZ * 2));
+                
+                }
         }
-    }
+        else
+        {
+            if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) == CharacterSkills.Swift)
+            {
+                if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
+                distanceBetweenTilesX <= 1 &&
+                distanceBetweenTilesZ <= 1 &&
+                GameManager.Instance.canAct == true)
+                {
+                    GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
+                    //GameManager.Instance.uiManager.UpdateCharacterUi(this,moveLeft,basicMoves);
+                    Move(tileToMoveTo);
+                }
+            }
+            else if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
+                tileToMoveTo.avaible == true &&
+                distanceBetweenTilesXZ <= 1 &&
+                GameManager.Instance.canAct == true)
+            {
+                print(tileToMoveTo);
 
+                GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
+                //GameManager.Instance.uiManager.UpdateCharacterUi(this,moveLeft,basicMoves);
+                Move(tileToMoveTo);
+            }
+        }
+       
+    }
+  
+    //MOUVEMENT GRATUIT
     public void CheckFreeMovement(Mb_Tile tileToMoveTo)
     {
         if (tileToMoveTo.avaible == true)
