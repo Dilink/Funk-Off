@@ -20,9 +20,6 @@ public class Ma_PatternManager : MonoBehaviour
     public Sc_Pattern futurePattern;
     public readonly int patternCount = 5;
 
-    [InlineEditor]
-    public Sc_LevelConfig levelConfig;
-
     private void Awake()
     {
         LoadAvailablePatterns();
@@ -42,7 +39,7 @@ public class Ma_PatternManager : MonoBehaviour
 
             pattern.Name = Path.GetFileNameWithoutExtension(path);
             pattern.Category = Directory.GetParent(path).Name;
-            pattern.CategoryWeight = levelConfig.patternCategories[pattern.Category];
+            pattern.CategoryWeight = GameManager.Instance.levelConfig.patternCategories[pattern.Category];
 
             availablePatternList.Add(pattern);
         }
@@ -214,7 +211,7 @@ public class Ma_PatternManager : MonoBehaviour
             //ADDITIONER TOUT LES POIDS POSSIBLE
             int total = 0;
             Dictionary<string, Tuple<int, List<Sc_Pattern>>> dic = new Dictionary<string, Tuple<int, List<Sc_Pattern>>>();
-            foreach (var cat in levelConfig.patternCategories)
+            foreach (var cat in GameManager.Instance.levelConfig.patternCategories)
             {
                 var lis = availablePatternList.Where(e => e.Category == cat.Key).ToList();
                 var tup = new Tuple<int, List<Sc_Pattern>>(total + cat.Value - 1, lis);
@@ -233,7 +230,7 @@ public class Ma_PatternManager : MonoBehaviour
             //int cumul = 0;
 
                 //CHECKER LE DICT EN ATTENDANT QUE LE TOTAL SOIT < A LA VALEUR DE POID CUMULE
-            foreach (var entry in levelConfig.patternCategories)
+            foreach (var entry in GameManager.Instance.levelConfig.patternCategories)
             {
                 pond -= entry.Value;
                 if ( pond  <=0 )
