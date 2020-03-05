@@ -81,17 +81,25 @@ public class Ma_UiManager : MonoBehaviour
     // PATTERNSBAR FUNCTIONS
     // ---------------------
 
-    // Update the Icon of the patternsbar at the emplacement indicated
+    // Update the Icon of the patternsbar
     public void UpdatePatternsBarIcon(int emplacement,Sc_Pattern pattern)
     {
         PatternsbarIconsImg[emplacement].sprite = pattern.sprite;
     }
 
+    // Update the multipliers visuals
     public void UpdateMultiplierIcon(int emplacement, Color color, string text)
     {
         PatternsbarMultipliersImg[emplacement].color = color;
         PatternsbarMultipliersTexts[emplacement].text = text;
         PatternsbarMultipliersTexts[emplacement].color = Color.black;
+    }
+
+    // Remove the multiplier visual
+    public void RemoveMultiplierIcon(int emplacement)
+    {
+        GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.clear, "x1");
+        GameManager.Instance.uiManager.PatternsbarMultipliersTexts[emplacement].color = Color.clear;
     }
 
     // ---------------------
@@ -111,12 +119,24 @@ public class Ma_UiManager : MonoBehaviour
 
     public void UpdateCharacterUi(Mb_PlayerController playerConcerned, int MoveLeft, int MaxMove)
     {
-   
         for (int i =0; i < allPlayerUi.Length; i++)
         {
             if (allPlayerUi[i].playerAssigned == playerConcerned)
             {
-                allPlayerUi[i].UpdateMoveLeftUi(MoveLeft, MaxMove);
+                //allPlayerUi[i].UpdateMoveLeftUi(MoveLeft, MaxMove);
+            }
+        }
+    }
+
+    public void UpdateCharacterIcons(Mb_PlayerController playerConcerned , Sprite icon, Sprite item, Sprite passive)
+    {
+        for (int i = 0; i < allPlayerUi.Length; i++)
+        {
+            if (allPlayerUi[i].playerAssigned == playerConcerned)
+            {
+                allPlayerUi[i].UpdateCardIcon(icon);
+                allPlayerUi[i].UpdateCardItem(item);
+                allPlayerUi[i].UpdateCardPassive(passive);
             }
         }
     }
