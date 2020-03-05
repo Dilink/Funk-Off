@@ -36,6 +36,7 @@ public class Ma_TurnManager : MonoBehaviour
             {
                 GameManager.Instance.allPlayers[i].ResetMove();
             }*/
+            GameManager.Instance.uiManager.UpdateTurnsbarText();
             GameManager.Instance.ResetMove();
         }
         else // End the level

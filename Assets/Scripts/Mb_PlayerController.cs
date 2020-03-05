@@ -8,7 +8,9 @@ public class Mb_PlayerController : MonoBehaviour
   //  private List<Mb_Tile> tileToGo = new List<Mb_Tile>();
     public Mb_Tile currentTile;
     public Mb_Tile oldTile;
+    public Sc_CharacterParameters characterBaseCharacteristics;
 
+    private float customMultiplier =1;
     // OLD MOVEMENT SYSTEM
     //[SerializeField] int basicMoves = 3;
     // private int moveLeft;
@@ -21,6 +23,7 @@ public class Mb_PlayerController : MonoBehaviour
     private void Awake()
     {
        // ResetMove();
+
         anim = GetComponent<Animator>();
     }
 
@@ -45,7 +48,11 @@ public class Mb_PlayerController : MonoBehaviour
     {
         currentTile.OnMove(false);
         GameManager.Instance.EnableActing();
-        GameManager.Instance.patternManager.CheckGridForPatternAndReact();
+        if((characterBaseCharacteristics.characterSkills & CharacterSkills.Finisher) == CharacterSkills.Finisher)
+            GameManager.Instance.patternManager.CheckGridForPatternAndReact(1.5f);
+        else
+            GameManager.Instance.patternManager.CheckGridForPatternAndReact(1);
+
     }
 
     public void CheckCostingMovement(Mb_Tile tileToMoveTo)
@@ -100,12 +107,13 @@ public class Mb_PlayerController : MonoBehaviour
     {
         currentTile.OnMove(true);
         GameManager.Instance.EnableActing();
-        GameManager.Instance.patternManager.CheckGridForPatternAndReact();
-    }
-    /*  public void PreviewMove()
-      {
-          GameManager.Instance.SetPreviewLine(tileToGo,this);
 
-      }*/
+        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Finisher) == CharacterSkills.Finisher)
+            GameManager.Instance.patternManager.CheckGridForPatternAndReact(1.5f);
+        else
+            GameManager.Instance.patternManager.CheckGridForPatternAndReact(1);
+    }
+
         
 }
+

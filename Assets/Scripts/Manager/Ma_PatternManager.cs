@@ -86,12 +86,12 @@ public class Ma_PatternManager : MonoBehaviour
         return new Tuple<int, int>(maxW - minW + 1, maxH - minH + 1);
     }*/
 
-    public void CheckGridForPatternAndReact()
+    public void CheckGridForPatternAndReact(float multiplier)
     {
         var res = JustCheckGridForPattern();
         if (res.HasValue)
         {
-            GameManager.Instance.OnPatternResolved(res.Value.Item1);
+            GameManager.Instance.OnPatternResolved(res.Value.Item1, multiplier);
             return;
         }
     }

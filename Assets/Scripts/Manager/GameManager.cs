@@ -148,7 +148,7 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    public void OnPatternResolved(int indexInList)
+    public void OnPatternResolved(int indexInList, float otherMultiplier)
     {
         //ANIM ET AUTRE FEEDBACKS DE COMPLETION
         foreach (Mb_PlayerController player in allPlayers)
@@ -161,7 +161,7 @@ public class GameManager : Singleton<GameManager>
         comboManager.RotateMultipliers(indexInList);
 
         // VARIATION DU FUUUUUUUUUUUUNK
-        FunkVariation(funkAddingPlayer * funkMultiplier);
+        FunkVariation(funkAddingPlayer * funkMultiplier * otherMultiplier);
     }
 
     //FUNK adding
