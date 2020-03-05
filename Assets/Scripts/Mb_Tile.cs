@@ -24,7 +24,6 @@ public class Mb_Tile : MonoBehaviour
         }
 
         Modifier newParamaters = new Modifier();
-        print(newParamaters);
         tileProperties = newParamaters;
 
     }

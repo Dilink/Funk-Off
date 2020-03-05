@@ -86,17 +86,26 @@ public class Ma_PatternManager : MonoBehaviour
 
     public void CheckGridForPattern()
     {
+        var res = JustCheckGridForPattern();
+        if (res.HasValue)
+        {
+            GameManager.Instance.OnPatternResolved(res.Value.Item1);
+            return;
+        }
+    }
+
+    private Optional<Tuple<int, Sc_Pattern>> JustCheckGridForPattern()
+    {
         // take scene grid and check each pattern if currentPatternsList if it matches
         for (int i = 0; i < currentPatternsList.Count(); i++)
         {
             Sc_Pattern pattern = currentPatternsList[i];
             if (PatternValidation(GameManager.Instance.allTiles, pattern))
             {
-                GameManager.Instance.OnPatternResolved(i, pattern);
-                return;
+                return new Optional<Tuple<int, Sc_Pattern>>(new Tuple<int, Sc_Pattern>(i, pattern));
             }
         }
-        Debug.Log("No pattern matched.");
+        return new Optional<Tuple<int, Sc_Pattern>>();
     }
 
     private Mb_Tile[] getAllTileWithPlayer(Mb_Tile[] allTiles)
@@ -148,9 +157,8 @@ public class Ma_PatternManager : MonoBehaviour
         {
             currentPatternsList.Add(GetRandomPatternDifferentOfCurrents());
         }
-        Debug.LogError("Go");
         futurePattern = GetRandomPatternDifferentOfCurrents();
-        Debug.LogError(futurePattern);
+
         for (int i = 0; i < currentPatternsList.Count(); i++)
         {
             Sc_Pattern pattern = currentPatternsList[i];
@@ -202,7 +210,6 @@ public class Ma_PatternManager : MonoBehaviour
                 pond -= entry.Value;
                 if ( pond  <=0 )
                 {
-                    Debug.LogError("BEFORE" +result);
                     result = dic[entry.Key].Item2;
                     
                     break;
