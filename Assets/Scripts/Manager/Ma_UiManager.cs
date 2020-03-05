@@ -201,6 +201,7 @@ public class Ma_UiManager : MonoBehaviour
         Invoke("EnableOrDisableLoadScreen", 0.8f);
     }
 
+    // System
     private void EnableOrDisableLoadScreen()
     {
         if (Loadscreen.activeInHierarchy)
