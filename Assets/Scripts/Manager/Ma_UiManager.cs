@@ -7,7 +7,8 @@ using DG.Tweening;
 
 public class Ma_UiManager : MonoBehaviour
 {
-    [SerializeField] Mb_PlayerCard[] allPlayerUi;
+    //   [SerializeField] Mb_PlayerCard[] allPlayerUi;
+    [SerializeField] TextMeshProUGUI moveLeftText;
 
     [Header("Turnsbar elements")]
     public TMP_Text TurnsbarText;
@@ -36,7 +37,7 @@ public class Ma_UiManager : MonoBehaviour
     private void Reset()
     {
         // PlayerCards elements
-        allPlayerUi = FindObjectsOfType<Mb_PlayerCard>();
+        //allPlayerUi = FindObjectsOfType<Mb_PlayerCard>();
 
         // Turnsbar elements
         TurnsbarText = GameObject.Find("TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
@@ -64,8 +65,9 @@ public class Ma_UiManager : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < allPlayerUi.Length; i++)
-            allPlayerUi[i].playerAssigned = GameManager.Instance.allPlayers[i];
+        //OLD MOVEMENT SYSTEM
+      /*  for (int i = 0; i < allPlayerUi.Length; i++)
+            allPlayerUi[i].playerAssigned = GameManager.Instance.allPlayers[i];*/
     }
     // ---------------------
     // TURNSBAR FUNCTIONS
@@ -116,7 +118,8 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
     // CHARACTERS UI FUNCTIONS
     // ---------------------
-
+    //OLD MOVEMENT SYSTEM
+    /*
     public void UpdateCharacterUi(Mb_PlayerController playerConcerned, int MoveLeft, int MaxMove)
     {
         for (int i =0; i < allPlayerUi.Length; i++)
@@ -139,6 +142,11 @@ public class Ma_UiManager : MonoBehaviour
                 allPlayerUi[i].UpdateCardPassive(passive);
             }
         }
+    }*/
+
+    public void UpdateMovesUi(int movesReturning, int moveForTheTurn)
+    {
+        moveLeftText.text = movesReturning + " / " + moveForTheTurn;
     }
 
     // ---------------------

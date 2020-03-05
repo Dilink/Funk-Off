@@ -34,7 +34,7 @@ public class Ma_PatternManager : MonoBehaviour
         availablePatternList.Clear();
 
         // Load all assets of type Sc_Pattern that are located in Assets/Patterns folder
-        string[] guids2 = AssetDatabase.FindAssets("t:Sc_Pattern", new[] { "Assets/Patterns" });
+        string[] guids2 = AssetDatabase.FindAssets("t:Sc_Pattern", new[] { "Assets/Patterns/Player" });
         foreach (var i in guids2)
         {
             string path = AssetDatabase.GUIDToAssetPath(i);
