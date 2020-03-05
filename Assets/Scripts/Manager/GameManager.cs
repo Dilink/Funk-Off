@@ -221,7 +221,7 @@ public class GameManager : Singleton<GameManager>
         {
             if ((allTiles[i].tileProperties.type & TileModifier.Tp) == TileModifier.Tp && currentTpUsed!= allTiles[i])
             {
-                return allTiles[i];
+                  return allTiles[i];
             }
         }
         return null;

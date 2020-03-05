@@ -38,11 +38,21 @@ public class Mb_Tile : MonoBehaviour
         tileProperties.type = (removedModifier & tileProperties.type) | tileProperties.type;
     }
 
+    public void OnTileChange()
+    {
+
+    }
+
     public void OnMove(bool fromTP)
     {
         if ((tileProperties.type & TileModifier.Damaging) == TileModifier.Damaging)
         {
             GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal());
+        }
+
+        if ((tileProperties.type & TileModifier.Tp) == TileModifier.Tp && fromTP == false)
+        {
+            playerOnTile.CheckTp(GameManager.Instance.TpTile(this));
         }
 
         if ((tileProperties.type & TileModifier.Ice) == TileModifier.Ice)
@@ -61,16 +71,10 @@ public class Mb_Tile : MonoBehaviour
             z = Mathf.Clamp(z, -1, 1);
             if (GameManager.Instance.GetTile(x, z)!= null)
             {
-                print(z);
-                print(x);
+
                 playerOnTile.CheckFreeMovement(GameManager.Instance.GetTile(x, z));
             }
 
-        }
-
-        if ((tileProperties.type & TileModifier.Tp) == TileModifier.Tp && fromTP == false)
-        {
-            playerOnTile.CheckTp(GameManager.Instance.TpTile(this));
         }
     }
 
