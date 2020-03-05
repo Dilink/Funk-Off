@@ -33,6 +33,11 @@ public class Ma_UiManager : MonoBehaviour
     public RectTransform PauseSettingsRect;
     public RectTransform PauseQuitConfirmRect;
 
+    [Header("EndgameScreen elements")]
+    public GameObject EndGameScreen;
+    public RectTransform EndGameScreen_winRect;
+    public RectTransform EndGameScreen_looseRect;
+
 
     private void Reset()
     {
@@ -61,6 +66,11 @@ public class Ma_UiManager : MonoBehaviour
         PauseMainRect = GameObject.Find("PauseMain").GetComponent<RectTransform>();
         PauseSettingsRect = GameObject.Find("PauseSettings").GetComponent<RectTransform>();
         PauseQuitConfirmRect = GameObject.Find("QuitConfirm").GetComponent<RectTransform>();
+
+        // EndgameScreen elements
+        EndGameScreen = GameObject.Find("EndGameScreen");
+        EndGameScreen_winRect = GameObject.Find("EndGameScreen_Win").GetComponent<RectTransform>();
+        EndGameScreen_looseRect = GameObject.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
     }
 
     private void Awake()
@@ -147,6 +157,24 @@ public class Ma_UiManager : MonoBehaviour
     public void UpdateMovesUi(int movesReturning, int moveForTheTurn)
     {
         moveLeftText.text = movesReturning + " / " + moveForTheTurn;
+    }
+
+    // ---------------------
+    // ENDGAME SCREEN UI FUNCTIONS
+    // ---------------------
+
+    public void DisplayEndgameScreen(bool issue)
+    {
+        EndGameScreen.SetActive(true);
+
+        if (issue)
+        {
+            EndGameScreen_winRect.DOAnchorPosY(0, 0.4f, false);
+        }
+        else
+        {
+            EndGameScreen_looseRect.DOAnchorPosY(0, 0.4f, false);
+        }
     }
 
     // ---------------------

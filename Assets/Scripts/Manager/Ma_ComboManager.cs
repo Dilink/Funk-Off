@@ -69,4 +69,13 @@ public class Ma_ComboManager : MonoBehaviour
         Multipliers[emplacement] = 1;
         GameManager.Instance.uiManager.RemoveMultiplierIcon(emplacement);
     }
+
+    public void RemoveAllMultipliers()
+    {
+        for(int l = 0; l < Multipliers.Count; l++)
+        {
+            Multipliers[l] = 1;
+            GameManager.Instance.uiManager.RemoveMultiplierIcon(l);
+        }
+    }
 }
