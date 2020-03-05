@@ -10,8 +10,7 @@ public class Ma_ComboManager : MonoBehaviour
     {
         for(int i = 0; i< GameManager.Instance.uiManager.PatternsbarMultipliersImg.Length; i++)
         {
-            Multipliers[i] = 1;
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(i, Color.clear);
+            RemoveMultiplier(i);
         }
     }
 
@@ -37,28 +36,29 @@ public class Ma_ComboManager : MonoBehaviour
         if (mult < 2)
         {
             Multipliers[emplacement] = 2;
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.green);
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.green, "x2");
         }
         else if (mult < 3)
         {
             Multipliers[emplacement] = 3;
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.yellow);
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.yellow, "x3");
         }
         else if (mult < 4)
         {
             Multipliers[emplacement] = 4;
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.red);
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.red, "x4");
         }
         else if (mult < 5)
         {
             Multipliers[emplacement] = 5;
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.magenta);
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.magenta, "x5");
         }
     }
 
     public void RemoveMultiplier(int emplacement)
     {
         Multipliers[emplacement] = 1;
-        GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.clear);
+        GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.clear, "x1");
+        GameManager.Instance.uiManager.PatternsbarMultipliersTexts[emplacement].color = Color.clear;
     }
 }
