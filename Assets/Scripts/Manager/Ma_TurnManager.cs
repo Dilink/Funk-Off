@@ -37,6 +37,7 @@ public class Ma_TurnManager : MonoBehaviour
                 GameManager.Instance.allPlayers[i].ResetMove();
             }*/
             GameManager.Instance.ResetMove();
+            GameManager.Instance.comboManager.RemoveAllMultipliers();
         }
         else // End the level
         {
