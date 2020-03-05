@@ -95,8 +95,9 @@ public class Modifier : ScriptableObject
 [System.Serializable]
 public enum TileModifier
 {
-    Damaging = 1<<0,
-    Ice = 1<<1,
-    Tp = 1<<2,
-    Slow = 1<<3,
+    Damaging    = 1 << 0,
+    Ice         = 1 << 1,
+    Tp          = 1 << 2,
+    Slow        = 1 << 3,
+    Walled      = 1 << 4,
 }
