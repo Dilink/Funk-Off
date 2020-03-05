@@ -588,7 +588,7 @@ MonoBehaviour:
   currentPatternsList: []
   availablePatternList: []
   futurePattern: {fileID: 0}
-  levelConfig: {fileID: 0}
+  levelConfig: {fileID: 11400000, guid: 1d755788ac98c064ba0f35ad474b541b, type: 2}
 --- !u!1 &565886726994531045
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,6 +637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 178e2eb30849f664796333d37e51017e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movePerTurn: 8
   currentPlayerSelectionned: {fileID: 0}
   allPlayers:
   - {fileID: 0}
@@ -655,8 +656,8 @@ MonoBehaviour:
   uiManager: {fileID: 1766101033920611849}
   patternManager: {fileID: 565886726453099461}
   comboManager: {fileID: 2427050970976729256}
-  funkDamagesEnemi: 0
-  funkAddingPlayer: 0
+  funkDamagesEnemi: 0.1
+  funkAddingPlayer: 0.03
   canAct: 1
 --- !u!1 &565886727164404432
 GameObject:
@@ -2222,10 +2223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8411a2aa1fddca5489846f1cc11d2d74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allPlayerUi:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 341974456733108963}
+  moveLeftText: {fileID: 0}
   TurnsbarText: {fileID: 3143978516478751787}
   PatternsbarIconsImg:
   - {fileID: 8886734186672881031}
@@ -6171,7 +6169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0b073c351d75a4ebdf18adc114389d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxTurn: 0
+  MaxTurn: 7
   CurrentTurn: 0
 --- !u!1 &5653198385340527431
 GameObject:
@@ -9990,7 +9988,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
