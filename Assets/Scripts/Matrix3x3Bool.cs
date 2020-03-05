@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 [System.Serializable]
 [StructLayout(LayoutKind.Sequential)]
@@ -13,16 +15,16 @@ public class Matrix3x3Bool : IEquatable<Matrix3x3Bool>
     //            0  | m00 m10 m20
     // column no  1  | m01 m11 m21
     // (=horiz)   2  | m02 m12 m22
-    public bool m00, m01, m02,
-                m10, m11, m12,
-                m20, m21, m22;
+    public bool m00, m10, m20,
+                m01, m11, m21,
+                m02, m12, m22;
 
     // used to allow Matrix3x3Bools to be used as keys in hash tables
     public override int GetHashCode()
     {
-        int c0 = m00.GetHashCode() ^ (m10.GetHashCode() << 2) ^ (m20.GetHashCode() >> 2);
-        int c1 = m01.GetHashCode() ^ (m11.GetHashCode() << 2) ^ (m21.GetHashCode() >> 2);
-        int c2 = m02.GetHashCode() ^ (m12.GetHashCode() << 2) ^ (m22.GetHashCode() >> 2);
+        int c0 = m00.GetHashCode() ^ (m01.GetHashCode() << 2) ^ (m02.GetHashCode() >> 2);
+        int c1 = m10.GetHashCode() ^ (m11.GetHashCode() << 2) ^ (m12.GetHashCode() >> 2);
+        int c2 = m20.GetHashCode() ^ (m21.GetHashCode() << 2) ^ (m22.GetHashCode() >> 2);
         return c0 ^ (c1 << 2) ^ (c2 >> 2);
     }
 
@@ -36,17 +38,17 @@ public class Matrix3x3Bool : IEquatable<Matrix3x3Bool>
 
     public bool Equals(Matrix3x3Bool other)
     {
-        bool c0 = m00 == other.m00 && m10 == other.m10 && m20 == other.m20;
-        bool c1 = m01 == other.m01 && m11 == other.m11 && m21 == other.m21;
-        bool c2 = m02 == other.m02 && m12 == other.m12 && m22 == other.m22;
+        bool c0 = m00 == other.m00 && m01 == other.m01 && m02 == other.m02;
+        bool c1 = m10 == other.m10 && m11 == other.m11 && m12 == other.m12;
+        bool c2 = m20 == other.m20 && m21 == other.m21 && m22 == other.m22;
         return c0 && c1 && c2;
     }
 
     public static bool operator ==(Matrix3x3Bool lhs, Matrix3x3Bool rhs)
     {
-        bool c0 = lhs.m00 == rhs.m00 && lhs.m10 == rhs.m10 && lhs.m20 == rhs.m20;
-        bool c1 = lhs.m01 == rhs.m01 && lhs.m11 == rhs.m11 && lhs.m21 == rhs.m21;
-        bool c2 = lhs.m02 == rhs.m02 && lhs.m12 == rhs.m12 && lhs.m22 == rhs.m22;
+        bool c0 = lhs.m00 == rhs.m00 && lhs.m01 == rhs.m01 && lhs.m02 == rhs.m02;
+        bool c1 = lhs.m10 == rhs.m10 && lhs.m11 == rhs.m11 && lhs.m12 == rhs.m12;
+        bool c2 = lhs.m20 == rhs.m20 && lhs.m21 == rhs.m21 && lhs.m22 == rhs.m22;
         // Returns false in the presence of NaN values.
         return c0 && c1 && c2;
     }
@@ -109,5 +111,38 @@ public class Matrix3x3Bool : IEquatable<Matrix3x3Bool>
                     throw new IndexOutOfRangeException("Invalid matrix index!");
             }
         }
+    }
+
+    public Vector2Int GetLocation(int index)
+    {
+        switch (index)
+        {
+            case 0: return new Vector2Int(-1,  1); // m00
+            case 1: return new Vector2Int( 0,  1); // m10
+            case 2: return new Vector2Int( 1,  1); // m20
+            case 3: return new Vector2Int(-1,  0); // m01
+            case 4: return new Vector2Int( 0,  0); // m11
+            case 5: return new Vector2Int( 1,  0); // m21
+            case 6: return new Vector2Int(-1, -1); // m02
+            case 7: return new Vector2Int( 0, -1); // m12
+            case 8: return new Vector2Int( 1, -1); // m22
+            default:
+                throw new IndexOutOfRangeException("Invalid matrix index!");
+        }
+    }
+
+    public int[] GetTrueValuesIndices()
+    {
+        List<int> indices = new List<int>();
+        
+        for (int i = 0; i < 9; i++)
+        {
+            if (this[i])
+            {
+                indices.Add(i);
+            }
+        }
+       
+        return indices.ToArray();
     }
 }

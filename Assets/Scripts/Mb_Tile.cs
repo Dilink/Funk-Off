@@ -11,7 +11,7 @@ public class Mb_Tile : MonoBehaviour
 {
     public int posX=0, posZ=0;
     public bool avaible = true;
-    [SerializeField] Mb_PlayerController playerOnTile;
+    [SerializeField] public Mb_PlayerController playerOnTile;
     [InlineEditor] public Modifier tileProperties;
     
 
@@ -38,37 +38,39 @@ public class Mb_Tile : MonoBehaviour
         tileProperties.type = (removedModifier & tileProperties.type) | tileProperties.type;
     }
 
-    public void OnMove()
+    public void OnMove(bool fromTP)
     {
         if ((tileProperties.type & TileModifier.Damaging) == TileModifier.Damaging)
         {
-
+            GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal());
         }
 
         if ((tileProperties.type & TileModifier.Ice) == TileModifier.Ice)
         {
-            print("ICE");
-            int x = playerOnTile.oldTile.posX;
-            int z = playerOnTile.oldTile.posZ;
+            int x = posX;
+            int z = posZ;
 
-            if (playerOnTile.oldTile.posX != posX)
+
+            x += posX - playerOnTile.oldTile.posX;
+
+      
+            z += posZ - playerOnTile.oldTile.posZ;
+
+
+            x = Mathf.Clamp(x, -1, 1);
+            z = Mathf.Clamp(z, -1, 1);
+            if (GameManager.Instance.GetTile(x, z)!= null)
             {
-                print("XDifferent");
-                x = -x;
+                print(z);
+                print(x);
+                playerOnTile.CheckFreeMovement(GameManager.Instance.GetTile(x, z));
             }
-            if (playerOnTile.oldTile.posX != posX)
-            {
-                print("ZDifferent");
-                z = -z;
-            }
-            print("X" + x + "Z" + z);
-            print(GameManager.Instance.GetTile(x, z));
-            playerOnTile.Move(GameManager.Instance.GetTile(x, z));
+
         }
 
-        if ((tileProperties.type & TileModifier.Tp) == TileModifier.Tp)
+        if ((tileProperties.type & TileModifier.Tp) == TileModifier.Tp && fromTP == false)
         {
-
+            playerOnTile.CheckTp(GameManager.Instance.TpTile(this));
         }
     }
 
@@ -93,8 +95,8 @@ public class Modifier : ScriptableObject
 [System.Serializable]
 public enum TileModifier
 {
-    Base = 1<<0,
-    Damaging = 1<<1,
-    Ice = 1<<2,
-    Tp = 1<<3,
+    Damaging = 1<<0,
+    Ice = 1<<1,
+    Tp = 1<<2,
+    Slow = 1<<3,
 }

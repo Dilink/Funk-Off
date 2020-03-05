@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +15,35 @@ public class GameManager : Singleton<GameManager>
     [Header("MANAGERS")]
     public Ma_UiManager uiManager;
     public Ma_PatternManager patternManager;
+    public Ma_ComboManager comboManager;
 
+    [Header("FunkRule")]
+    private float funkMultiplier=1;
+    private float funkAmount = 0.5f;
+
+    [SerializeField] float funkDamagesEnemi;
+    [SerializeField] float funkAddingPlayer;
+
+    private void Start()
+    {
+        EnableActing();
+        uiManager.UpdateFunkBar(funkAmount);
+    }
+    //ACTING
+    #region
+
+    public bool canAct=true;
+
+    public void EnableActing()
+    {
+        canAct = true;
+    }
+
+    public void DisableActing()
+    {
+        canAct = false;
+    }
+    #endregion
 
     private void Update()
     {
@@ -25,7 +54,7 @@ public class GameManager : Singleton<GameManager>
         }
         else if (currentPlayerSelectionned != null)
         {
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButtonDown(1))
             {
                 CastRayTile();
             }
@@ -57,7 +86,8 @@ public class GameManager : Singleton<GameManager>
 
         if (Physics.Raycast(ray, out hit))
         {
-            currentPlayerSelectionned.CheckMovement(hit.collider.GetComponent<Mb_Tile>());
+            currentPlayerSelectionned.CheckCostingMovement(hit.collider.GetComponent<Mb_Tile>());
+            
         }
     }
     #endregion
@@ -82,7 +112,8 @@ public class GameManager : Singleton<GameManager>
         linePreview.positionCount = 0;
 
     }*/
-
+    
+    //CHOPPER LA TILE QUE L ON VEUT
     public Mb_Tile GetTile(int x, int z)
     {
         for (int i =0; i < allTiles.Length; i++)
@@ -91,6 +122,60 @@ public class GameManager : Singleton<GameManager>
             {
                 return allTiles[i];
                 
+            }
+        }
+        return null;
+    }
+
+    public void OnPatternResolved(int indexInList)
+    {
+        //ANIM ET AUTRE FEEDBACKS DE COMPLETION
+        foreach (Mb_PlayerController player in allPlayers)
+            player.anim.SetTrigger("Dance");
+
+        //DECOULEMENT DES PATTERNS
+;        patternManager.RotatePattern(indexInList);
+
+        //INCREMENTATION DU MULTIPLIER ICI
+        comboManager.RotateMultipliers(indexInList);
+
+        // VARIATION DU FUUUUUUUUUUUUNK
+        FunkVariation(funkAddingPlayer * funkMultiplier);
+    }
+
+    //FUNK adding
+    public void FunkVariation(float funkToAdd)
+    {
+        funkAmount += funkToAdd * funkMultiplier;
+        funkAmount = Mathf.Clamp(funkAmount, 0, 1);
+        uiManager.UpdateFunkBar(funkAmount);
+    }
+
+    //FUNK MULTIPLIER SET
+    public void SetFunkMultiplier(float newModifier)
+    {
+        funkMultiplier = newModifier;
+    }
+
+    //DAMAGES PART
+    public void SetFunkDamages(float newDamages)
+    {
+        funkDamagesEnemi = newDamages;
+    }
+
+    public float funkDamagesToDeal()
+    {
+        return -funkDamagesEnemi;
+    }
+
+    //TILE SPE
+    public Mb_Tile TpTile(Mb_Tile currentTpUsed)
+    {
+        for (int i = 0; i < allTiles.Length; i++)
+        {
+            if ((allTiles[i].tileProperties.type & TileModifier.Tp) == TileModifier.Tp && currentTpUsed!= allTiles[i])
+            {
+                return allTiles[i];
             }
         }
         return null;

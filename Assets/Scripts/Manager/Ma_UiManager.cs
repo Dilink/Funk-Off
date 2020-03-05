@@ -7,8 +7,6 @@ using DG.Tweening;
 
 public class Ma_UiManager : MonoBehaviour
 {
-    public static Ma_UiManager instance;
-
     [SerializeField] Mb_PlayerCard[] allPlayerUi;
 
     [Header("Turnsbar elements")]
@@ -16,6 +14,8 @@ public class Ma_UiManager : MonoBehaviour
 
     [Header("Patternsbar elements")]
     public Image[] PatternsbarIconsImg;
+    public Image[] PatternsbarMultipliersImg;
+    public TMP_Text[] PatternsbarMultipliersTexts;
 
     [Header("Funkbar elements")]
     public Image FunkbarFillImg;
@@ -32,13 +32,19 @@ public class Ma_UiManager : MonoBehaviour
     public RectTransform PauseSettingsRect;
     public RectTransform PauseQuitConfirmRect;
 
+
     private void Reset()
     {
+        // PlayerCards elements
+        allPlayerUi = FindObjectsOfType<Mb_PlayerCard>();
+
         // Turnsbar elements
         TurnsbarText = GameObject.Find("TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
 
         // Patternsbar elements
         PatternsbarIconsImg = GameObject.Find("PatternsBar_PatternsIcons").GetComponentsInChildren<Image>();
+        PatternsbarMultipliersImg = GameObject.Find("PatternsBar_Multipliers").GetComponentsInChildren<Image>();
+        PatternsbarMultipliersTexts = GameObject.Find("PatternsBar_MultipliersTexts").GetComponentsInChildren<TMP_Text>();
 
         // Funkbar elements
         FunkbarFillImg = GameObject.Find("Funkbar_Fill").GetComponent<Image>();
@@ -56,6 +62,11 @@ public class Ma_UiManager : MonoBehaviour
         PauseQuitConfirmRect = GameObject.Find("QuitConfirm").GetComponent<RectTransform>();
     }
 
+    private void Awake()
+    {
+        for (int i = 0; i < allPlayerUi.Length; i++)
+            allPlayerUi[i].playerAssigned = GameManager.Instance.allPlayers[i];
+    }
     // ---------------------
     // TURNSBAR FUNCTIONS
     // ---------------------
@@ -71,9 +82,16 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
 
     // Update the Icon of the patternsbar at the emplacement indicated
-    public void UpdatePatternsBarIcon(int emplacement) // + Pattern class file
+    public void UpdatePatternsBarIcon(int emplacement,Sc_Pattern pattern)
     {
-        //PatternsbarIconsImg[Emplacement].sprite = PatternClassFile.sprite
+        PatternsbarIconsImg[emplacement].sprite = pattern.sprite;
+    }
+
+    public void UpdateMultiplierIcon(int emplacement, Color color, string text)
+    {
+        PatternsbarMultipliersImg[emplacement].color = color;
+        PatternsbarMultipliersTexts[emplacement].text = text;
+        PatternsbarMultipliersTexts[emplacement].color = Color.black;
     }
 
     // ---------------------
@@ -83,7 +101,7 @@ public class Ma_UiManager : MonoBehaviour
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        FunkbarFillImg.fillAmount = funkPercentage / 100;
+        FunkbarFillImg.fillAmount = funkPercentage;
         FunkbarCursorRect.anchoredPosition = new Vector2(FunkbarFillRect.sizeDelta.x * FunkbarFillImg.fillAmount, FunkbarCursorRect.anchoredPosition.y);
     }
 
@@ -93,6 +111,7 @@ public class Ma_UiManager : MonoBehaviour
 
     public void UpdateCharacterUi(Mb_PlayerController playerConcerned, int MoveLeft, int MaxMove)
     {
+   
         for (int i =0; i < allPlayerUi.Length; i++)
         {
             if (allPlayerUi[i].playerAssigned == playerConcerned)
@@ -158,6 +177,7 @@ public class Ma_UiManager : MonoBehaviour
         Invoke("EnableOrDisablePauseMenu", 0.6f);
     }
 
+    // System, enable or disable the pause menu
     private void EnableOrDisablePauseMenu()
     {
         if (PauseMenu.activeInHierarchy)
