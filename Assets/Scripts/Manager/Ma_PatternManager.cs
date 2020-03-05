@@ -86,17 +86,26 @@ public class Ma_PatternManager : MonoBehaviour
 
     public void CheckGridForPattern()
     {
+        var res = JustCheckGridForPattern();
+        if (res.HasValue)
+        {
+            GameManager.Instance.OnPatternResolved(res.Value.Item1, res.Value.Item2);
+            return;
+        }
+    }
+
+    private Optional<Tuple<int, Sc_Pattern>> JustCheckGridForPattern()
+    {
         // take scene grid and check each pattern if currentPatternsList if it matches
         for (int i = 0; i < currentPatternsList.Count(); i++)
         {
             Sc_Pattern pattern = currentPatternsList[i];
             if (PatternValidation(GameManager.Instance.allTiles, pattern))
             {
-                GameManager.Instance.OnPatternResolved(i, pattern);
-                return;
+                return new Optional<Tuple<int, Sc_Pattern>>(new Tuple<int, Sc_Pattern>(i, pattern));
             }
         }
-        Debug.Log("No pattern matched.");
+        return new Optional<Tuple<int, Sc_Pattern>>();
     }
 
     private Mb_Tile[] getAllTileWithPlayer(Mb_Tile[] allTiles)
