@@ -74,9 +74,9 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
 
     // Update the text of the Turnsbar to display current turn / Max turns
-    public void UpdateTurnsbarText()
+    public void UpdateTurnsbarText(int currentTurn, int maxTurn)
     {
-        TurnsbarText.text = Ma_TurnManager.instance.CurrentTurn.ToString() + "/" + Ma_TurnManager.instance.MaxTurn.ToString();
+        TurnsbarText.text = currentTurn + "/" + maxTurn;
     }
 
     // ---------------------
