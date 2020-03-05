@@ -32,6 +32,9 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] float funkDamagesEnemi;
     [SerializeField] float funkAddingPlayer;
 
+    [InlineEditor]
+    public Sc_LevelConfig levelConfig;
+
     private void Start()
     {
       
