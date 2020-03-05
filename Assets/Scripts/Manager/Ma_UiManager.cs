@@ -15,6 +15,7 @@ public class Ma_UiManager : MonoBehaviour
     [Header("Patternsbar elements")]
     public Image[] PatternsbarIconsImg;
     public Image[] PatternsbarMultipliersImg;
+    public TMP_Text[] PatternsbarMultipliersTexts;
 
     [Header("Funkbar elements")]
     public Image FunkbarFillImg;
@@ -43,6 +44,7 @@ public class Ma_UiManager : MonoBehaviour
         // Patternsbar elements
         PatternsbarIconsImg = GameObject.Find("PatternsBar_PatternsIcons").GetComponentsInChildren<Image>();
         PatternsbarMultipliersImg = GameObject.Find("PatternsBar_Multipliers").GetComponentsInChildren<Image>();
+        PatternsbarMultipliersTexts = GameObject.Find("PatternsBar_MultipliersTexts").GetComponentsInChildren<TMP_Text>();
 
         // Funkbar elements
         FunkbarFillImg = GameObject.Find("Funkbar_Fill").GetComponent<Image>();
@@ -85,9 +87,11 @@ public class Ma_UiManager : MonoBehaviour
         PatternsbarIconsImg[emplacement].sprite = pattern.sprite;
     }
 
-    public void UpdateMultiplierIcon(int emplacement, Color color)
+    public void UpdateMultiplierIcon(int emplacement, Color color, string text)
     {
         PatternsbarMultipliersImg[emplacement].color = color;
+        PatternsbarMultipliersTexts[emplacement].text = text;
+        PatternsbarMultipliersTexts[emplacement].color = Color.black;
     }
 
     // ---------------------
