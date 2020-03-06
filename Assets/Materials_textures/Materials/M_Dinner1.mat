@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Floor_dance
-  m_Shader: {fileID: 4800000, guid: b60fd26fa80eaa74e8a4538963be2799, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 0
+  m_Name: M_Dinner1
+  m_Shader: {fileID: 4800000, guid: 5b6dca10a994bc4478fd9932c4e5a63e, type: 3}
+  m_ShaderKeywords: _SWITCH_COLOR_TEXTURE_ON
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -39,10 +39,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Image_alltiles:
-        m_Texture: {fileID: 2800000, guid: 4f9b9ea0ec1a1504ca4296b9f6e9076b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -59,23 +55,15 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _TextureSample0:
-        m_Texture: {fileID: 2800000, guid: 4f9b9ea0ec1a1504ca4296b9f6e9076b, type: 3}
+    - _TEXTURE_OBJECT:
+        m_Texture: {fileID: 2800000, guid: 86c32a5841cce4748a3e1726acb700cf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _TextureSample1:
-        m_Texture: {fileID: 2800000, guid: d61fdecf04c1ff848bd486d0048e53b0, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Trame:
-        m_Texture: {fileID: 2800000, guid: d61fdecf04c1ff848bd486d0048e53b0, type: 3}
-        m_Scale: {x: 1, y: 1}
+    - _TEXTURE_TRAME:
+        m_Texture: {fileID: 2800000, guid: e4e8d406a0c61a747add86208b257ef4, type: 3}
+        m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _texcoord2:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -87,16 +75,24 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _HIGH_LIGHT_LVL: 0.62
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _SHADOW_FULL: -0.8
+    - _SWITCH_COLOR_TEXTURE: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TRAME_LVL: 0.35
     - _UVSec: 0
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
+    - _COLOR_UNIFORME_OR_SWITCH: {r: 1, g: 0.8057632, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _GENERAL_COLOR: {r: 0.5943396, g: 0.11432765, b: 0.047659315, a: 0.59607846}
+    - _HIGHLIGHTCOLOR: {r: 1, g: 0.9410804, b: 0.6839622, a: 1}
+    - _SHADOW_COLOR: {r: 0.1373863, g: 0.122241, b: 0.3867925, a: 0}
