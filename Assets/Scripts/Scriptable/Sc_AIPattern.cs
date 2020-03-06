@@ -1,5 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
+using System.Collections.Generic;
+using Sirenix.OdinInspector.Editor;
 
 [CreateAssetMenu(fileName = "New AI Pattern", menuName = "Custom/AI Pattern")]
 public class Sc_AIPattern : ScriptableObject
@@ -8,4 +10,12 @@ public class Sc_AIPattern : ScriptableObject
     public Matrix3x3Int Matrix;
     [ReadOnly]
     public string Name;
+    public int difficultyLevel;
+
+
+    [Button(50), GUIColor(0.89f, 0.14f, 0.14f)] 
+    void UpdateDifficulty()
+    {
+        difficultyLevel = Matrix.difficultyLevel;
+    }
 }
