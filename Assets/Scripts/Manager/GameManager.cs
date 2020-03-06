@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
 {
     [Header("PLAYER PARAMETERS")]
     private int movePerTurn;
+    [SerializeField] bool canStore;
     [SerializeField] int maxMovesPerTurn;
     private int moveLeft;
     int totalMoveReseted = 0;
@@ -117,8 +118,6 @@ public class GameManager : Singleton<GameManager>
         totalMoveReseted = Mathf.Clamp(totalMoveReseted, totalMoveReseted, maxMovesPerTurn);              
     }
 
-
-
     public int moveLeftForTurn()
     {
         return moveLeft;
@@ -133,7 +132,10 @@ public class GameManager : Singleton<GameManager>
     public void ResetMove()
     {
         int reservedMoves = moveLeft;
-        moveLeft = Mathf.Clamp(totalMoveReseted + reservedMoves, 0, maxMovesPerTurn);              
+        if (canStore)
+            moveLeft = Mathf.Clamp(totalMoveReseted + reservedMoves, 0, maxMovesPerTurn);
+        else
+            moveLeft = totalMoveReseted;
         uiManager.UpdateMovesUi(moveLeft, maxMovesPerTurn);
     }
     //PREVIEW
@@ -162,7 +164,7 @@ public class GameManager : Singleton<GameManager>
     {
         for (int i =0; i < allTiles.Length; i++)
         {
-            if (allTiles[i].posX == x && allTiles[i].posZ == z)
+            if (Mathf.Clamp(allTiles[i].posX,-1,1) == x && Mathf.Clamp(allTiles[i].posZ,-1,1) == z)
             {
                 return allTiles[i];
                 
@@ -219,11 +221,12 @@ public class GameManager : Singleton<GameManager>
         {
             if ((allTiles[i].tileProperties.type & TileModifier.Tp) == TileModifier.Tp && currentTpUsed!= allTiles[i])
             {
-                return allTiles[i];
+                  return allTiles[i];
             }
         }
         return null;
     }
+
 
     [Button(ButtonSizes.Medium), GUIColor(0.89f, 0.14f, 0.14f)]
     private void UpdateReferences()

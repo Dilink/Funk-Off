@@ -41,6 +41,7 @@ public class Ma_TurnManager : MonoBehaviour
             {
                 GameManager.Instance.allPlayers[i].ResetMove();
             }*/
+            GameManager.Instance.patternManager.OnTurnEnd();
             GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
             GameManager.Instance.ResetMove();
             GameManager.Instance.comboManager.RemoveAllMultipliers();
