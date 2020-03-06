@@ -38,11 +38,6 @@ public class Mb_Tile : MonoBehaviour
         tileProperties.type = (removedModifier & tileProperties.type) | tileProperties.type;
     }
 
-    public void OnTileChange()
-    {
-
-    }
-
     public void OnMove(bool fromTP)
     {
         if ((tileProperties.type & TileModifier.Damaging) == TileModifier.Damaging)
@@ -57,25 +52,11 @@ public class Mb_Tile : MonoBehaviour
 
         if ((tileProperties.type & TileModifier.Ice) == TileModifier.Ice)
         {
-            int x = posX;
-            int z = posZ;
-
-
-            x += posX - playerOnTile.oldTile.posX;
-
-      
-            z += posZ - playerOnTile.oldTile.posZ;
-
-
-            x = Mathf.Clamp(x, -1, 1);
-            z = Mathf.Clamp(z, -1, 1);
-            if (GameManager.Instance.GetTile(x, z)!= null)
-            {
-
-                playerOnTile.CheckFreeMovement(GameManager.Instance.GetTile(x, z));
-            }
+            playerOnTile.Drift();
 
         }
+
+
     }
 
     public void ResetOccupent()
