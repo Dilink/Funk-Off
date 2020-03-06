@@ -84,5 +84,8 @@ public enum TileModifier
     Ice         = 1 << 1,
     Tp          = 1 << 2,
     Slow        = 1 << 3,
-    Walled      = 1 << 4,
+    WalledUp    = 1 << 4,
+    WalledLeft  = 1 << 5,
+    WalledDown  = 1 << 6,
+    WalledRight = 1 << 7,
 }

@@ -18,6 +18,10 @@ public class CustomMatrix3x3Bitwise : OdinValueDrawer<Matrix3x3Int>
         { 1 << 2, Color.green },
         { 1 << 3, Color.yellow },
         { 1 << 4, Color.gray },
+        { 1 << 5, Color.gray },
+        { 1 << 6, Color.gray },
+        { 1 << 7, Color.gray },
+
     };
 
     private int GetMaxFlagValue()
@@ -54,14 +58,29 @@ public class CustomMatrix3x3Bitwise : OdinValueDrawer<Matrix3x3Int>
                     tileValue += 1;
                 }
 
-                if ((value[x, y] & (int)TileModifier.Walled) != 0)
+                if ((value[x, y] & (int)TileModifier.WalledDown) != 0)
+                {
+                    tileValue += 1;
+                }
+                if ((value[x, y] & (int)TileModifier.WalledUp) !=0)               
+                {
+                    tileValue += 1;
+                }
+                if ((value[x, y] & (int)TileModifier.WalledRight) != 0)
+                {
+                    tileValue += 1;
+                }
+                if ((value[x, y] & (int)TileModifier.WalledLeft) != 0)
                 {
                     tileValue += 1;
                 }
 
                 int coordAddition = Mathf.Abs(x-1) + Mathf.Abs( y-1);
 
-                if ((value[x, y] & (int)TileModifier.Walled) != 0 || 
+                if ((value[x, y] & (int)TileModifier.WalledUp) != 0 || 
+                    (value[x, y] & (int)TileModifier.WalledDown) != 0 ||
+                    (value[x, y] & (int)TileModifier.WalledLeft) != 0 ||
+                    (value[x, y] & (int)TileModifier.WalledRight) != 0 ||
                     (value[x, y] & (int)TileModifier.Damaging) != 0 ||
                     (value[x, y] & (int)TileModifier.Ice) != 0 ||
                     (value[x, y] & (int)TileModifier.Slow) != 0)
