@@ -307,6 +307,11 @@ public class Ma_PatternManager : MonoBehaviour
             GameManager.Instance.uiManager.MovePatterns(i);
         }
 
+        if (patternsForCancellation.Contains(currentPatternsList[indexInList]))
+        {
+            patternsForCancellation.Remove(currentPatternsList[indexInList]);
+        }
+
         GameManager.Instance.uiManager.RemovePattern(indexInList);
 
         //futurePattern = GetRandomPatternDifferentOfCurrents();
