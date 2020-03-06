@@ -13,6 +13,7 @@ public class Ma_TurnManager : MonoBehaviour
 
     private void Start()
     {
+        MaxTurn = GameManager.Instance.levelConfig.rounds[0].turnLimit;
         GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
     }
 
@@ -48,7 +49,7 @@ public class Ma_TurnManager : MonoBehaviour
         }
         else // End the level
         {
-            //  GameManager.Instance.uiManager.EndLevelPannelAppearence();
+            GameManager.Instance.CheckGameEnd();
         }
 
     }
