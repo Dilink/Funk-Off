@@ -51,9 +51,9 @@ public class Ma_PatternManager : MonoBehaviour
         GameManager.Instance.uiManager.UpdateCancelMarkerIcon(index, flag);
     }
 
-    public void OnTurnEnd(bool isLevelFinished = false)
+    public void OnTurnEnd(bool isLevelFinished = false, bool ignoreDamages = false)
     {
-        if (patternsForCancellation.Count() != 0)
+        if (!ignoreDamages && patternsForCancellation.Count() != 0)
         {
             GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal());
         }
@@ -307,11 +307,11 @@ public class Ma_PatternManager : MonoBehaviour
 
 
 
-    private Sc_Pattern PickPattern(Dictionary<string, int> categories=null, List<Sc_Pattern> patterns=null)
+    private Sc_Pattern PickPattern(List<PatternCategory> categories =null, List<Sc_Pattern> patterns=null)
     {
         if (categories == null)
         {
-            categories = new Dictionary<string, int>(GameManager.Instance.levelConfig.patternCategories);
+            categories = new List<PatternCategory>(GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].patternCategories);
         }
 
         if (patterns == null)
@@ -329,13 +329,13 @@ public class Ma_PatternManager : MonoBehaviour
         }
 
         // Get all patterns in that category
-        var list2 = patterns.Where(e => e.Category == cat.Value.Key).ToList();
+        var list2 = patterns.Where(e => e.Category == cat.Value.Name).ToList();
 
         // If there aren't no patterns left
         if (list2.Count() == 0)
         {
             // Remove the category from the list
-            categories.Remove(cat.Value.Key);
+            categories.Remove(cat.Value);
             // Try to pick a pattern from another category with no prepared patterns list
             return PickPattern(categories, null);
         }
@@ -356,7 +356,7 @@ public class Ma_PatternManager : MonoBehaviour
                 if (list2.Count() == 0)
                 {
                     // Remove the category
-                    categories.Remove(cat.Value.Key);
+                    categories.Remove(cat.Value);
                     // Pick a new pattern from another category
                     return PickPattern(categories, null);
                 }
@@ -374,29 +374,29 @@ public class Ma_PatternManager : MonoBehaviour
         }
     }
 
-    private Optional<KeyValuePair<string, int>> ChooseWeightedRandomization(Dictionary<string, int> dic)
+    private Optional<PatternCategory> ChooseWeightedRandomization(List<PatternCategory> dic)
     {
         if (dic.Count() == 0)
         {
-            return new Optional<KeyValuePair<string, int>>();
+            return new Optional<PatternCategory>();
         }
 
-        int totalweight = dic.Sum(c => c.Value);
+        int totalweight = dic.Sum(c => c.Weight);
         int choice = rand.Next(totalweight);
         int sum = 0;
 
         foreach (var obj in dic)
         {
-            for (int i = sum; i < obj.Value + sum; i++)
+            for (int i = sum; i < obj.Weight + sum; i++)
             {
                 if (i >= choice)
                 {
                     return obj;
                 }
             }
-            sum += obj.Value;
+            sum += obj.Weight;
         }
 
-        return new Optional<KeyValuePair<string, int>>(dic.First());
+        return new Optional<PatternCategory>(dic.First());
     }
 }
