@@ -14,6 +14,7 @@ public class Ma_UiManager : MonoBehaviour
     public TMP_Text TurnsbarText;
 
     [Header("Patternsbar elements")]
+    public GameObject[] PatternsbarElements;
     public Image[] PatternsbarIconsImg;
     public Image[] PatternsbarMultipliersImg;
     public Image[] PatternsbarCancelMarkersImg;
@@ -52,10 +53,11 @@ public class Ma_UiManager : MonoBehaviour
         TurnsbarText = GameObject.Find("TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
 
         // Patternsbar elements
-        PatternsbarIconsImg = GameObject.Find("PatternsBar_PatternsIcons").GetComponentsInChildren<Image>();
-        PatternsbarMultipliersImg = GameObject.Find("PatternsBar_Multipliers").GetComponentsInChildren<Image>();
-        PatternsbarCancelMarkersImg = GameObject.Find("PatternsBar_CancelMarkers").GetComponentsInChildren<Image>();
-        PatternsbarMultipliersTexts = GameObject.Find("PatternsBar_MultipliersTexts").GetComponentsInChildren<TMP_Text>();
+        PatternsbarElements = GameObject.Find("PatternsBar_elements").GetComponentsInChildren<GameObject>();
+        //PatternsbarIconsImg = GameObject.Find("").GetComponentsInChildren<Image>();
+        //PatternsbarMultipliersImg = GameObject.Find("PatternsBar_Multipliers").GetComponentsInChildren<Image>();
+        //PatternsbarCancelMarkersImg = GameObject.Find("PatternsBar_CancelMarkers").GetComponentsInChildren<Image>();
+        //PatternsbarMultipliersTexts = GameObject.Find("PatternsBar_MultipliersTexts").GetComponentsInChildren<TMP_Text>();
 
         // Funkbar elements
         FunkbarFillImg = GameObject.Find("Funkbar_Fill").GetComponent<Image>();
