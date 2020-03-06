@@ -185,6 +185,9 @@ public class GameManager : Singleton<GameManager>
         //INCREMENTATION DU MULTIPLIER ICI
         comboManager.RotateMultipliers(indexInList);
 
+        // RECUPERATION DU MULTIPLIER
+        comboManager.GetMultiplier();
+
         // VARIATION DU FUUUUUUUUUUUUNK
         FunkVariation(funkAddingPlayer * funkMultiplier * otherMultiplier);
     }
