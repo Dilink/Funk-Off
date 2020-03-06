@@ -16,6 +16,7 @@ public class Ma_UiManager : MonoBehaviour
     [Header("Patternsbar elements")]
     public Image[] PatternsbarIconsImg;
     public Image[] PatternsbarMultipliersImg;
+    public Image[] PatternsbarCancelMarkersImg;
     public TMP_Text[] PatternsbarMultipliersTexts;
 
     [Header("Funkbar elements")]
@@ -53,6 +54,7 @@ public class Ma_UiManager : MonoBehaviour
         // Patternsbar elements
         PatternsbarIconsImg = GameObject.Find("PatternsBar_PatternsIcons").GetComponentsInChildren<Image>();
         PatternsbarMultipliersImg = GameObject.Find("PatternsBar_Multipliers").GetComponentsInChildren<Image>();
+        PatternsbarCancelMarkersImg = GameObject.Find("PatternsBar_CancelMarkers").GetComponentsInChildren<Image>();
         PatternsbarMultipliersTexts = GameObject.Find("PatternsBar_MultipliersTexts").GetComponentsInChildren<TMP_Text>();
 
         // Funkbar elements
@@ -117,8 +119,14 @@ public class Ma_UiManager : MonoBehaviour
     // Remove the multiplier visual
     public void RemoveMultiplierIcon(int emplacement)
     {
-        GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.clear, "x1");
-        GameManager.Instance.uiManager.PatternsbarMultipliersTexts[emplacement].color = Color.clear;
+        UpdateMultiplierIcon(emplacement, Color.clear, "x1");
+        PatternsbarMultipliersTexts[emplacement].color = Color.clear;
+    }
+
+    // Update the cancel marker visuals
+    public void UpdateCancelMarkerIcon(int emplacement, bool active)
+    {
+        PatternsbarCancelMarkersImg[emplacement].color = !active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
     }
 
     // ---------------------

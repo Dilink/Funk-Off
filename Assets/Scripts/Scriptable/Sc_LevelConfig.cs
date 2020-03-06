@@ -14,4 +14,9 @@ public class Sc_LevelConfig : SerializedScriptableObject
         { "3x2", 1 },
         { "3x3", 1 },
     };
+
+    [Range(0, 4)]
+    public int minPatternsToCancelAttack = 1;
+    [Range(1, 5)]
+    public int maxPatternsToCancelAttack = 3;
 }
