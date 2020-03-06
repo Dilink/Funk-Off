@@ -30,7 +30,15 @@ public class Ma_PatternManager : MonoBehaviour
 
     private void OnTurnStart()
     {
+        Debug.Log("cleaning the cancel markers");
+
         patternsForCancellation.Clear();
+
+        for (int j = 0; j < currentPatternsList.Count; j++)
+        {
+            UpdateCancelMarker(j);
+        }
+
         var level = GameManager.Instance.levelConfig;
         int count = rand.Next(level.minPatternsToCancelAttack, level.maxPatternsToCancelAttack);
         var copy = new List<Sc_Pattern>(currentPatternsList);
@@ -42,6 +50,11 @@ public class Ma_PatternManager : MonoBehaviour
             var pattern = queue.Dequeue();
             UpdateCancelMarker(currentPatternsList.IndexOf(pattern));
             patternsForCancellation.Add(pattern);
+        }
+
+        for (int j = 0; j < currentPatternsList.Count; j++)
+        {
+            UpdateCancelMarker(j);
         }
     }
 
@@ -279,13 +292,18 @@ public class Ma_PatternManager : MonoBehaviour
         currentPatternsList.RemoveAt(indexInList);
         currentPatternsList.Add(futurePattern);
 
-        for (int i = 0; i < currentPatternsList.Count(); i++)
+        UpdateCancelMarker(indexInList);
+
+        for (int i = indexInList+1; i < currentPatternsList.Count()+1; i++)
         {
-            GameManager.Instance.uiManager.UpdatePatternsBarIcon(i, currentPatternsList[i]);
-            UpdateCancelMarker(i);
+            GameManager.Instance.uiManager.MovePatterns(i);
         }
+
+
+        GameManager.Instance.uiManager.RemovePattern(indexInList);
 
         futurePattern = GetRandomPatternDifferentOfCurrents();
         GameManager.Instance.uiManager.UpdatePatternsBarIcon(currentPatternsList.Count(), futurePattern);
+
     }
 }

@@ -14,7 +14,7 @@ public class Ma_UiManager : MonoBehaviour
     public TMP_Text TurnsbarText;
 
     [Header("Patternsbar elements")]
-    public GameObject[] PatternsbarElements;
+    public List <RectTransform> PatternsbarElements;
     public Image[] PatternsbarIconsImg;
     public Image[] PatternsbarMultipliersImg;
     public Image[] PatternsbarCancelMarkersImg;
@@ -53,7 +53,7 @@ public class Ma_UiManager : MonoBehaviour
         TurnsbarText = GameObject.Find("TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
 
         // Patternsbar elements
-        PatternsbarElements = GameObject.Find("PatternsBar_elements").GetComponentsInChildren<GameObject>();
+        //PatternsbarElements = GameObject.Find("PatternsBar_elements").GetComponentsInChildren<GameObject>();
         //PatternsbarIconsImg = GameObject.Find("").GetComponentsInChildren<Image>();
         //PatternsbarMultipliersImg = GameObject.Find("PatternsBar_Multipliers").GetComponentsInChildren<Image>();
         //PatternsbarCancelMarkersImg = GameObject.Find("PatternsBar_CancelMarkers").GetComponentsInChildren<Image>();
@@ -104,10 +104,36 @@ public class Ma_UiManager : MonoBehaviour
     // PATTERNSBAR FUNCTIONS
     // ---------------------
 
+    public void MovePatterns(int emplacement)
+    {
+        if(PatternsbarElements[emplacement].anchoredPosition.x >= -350)
+        {
+            //Debug.Log("Ui si moving "  + emplacement);
+            PatternsbarElements[emplacement].transform.DOLocalMoveX(PatternsbarElements[emplacement].anchoredPosition.x - 200, 0.4f, false);
+            PatternsbarElements[emplacement].localScale = new Vector3(1, 1, 1);
+            PatternsbarElements[emplacement].GetChild(0).GetComponent<Image>().color = Color.white;
+        }
+        else
+        {
+            RemovePattern(emplacement);
+        }
+    }
+
+    public void RemovePattern(int emplacement)
+    {
+        PatternsbarElements[emplacement].anchoredPosition = new Vector2(600, 0);
+        PatternsbarElements[emplacement].localScale = new Vector3(0.8f, 0.8f, 1);
+        PatternsbarElements[emplacement].GetChild(0).GetComponent<Image>().color = Color.grey;
+
+        RectTransform temp = PatternsbarElements[emplacement];
+        PatternsbarElements.RemoveAt(emplacement);
+        PatternsbarElements.Add(temp);
+    }
+
     // Update the Icon of the patternsbar
     public void UpdatePatternsBarIcon(int emplacement,Sc_Pattern pattern)
     {
-        PatternsbarIconsImg[emplacement].sprite = pattern.sprite;
+        PatternsbarElements[emplacement].GetChild(1).GetComponent<Image>().sprite = pattern.sprite;
     }
 
     // Update the multipliers visuals
@@ -128,7 +154,7 @@ public class Ma_UiManager : MonoBehaviour
     // Update the cancel marker visuals
     public void UpdateCancelMarkerIcon(int emplacement, bool active)
     {
-        PatternsbarCancelMarkersImg[emplacement].color = !active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
+        PatternsbarElements[emplacement].GetChild(2).GetComponent<Image>().color = active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
     }
 
     // ---------------------
