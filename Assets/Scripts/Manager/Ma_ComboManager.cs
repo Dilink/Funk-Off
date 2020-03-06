@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ma_ComboManager : MonoBehaviour
 {
-    public List<int> Multipliers = new List<int>(5);
+    public List<float> Multipliers = new List<float>(5);
 
     private void Awake()
     {
@@ -40,7 +40,7 @@ public class Ma_ComboManager : MonoBehaviour
 
     public void AddMultiplier(int emplacement)
     {
-        int mult = Multipliers[emplacement];
+        float mult = Multipliers[emplacement];
 
         if (mult < 2)
         {
@@ -68,5 +68,25 @@ public class Ma_ComboManager : MonoBehaviour
     {
         Multipliers[emplacement] = 1;
         GameManager.Instance.uiManager.RemoveMultiplierIcon(emplacement);
+    }
+
+    public void RemoveAllMultipliers()
+    {
+        for(int l = 0; l < Multipliers.Count; l++)
+        {
+            Multipliers[l] = 1;
+            GameManager.Instance.uiManager.RemoveMultiplierIcon(l);
+        }
+    }
+
+    public void GetMultiplier()
+    {
+        for(int m = 0; m < Multipliers.Count; m++)
+        {
+            if(Multipliers[m] != 0)
+            {
+                GameManager.Instance.SetFunkMultiplier(Multipliers[m]);
+            }
+        }
     }
 }

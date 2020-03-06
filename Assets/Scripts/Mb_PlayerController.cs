@@ -8,20 +8,29 @@ public class Mb_PlayerController : MonoBehaviour
   //  private List<Mb_Tile> tileToGo = new List<Mb_Tile>();
     public Mb_Tile currentTile;
     public Mb_Tile oldTile;
+    public Sc_CharacterParameters characterBaseCharacteristics;
+
+    private float customMultiplier =1;
 
     // OLD MOVEMENT SYSTEM
     //[SerializeField] int basicMoves = 3;
     // private int moveLeft;
+    int velX=0, velZ=0;
 
+    void UpdateVel()
+    {
+        velX = currentTile.posX - oldTile.posX;
+        velZ = currentTile.posZ- oldTile.posZ;
+    }
 
-
-//ANIM ET FEEDBACKS
-[HideInInspector] public Animator anim;
+    //ANIM ET FEEDBACKS
+    [HideInInspector] public Animator anim;
 
     private void Awake()
     {
-       // ResetMove();
-        anim = GetComponent<Animator>();
+        // ResetMove();
+        oldTile = currentTile;
+         anim = GetComponent<Animator>();
     }
 
     private void Move(Mb_Tile tileToMoveTo)
@@ -30,13 +39,14 @@ public class Mb_PlayerController : MonoBehaviour
         //reset de la vieille tuile
         currentTile.avaible = true;
         currentTile.ResetOccupent();
-        oldTile = currentTile;
 
+        oldTile = currentTile;
+      
         //set de la nouvelle tuile
         currentTile = tileToMoveTo;
         currentTile.setOccupent(this);
         currentTile.avaible = false;
-
+        UpdateVel();
         //bouger le joueur                                               //declenchement parametre de la tuile
         transform.DOMove(tileToMoveTo.transform.position + new Vector3(0,.5f,0), .33f,false).OnComplete(OnMoveCallBack);
     } 
@@ -45,26 +55,60 @@ public class Mb_PlayerController : MonoBehaviour
     {
         currentTile.OnMove(false);
         GameManager.Instance.EnableActing();
-        GameManager.Instance.patternManager.CheckGridForPatternAndReact();
+        CheckPatternCallBack();
+
     }
 
+    //MOUVEMENT PAYANT
     public void CheckCostingMovement(Mb_Tile tileToMoveTo)
     {
-        int distanceBetweenTiles = Mathf.Abs(currentTile.posX - tileToMoveTo.posX) + Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
+        int distanceBetweenTilesX = Mathf.Abs(currentTile.posX - tileToMoveTo.posX);
+        int distanceBetweenTilesZ = Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
+        int distanceBetweenTilesXZ = Mathf.Abs(currentTile.posX - tileToMoveTo.posX) + Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
 
-        if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
-            tileToMoveTo.avaible == true &&
-            distanceBetweenTiles <=1 &&
-            GameManager.Instance.canAct==true)
+        if(tileToMoveTo.avaible == false)
         {
-            print(tileToMoveTo);
+            int directionX = tileToMoveTo.posX - currentTile.posX ;
+            int directionZ= tileToMoveTo.posZ - currentTile.posZ ;
+          
+            if ((characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff &&
+                GameManager.Instance.GetTile(currentTile.posX + directionX * 2, currentTile.posZ + directionZ * 2).avaible == true &&
+                GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost)
+            {
+                    GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
 
-            GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
-            //GameManager.Instance.uiManager.UpdateCharacterUi(this,moveLeft,basicMoves);
-            Move(tileToMoveTo);
+                    Move(GameManager.Instance.GetTile(currentTile.posX + directionX * 2, currentTile.posZ + directionZ * 2));
+                
+                }
         }
+        else
+        {
+            if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) == CharacterSkills.Swift)
+            {
+                if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
+                distanceBetweenTilesX <= 1 &&
+                distanceBetweenTilesZ <= 1 &&
+                GameManager.Instance.canAct == true)
+                {
+                    GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
+                    //GameManager.Instance.uiManager.UpdateCharacterUi(this,moveLeft,basicMoves);
+                    Move(tileToMoveTo);
+                }
+            }
+            else if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
+                tileToMoveTo.avaible == true &&
+                distanceBetweenTilesXZ <= 1 &&
+                GameManager.Instance.canAct == true)
+            {
+                GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
+                //GameManager.Instance.uiManager.UpdateCharacterUi(this,moveLeft,basicMoves);
+                Move(tileToMoveTo);
+            }
+        }
+       
     }
-
+  
+    //MOUVEMENT GRATUIT
     public void CheckFreeMovement(Mb_Tile tileToMoveTo)
     {
         if (tileToMoveTo.avaible == true)
@@ -81,6 +125,13 @@ public class Mb_PlayerController : MonoBehaviour
         }
     }
 
+    public void Drift()
+    {
+        int z = currentTile.posZ + velZ;
+        int x = currentTile.posX + velX;
+        CheckFreeMovement(GameManager.Instance.GetTile(x, z));
+    }
+
     void Tp(Mb_Tile tileToTp)
     {
         GameManager.Instance.DisableActing();
@@ -92,7 +143,7 @@ public class Mb_PlayerController : MonoBehaviour
         currentTile.setOccupent(this);
         currentTile.avaible = false;
 
-        transform.position = tileToTp.transform.parent.position;
+        transform.position = tileToTp.transform.position + new Vector3(0, .5f, 0);
         OnTpCallBack();
     }
 
@@ -100,12 +151,18 @@ public class Mb_PlayerController : MonoBehaviour
     {
         currentTile.OnMove(true);
         GameManager.Instance.EnableActing();
-        GameManager.Instance.patternManager.CheckGridForPatternAndReact();
-    }
-    /*  public void PreviewMove()
-      {
-          GameManager.Instance.SetPreviewLine(tileToGo,this);
+        CheckPatternCallBack();
 
-      }*/
+    }
+
+    void CheckPatternCallBack()
+    {
+        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Finisher) == CharacterSkills.Finisher)
+            GameManager.Instance.patternManager.CheckGridForPatternAndReact(1.5f);
+        else
+            GameManager.Instance.patternManager.CheckGridForPatternAndReact(1);
+    }
+
         
 }
+

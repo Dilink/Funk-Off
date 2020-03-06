@@ -45,33 +45,18 @@ public class Mb_Tile : MonoBehaviour
             GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal());
         }
 
-        if ((tileProperties.type & TileModifier.Ice) == TileModifier.Ice)
-        {
-            int x = posX;
-            int z = posZ;
-
-
-            x += posX - playerOnTile.oldTile.posX;
-
-      
-            z += posZ - playerOnTile.oldTile.posZ;
-
-
-            x = Mathf.Clamp(x, -1, 1);
-            z = Mathf.Clamp(z, -1, 1);
-            if (GameManager.Instance.GetTile(x, z)!= null)
-            {
-                print(z);
-                print(x);
-                playerOnTile.CheckFreeMovement(GameManager.Instance.GetTile(x, z));
-            }
-
-        }
-
         if ((tileProperties.type & TileModifier.Tp) == TileModifier.Tp && fromTP == false)
         {
             playerOnTile.CheckTp(GameManager.Instance.TpTile(this));
         }
+
+        if ((tileProperties.type & TileModifier.Ice) == TileModifier.Ice)
+        {
+            playerOnTile.Drift();
+
+        }
+
+
     }
 
     public void ResetOccupent()
@@ -95,8 +80,9 @@ public class Modifier : ScriptableObject
 [System.Serializable]
 public enum TileModifier
 {
-    Damaging = 1<<0,
-    Ice = 1<<1,
-    Tp = 1<<2,
-    Slow = 1<<3,
+    Damaging    = 1 << 0,
+    Ice         = 1 << 1,
+    Tp          = 1 << 2,
+    Slow        = 1 << 3,
+    Walled      = 1 << 4,
 }

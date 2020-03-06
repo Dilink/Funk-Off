@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
     [Header("PLAYER PARAMETERS")]
-    [SerializeField] int movePerTurn=8;
+    private int movePerTurn;
+    [SerializeField] bool canStore;
+    [SerializeField] int maxMovesPerTurn;
     private int moveLeft;
+    int totalMoveReseted = 0;
 
     public Mb_PlayerController currentPlayerSelectionned;
     public Mb_PlayerController[] allPlayers;
@@ -19,7 +24,7 @@ public class GameManager : Singleton<GameManager>
     public Ma_UiManager uiManager;
     public Ma_PatternManager patternManager;
     public Ma_ComboManager comboManager;
-
+    
     [Header("FunkRule")]
     private float funkMultiplier=1;
     private float funkAmount = 0.5f;
@@ -27,11 +32,16 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] float funkDamagesEnemi;
     [SerializeField] float funkAddingPlayer;
 
+    [InlineEditor]
+    public Sc_LevelConfig levelConfig;
+
     private void Start()
     {
-        ResetMove();
-        EnableActing();
+      
         uiManager.UpdateFunkBar(funkAmount);
+        SetupMovementLimit();
+        EnableActing();
+        ResetMove();
     }
     //ACTING
     #region
@@ -97,6 +107,17 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     //MOVEPART
+    //definir la limte de début
+    private void SetupMovementLimit()
+    {
+       
+        foreach (Mb_PlayerController player in allPlayers)
+        {
+            totalMoveReseted += player.characterBaseCharacteristics.movementGiven;
+        }
+        totalMoveReseted = Mathf.Clamp(totalMoveReseted, totalMoveReseted, maxMovesPerTurn);              
+    }
+
     public int moveLeftForTurn()
     {
         return moveLeft;
@@ -110,8 +131,12 @@ public class GameManager : Singleton<GameManager>
 
     public void ResetMove()
     {
-        moveLeft = movePerTurn;
-        uiManager.UpdateMovesUi(moveLeft, movePerTurn);
+        int reservedMoves = moveLeft;
+        if (canStore)
+            moveLeft = Mathf.Clamp(totalMoveReseted + reservedMoves, 0, maxMovesPerTurn);
+        else
+            moveLeft = totalMoveReseted;
+        uiManager.UpdateMovesUi(moveLeft, maxMovesPerTurn);
     }
     //PREVIEW
     /*
@@ -139,7 +164,7 @@ public class GameManager : Singleton<GameManager>
     {
         for (int i =0; i < allTiles.Length; i++)
         {
-            if (allTiles[i].posX == x && allTiles[i].posZ == z)
+            if (Mathf.Clamp(allTiles[i].posX,-1,1) == x && Mathf.Clamp(allTiles[i].posZ,-1,1) == z)
             {
                 return allTiles[i];
                 
@@ -148,7 +173,7 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    public void OnPatternResolved(int indexInList)
+    public void OnPatternResolved(int indexInList, float otherMultiplier)
     {
         //ANIM ET AUTRE FEEDBACKS DE COMPLETION
         foreach (Mb_PlayerController player in allPlayers)
@@ -160,8 +185,11 @@ public class GameManager : Singleton<GameManager>
         //INCREMENTATION DU MULTIPLIER ICI
         comboManager.RotateMultipliers(indexInList);
 
+        // RECUPERATION DU MULTIPLIER
+        comboManager.GetMultiplier();
+
         // VARIATION DU FUUUUUUUUUUUUNK
-        FunkVariation(funkAddingPlayer * funkMultiplier);
+        FunkVariation(funkAddingPlayer * funkMultiplier * otherMultiplier);
     }
 
     //FUNK adding
@@ -196,9 +224,17 @@ public class GameManager : Singleton<GameManager>
         {
             if ((allTiles[i].tileProperties.type & TileModifier.Tp) == TileModifier.Tp && currentTpUsed!= allTiles[i])
             {
-                return allTiles[i];
+                  return allTiles[i];
             }
         }
         return null;
+    }
+
+
+    [Button(ButtonSizes.Medium), GUIColor(0.89f, 0.14f, 0.14f)]
+    private void UpdateReferences()
+    {
+        allPlayers = GameObject.FindObjectsOfType<Mb_PlayerController>();
+        allTiles = GameObject.FindObjectsOfType<Mb_Tile>();
     }
 }

@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using Sirenix.OdinInspector.Editor;
 using Sirenix.Utilities;
 using UnityEngine;
@@ -10,12 +11,105 @@ public class CustomMatrix3x3Bitwise : OdinValueDrawer<Matrix3x3Int>
 {
     private float validSize = 0;
 
+    private Dictionary<int, Color> colorMap = new Dictionary<int, Color>()
+    {
+        { 1 << 0, Color.red },
+        { 1 << 1, Color.blue },
+        { 1 << 2, Color.green },
+        { 1 << 3, Color.yellow },
+        { 1 << 4, Color.gray },
+    };
+
+    private int GetMaxFlagValue()
+    {
+        int result = 0;
+        var enumValues = Enum.GetValues(typeof(TileModifier)).Cast<TileModifier>();
+        foreach (var item in enumValues)
+            result |= (int)item;
+        return result;
+    }
+
+    void CalculateValue(int xCoord, int yCoord, Matrix3x3Int value)
+    {
+        int patternValue=0;
+
+        for (int y=0; y<3; y++)
+        {
+            for (int x = 0; x < 3; x++)
+            {
+                int tileValue = 0;
+
+                if ((value[x,y] & (int)TileModifier.Ice) != 0)
+                {
+                    tileValue += 2;
+                }
+
+                if ((value[x, y] & (int)TileModifier.Slow) != 0)
+                {
+                    tileValue += 2;
+                }
+
+                if ((value[x, y] & (int)TileModifier.Damaging) != 0)
+                {
+                    tileValue += 1;
+                }
+
+                if ((value[x, y] & (int)TileModifier.Walled) != 0)
+                {
+                    tileValue += 1;
+                }
+
+                int coordAddition = Mathf.Abs(x-1) + Mathf.Abs( y-1);
+
+                if ((value[x, y] & (int)TileModifier.Walled) != 0 || 
+                    (value[x, y] & (int)TileModifier.Damaging) != 0 ||
+                    (value[x, y] & (int)TileModifier.Ice) != 0 ||
+                    (value[x, y] & (int)TileModifier.Slow) != 0)
+                    switch (coordAddition)
+                {
+                    case 0:
+                        tileValue += 6;
+                        break;
+                    case 1:
+                        tileValue += 4;
+                        break;
+                    case 2:
+                        tileValue += 2;
+                        break;
+                
+                }
+
+                patternValue += tileValue;
+            }
+        }
+        value.difficultyLevel = patternValue;
+    }
+
     protected override void DrawPropertyLayout(GUIContent label)
     {
         Matrix3x3Int value = this.ValueEntry.SmartValue;
 
         Color defaultColor = GUI.color;
         Rect iniRect = EditorGUILayout.GetControlRect(GUILayout.Height(0));
+
+        var menuItemClickCallback = new GenericMenu.MenuFunction2((v) => {
+            var e = v as Tuple<int, int, int>;
+            value[e.Item2, e.Item3] ^= e.Item1;
+            CalculateValue(e.Item2, e.Item3, value);
+
+        });
+
+        var resetAllClickCallback = new GenericMenu.MenuFunction2((v) => {
+            var e = v as Tuple<int, int>;
+            value[e.Item1, e.Item2] = 0;
+            CalculateValue(e.Item1, e.Item2, value);
+        });
+
+        var checkAllClickCallback = new GenericMenu.MenuFunction2((v) => {
+            var e = v as Tuple<int, int>;
+            value[e.Item1, e.Item2] = GetMaxFlagValue();
+            CalculateValue(e.Item1, e.Item2, value);
+        });
 
         if (Event.current.type == EventType.Repaint)
         {
@@ -29,9 +123,8 @@ public class CustomMatrix3x3Bitwise : OdinValueDrawer<Matrix3x3Int>
             EditorGUILayout.BeginHorizontal();
             for (int j = 0; j < 3; j++)
             {
-                //Color color = value[i, j] ? Color.black : Color.white;
-                Color color = Color.white;
-                GUI.color = color;
+                int activatedCount = 0;
+                float r = 0, g = 0, b = 0;
                 Rect rect = new Rect();
 
                 rect.width = rect.height = iniRect.width / 3.0f;
@@ -39,40 +132,33 @@ public class CustomMatrix3x3Bitwise : OdinValueDrawer<Matrix3x3Int>
                 rect.y = iniRect.y + j * rect.height;
                 rect = rect.Padding(rect.width / 3.0f * 0.1f);
 
+                var menu = new GenericMenu();
+                menu.AddDisabledItem(new GUIContent("Tile Modifier"));
+                menu.AddSeparator("");
+                var enumValues = Enum.GetValues(typeof(TileModifier)).Cast<TileModifier>();
+                foreach (var item in enumValues)
+                {
+                    bool isActivated = (value[i, j] & ((int)item)) != 0;
+                    if (isActivated)
+                    {
+                        activatedCount++;
+                        r += colorMap[(int)item].r;
+                        g += colorMap[(int)item].g;
+                        b += colorMap[(int)item].b;
+                    }
+                    menu.AddItem(new GUIContent(item.ToString()), isActivated, menuItemClickCallback, new Tuple<int, int, int>((int)item, i, j));
+                }
+                menu.AddSeparator("");
+                menu.AddItem(new GUIContent("Check all"), false, checkAllClickCallback, new Tuple<int, int>(i, j));
+                menu.AddItem(new GUIContent("Reset all"), false, resetAllClickCallback, new Tuple<int, int>(i, j));
+
                 if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
                 {
-                    var menu = new GenericMenu();
-                    var callback = new GenericMenu.MenuFunction2((v) => {
-                        var e = v as Tuple<int, int, int>;
-                        value[e.Item2, e.Item3] ^= e.Item1;
-                    });
-
-                    menu.AddDisabledItem(new GUIContent("Tile Modifier"));
-                    menu.AddSeparator("");
-                    var enumValues = System.Enum.GetValues(typeof(TileModifier)).Cast<TileModifier>();
-                    foreach (var item in enumValues)
-                        menu.AddItem(new GUIContent(item.ToString()), (value[i, j] & ((int) item)) != 0, callback, new Tuple<int, int, int>((int) item, i, j));
-                    menu.AddSeparator("");
-                    menu.AddItem(new GUIContent("Reset"), false, (v) => {
-                        var e = v as Tuple<int, int>;
-                        value[e.Item1, e.Item2] = 0;
-                    }, new Tuple<int, int>(i, j));
                     menu.ShowAsContext();
-
-                    /*if (value[i, j])
-                    {
-                        value[i, j] = false;
-                    }
-                    else if (!hasMoreThan3Values(value))
-                    {
-                        value[i, j] = true;
-                    }*/
                     GUI.changed = true;
                     Event.current.Use();
                 }
-                EditorGUI.DrawRect(rect, color);
-
-                GUI.color = defaultColor;
+                EditorGUI.DrawRect(rect, new Color(r / (float)activatedCount, g / (float)activatedCount, b / (float)activatedCount));
             }
             EditorGUILayout.EndHorizontal();
         }
