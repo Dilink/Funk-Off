@@ -5,7 +5,7 @@ using System;
 
 public class Ma_AIManager : MonoBehaviour
 {
-    public Sc_AIPattern patternToApply;
+
     /*
     void PrepAttack()
     {
@@ -26,8 +26,9 @@ public class Ma_AIManager : MonoBehaviour
 
     public void ChoosePattern()
     {
-        int randomPattern = UnityEngine.Random.Range(0, allPatterns.Length-1);
-        ApplyPattern(allPatterns[randomPattern]);
+        List<Sc_AIPattern> temporaryList = GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].aiPatterns;
+        int randomPattern = UnityEngine.Random.Range(0, temporaryList.Count - 1);
+        ApplyPattern(temporaryList[randomPattern]);
     }
 
     public void ApplyPattern(Sc_AIPattern pattern)

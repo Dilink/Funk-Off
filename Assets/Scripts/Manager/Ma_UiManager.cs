@@ -160,6 +160,15 @@ public class Ma_UiManager : MonoBehaviour
         PatternsbarMultipliersTexts[emplacement].color = Color.clear;
     }
 
+    public void RemoveAllMultiplierIcon()
+    {
+       for(int i =0; i<PatternsbarMultipliersImg.Length; i++)
+        {
+            UpdateMultiplierIcon(i, Color.clear, "x1");
+            PatternsbarMultipliersTexts[i].color = Color.clear;
+        }
+    }
+
     // Update the cancel marker visuals
     public void UpdateCancelMarkerIcon(int emplacement, bool active)
     {

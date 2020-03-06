@@ -29,7 +29,6 @@ public class GameManager : Singleton<GameManager>
     public Ma_AIManager aiManager;
     
     [Header("FunkRule")]
-    private float funkMultiplier=1;
     private float _funkAmount = 0.5f;
 
     private float funkAmount
@@ -57,7 +56,7 @@ public class GameManager : Singleton<GameManager>
         SetupMovementLimit();
         EnableActing();
         ResetMove();
-        aiManager.ApplyPattern(aiManager.patternToApply);
+
     }
     //ACTING
     #region
@@ -195,31 +194,25 @@ public class GameManager : Singleton<GameManager>
         foreach (Mb_PlayerController player in allPlayers)
             player.anim.SetTrigger("Dance");
 
-        //DECOULEMENT DES PATTERNS
-;        patternManager.RotatePattern(indexInList);
-
-        //INCREMENTATION DU MULTIPLIER ICI
-        comboManager.RotateMultipliers(indexInList);
-
-        // RECUPERATION DU MULTIPLIER
-        comboManager.GetMultiplier();
-
         // VARIATION DU FUUUUUUUUUUUUNK
-        FunkVariation(funkAddingPlayer * funkMultiplier * otherMultiplier);
+
+        FunkVariation(funkAddingPlayer * comboManager.getFunkMultiplier() * otherMultiplier);
+         
+
+        //DECOULEMENT DES PATTERNS
+        patternManager.RotatePattern(indexInList);
+
     }
 
     //FUNK adding
     public void FunkVariation(float funkToAdd)
     {
-        funkAmount += funkToAdd * funkMultiplier;
+        float funkToAddTotal = funkToAdd * comboManager.getFunkMultiplier();
+        funkAmount += ( funkToAdd * comboManager.getFunkMultiplier());
         funkAmount = Mathf.Clamp(funkAmount, 0, 1);
     }
 
-    //FUNK MULTIPLIER SET
-    public void SetFunkMultiplier(float newModifier)
-    {
-        funkMultiplier = newModifier;
-    }
+ 
 
     //DAMAGES PART
     public void SetFunkDamages(float newDamages)

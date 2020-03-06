@@ -147,6 +147,7 @@ public class Ma_PatternManager : MonoBehaviour
             Sc_Pattern pattern = currentPatternsList[i];
             if (PatternValidation(GameManager.Instance.allTiles, pattern))
             {
+                GameManager.Instance.comboManager.OnPatternAccomplished(i);
                 return new Optional<Tuple<int, Sc_Pattern>>(new Tuple<int, Sc_Pattern>(i, pattern));
             }
         }
