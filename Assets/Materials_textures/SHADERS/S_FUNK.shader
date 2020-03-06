@@ -10,10 +10,11 @@ Shader "FUNK_SHADER"
 		_TEXTURE_OBJECT("TEXTURE_OBJECT", 2D) = "white" {}
 		_SHADOW_FULL("SHADOW_FULL", Float) = -0.8
 		[Toggle(_SWITCH_COLOR_TEXTURE_ON)] _SWITCH_COLOR_TEXTURE("SWITCH_COLOR_TEXTURE", Float) = 0
-		_SHADOW_COLOR("SHADOW_COLOR", Color) = (0.1373863,0.122241,0.3867925,0)
+		_SHADOW_COLOR("SHADOW_COLOR", Color) = (0.1373863,0.122241,0.3867925,1)
 		_GENERAL_COLOR("GENERAL_COLOR", Color) = (0,0,0,1)
 		_HIGHLIGHTCOLOR("HIGH LIGHT COLOR", Color) = (1,0.5613208,0.5613208,0.454902)
 		_HIGH_LIGHT_LVL("HIGH_LIGHT_LVL", Float) = 0.62
+		_OPACITY_SHADOW("OPACITY_SHADOW", Float) = 0.1
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 		[HideInInspector] __dirty( "", Int ) = 1
 	}
@@ -57,6 +58,7 @@ Shader "FUNK_SHADER"
 		uniform float4 _GENERAL_COLOR;
 		uniform sampler2D _TEXTURE_OBJECT;
 		uniform float4 _TEXTURE_OBJECT_ST;
+		uniform float _OPACITY_SHADOW;
 		uniform float4 _HIGHLIGHTCOLOR;
 		uniform float _HIGH_LIGHT_LVL;
 
@@ -89,7 +91,10 @@ Shader "FUNK_SHADER"
 				float4 staticSwitch117 = _COLOR_UNIFORME_OR_SWITCH;
 			#endif
 			float4 temp_cast_2 = (_TRAME_LVL).xxxx;
-			float4 lerpResult105 = lerp( lerpResult121 , staticSwitch117 , temp_output_85_0);
+			float4 temp_cast_3 = (_OPACITY_SHADOW).xxxx;
+			float4 blendOpSrc170 = temp_output_85_0;
+			float4 blendOpDest170 = temp_cast_3;
+			float4 lerpResult105 = lerp( lerpResult121 , staticSwitch117 , ( saturate( ( blendOpDest170/ ( 1.0 - blendOpSrc170 ) ) )));
 			float4 blendOpSrc164 = tex2DNode119;
 			float4 blendOpDest164 = _HIGHLIGHTCOLOR;
 			float4 lerpResult161 = lerp( lerpResult105 , ( saturate(  (( blendOpSrc164 > 0.5 ) ? ( 1.0 - ( 1.0 - 2.0 * ( blendOpSrc164 - 0.5 ) ) * ( 1.0 - blendOpDest164 ) ) : ( 2.0 * blendOpSrc164 * blendOpDest164 ) ) )) , ( _HIGHLIGHTCOLOR.a * step( _HIGH_LIGHT_LVL , dotResult48 ) ));
@@ -186,7 +191,7 @@ Shader "FUNK_SHADER"
 }
 /*ASEBEGIN
 Version=16100
-0;0;1920;1019;837.7214;514.1354;1.704404;True;True
+0;0;1920;1019;44.60303;240.9418;1;True;True
 Node;AmplifyShaderEditor.WorldNormalVector;46;-1578.084,349.4279;Float;False;False;1;0;FLOAT3;0,0,1;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
 Node;AmplifyShaderEditor.WorldSpaceLightDirHlpNode;47;-1630.121,506.1794;Float;False;False;1;0;FLOAT;0;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
 Node;AmplifyShaderEditor.DotProductOpNode;48;-1308.015,451.5381;Float;True;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT;0
@@ -196,23 +201,25 @@ Node;AmplifyShaderEditor.RangedFloatNode;122;-764.5406,630.941;Float;False;Prope
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;65;-446.9178,290.1368;Float;True;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.StepOpNode;88;-585.8388,618.8432;Float;True;2;0;FLOAT;-0.8;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.OneMinusNode;84;-220.1772,296.3608;Float;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RangedFloatNode;86;-1311.428,211.2318;Float;False;Property;_TRAME_LVL;TRAME_LVL;1;0;Create;True;0;0;False;0;0.21;0.21;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.ColorNode;133;-56.61833,-227.5846;Float;False;Property;_GENERAL_COLOR;GENERAL_COLOR;7;0;Create;True;0;0;False;0;0,0,0,1;0,0,0,1;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode;119;-141.5224,-450.5797;Float;True;Property;_TEXTURE_OBJECT;TEXTURE_OBJECT;3;0;Create;True;0;0;False;0;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;86;-1311.428,211.2318;Float;False;Property;_TRAME_LVL;TRAME_LVL;1;0;Create;True;0;0;False;0;0.21;0.21;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.BlendOpsNode;129;-27.3251,294.1793;Float;True;Darken;True;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.StepOpNode;85;274.7988,212.1826;Float;True;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.ColorNode;106;390.5292,-556.8342;Float;False;Property;_COLOR_UNIFORME_OR_SWITCH;COLOR_UNIFORME_OR_SWITCH;2;0;Create;True;0;0;False;0;1,0.8057632,0,0;0.8962264,0.7119444,0.4861605,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;160;1237.112,637.0128;Float;False;Property;_HIGH_LIGHT_LVL;HIGH_LIGHT_LVL;9;0;Create;True;0;0;False;0;0.62;0.62;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;171;491.5956,38.46854;Float;False;Property;_OPACITY_SHADOW;OPACITY_SHADOW;10;0;Create;True;0;0;False;0;0.1;1;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.LerpOp;143;416.8742,-309.4414;Float;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.ColorNode;120;358.058,511.0972;Float;False;Property;_SHADOW_COLOR;SHADOW_COLOR;6;0;Create;True;0;0;False;0;0.1373863,0.122241,0.3867925,0;0.2830189,0.137282,0.1081346,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.StepOpNode;159;1473.361,490.5234;Float;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.StaticSwitch;117;748.4221,-377.36;Float;False;Property;_SWITCH_COLOR_TEXTURE;SWITCH_COLOR_TEXTURE;5;0;Create;True;0;0;False;0;0;0;0;True;;Toggle;2;Key0;Key1;9;1;COLOR;0,0,0,0;False;0;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;4;COLOR;0,0,0,0;False;5;COLOR;0,0,0,0;False;6;COLOR;0,0,0,0;False;7;COLOR;0,0,0,0;False;8;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.LerpOp;121;683.5258,458.1297;Float;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.ColorNode;106;390.5292,-556.8342;Float;False;Property;_COLOR_UNIFORME_OR_SWITCH;COLOR_UNIFORME_OR_SWITCH;2;0;Create;True;0;0;False;0;1,0.8057632,0,0;0.8962264,0.7119444,0.4861605,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ColorNode;120;148.058,568.0972;Float;False;Property;_SHADOW_COLOR;SHADOW_COLOR;6;0;Create;True;0;0;False;0;0.1373863,0.122241,0.3867925,1;0.2830189,0.137282,0.1081346,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;160;959.9731,645.6286;Float;False;Property;_HIGH_LIGHT_LVL;HIGH_LIGHT_LVL;9;0;Create;True;0;0;False;0;0.62;0.62;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.StepOpNode;85;274.7988,212.1826;Float;True;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.BlendOpsNode;170;788.5956,46.46854;Float;True;ColorDodge;True;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.LerpOp;121;594.5258,324.1297;Float;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.StepOpNode;159;1196.222,499.1391;Float;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.ColorNode;162;1341.999,-75.25652;Float;False;Property;_HIGHLIGHTCOLOR;HIGH LIGHT COLOR;8;0;Create;True;0;0;False;0;1,0.5613208,0.5613208,0.454902;1,0.5613208,0.5613208,0.454902;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.LerpOp;105;1116.857,171.8253;Float;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;163;1775.132,474.1494;Float;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.StaticSwitch;117;727.5306,-381.5383;Float;False;Property;_SWITCH_COLOR_TEXTURE;SWITCH_COLOR_TEXTURE;5;0;Create;True;0;0;False;0;0;0;0;True;;Toggle;2;Key0;Key1;9;1;COLOR;0,0,0,0;False;0;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;4;COLOR;0,0,0,0;False;5;COLOR;0,0,0,0;False;6;COLOR;0,0,0,0;False;7;COLOR;0,0,0,0;False;8;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.BlendOpsNode;164;1654.356,-225.4164;Float;True;HardLight;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.LerpOp;161;1999.643,175.697;Float;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;163;1497.993,482.7651;Float;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.LerpOp;105;1236.857,136.8253;Float;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.LerpOp;161;2115.61,151.6673;Float;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.StandardSurfaceOutputNode;61;2416.393,-71.72762;Float;False;True;2;Float;ASEMaterialInspector;0;0;CustomLighting;FUNK_SHADER;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;Back;0;False;-1;0;False;-1;False;0;False;-1;0;False;-1;False;0;Opaque;0.5;True;True;0;False;Opaque;;Geometry;All;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;0;False;-1;False;0;False;-1;255;False;-1;255;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;False;2;15;10;25;False;0.5;True;0;0;False;-1;0;False;-1;0;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;0;0,0,0,0;VertexOffset;True;False;Cylindrical;False;Relative;0;;-1;-1;-1;-1;0;False;0;0;False;-1;-1;0;False;-1;0;0;0;15;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT3;0,0,0;False;4;FLOAT;0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT;0;False;9;FLOAT;0;False;10;FLOAT;0;False;13;FLOAT3;0,0,0;False;11;FLOAT3;0,0,0;False;12;FLOAT3;0,0,0;False;14;FLOAT4;0,0,0,0;False;15;FLOAT3;0,0,0;False;0
 WireConnection;48;0;46;0
 WireConnection;48;1;47;0
@@ -224,27 +231,29 @@ WireConnection;88;1;48;0
 WireConnection;84;0;65;0
 WireConnection;129;0;84;0
 WireConnection;129;1;88;0
-WireConnection;85;0;86;0
-WireConnection;85;1;129;0
 WireConnection;143;0;133;0
 WireConnection;143;1;119;0
 WireConnection;143;2;133;4
+WireConnection;85;0;86;0
+WireConnection;85;1;129;0
+WireConnection;170;0;85;0
+WireConnection;170;1;171;0
+WireConnection;121;0;120;0
+WireConnection;121;2;85;0
 WireConnection;159;0;160;0
 WireConnection;159;1;48;0
 WireConnection;117;1;106;0
 WireConnection;117;0;143;0
-WireConnection;121;0;120;0
-WireConnection;121;2;85;0
-WireConnection;105;0;121;0
-WireConnection;105;1;117;0
-WireConnection;105;2;85;0
-WireConnection;163;0;162;4
-WireConnection;163;1;159;0
 WireConnection;164;0;119;0
 WireConnection;164;1;162;0
+WireConnection;163;0;162;4
+WireConnection;163;1;159;0
+WireConnection;105;0;121;0
+WireConnection;105;1;117;0
+WireConnection;105;2;170;0
 WireConnection;161;0;105;0
 WireConnection;161;1;164;0
 WireConnection;161;2;163;0
 WireConnection;61;13;161;0
 ASEEND*/
-//CHKSM=22AF179B9A6B1A6A6A7A1779BB261D8B7DE39220
+//CHKSM=6926A5C8197F7D22D2F11C8CCF4170BF37B88D0B
