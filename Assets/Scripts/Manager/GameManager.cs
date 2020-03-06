@@ -19,12 +19,14 @@ public class GameManager : Singleton<GameManager>
 
     [Header("GRID PARAMETERS")]
     public Mb_Tile[] allTiles;
+    public Sc_GridFeedBackRule gridFeedbackRules;
 
     [Header("MANAGERS")]
     public Ma_UiManager uiManager;
     public Ma_PatternManager patternManager;
     public Ma_ComboManager comboManager;
     public Ma_TurnManager turnManager;
+    public Ma_AIManager aiManager;
     
     [Header("FunkRule")]
     private float funkMultiplier=1;
@@ -50,12 +52,12 @@ public class GameManager : Singleton<GameManager>
     public int currentRoundCountFinished = 0;
 
     private void Start()
-    {
-      
+    {     
         uiManager.UpdateFunkBar(funkAmount);
         SetupMovementLimit();
         EnableActing();
         ResetMove();
+        aiManager.ApplyPattern(aiManager.patternToApply);
     }
     //ACTING
     #region

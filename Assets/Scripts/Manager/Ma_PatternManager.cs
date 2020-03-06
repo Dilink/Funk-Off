@@ -30,7 +30,7 @@ public class Ma_PatternManager : MonoBehaviour
 
     private void OnTurnStart()
     {
-        Debug.Log("cleaning the cancel markers");
+
 
         patternsForCancellation.Clear();
 
@@ -217,7 +217,7 @@ public class Ma_PatternManager : MonoBehaviour
             }
         }*/
 
-        Debug.Log("Generate first set of patterns");
+
 
         for (int i = 0; i < 5; i++)
         {

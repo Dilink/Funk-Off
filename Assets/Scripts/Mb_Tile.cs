@@ -12,10 +12,11 @@ public class Mb_Tile : MonoBehaviour
     public int posX=0, posZ=0;
     public bool avaible = true;
     [SerializeField] public Mb_PlayerController playerOnTile;
-    [InlineEditor] public Modifier tileProperties;
-    
+    public Modifier tileProperties;
+    private MeshRenderer meshRenderer;
+    private Material tileMaterial;
 
-    private void Start()
+    private void Awake()
     {
         if (playerOnTile != null)
         {
@@ -23,8 +24,10 @@ public class Mb_Tile : MonoBehaviour
             playerOnTile.currentTile = this;
         }
 
-        Modifier newParamaters = new Modifier();
-        tileProperties = newParamaters;
+        //creer une instance du materiau pour pouvoir le set comme on veut pendant la game
+        meshRenderer = GetComponent<MeshRenderer>();
+        tileMaterial = new Material(meshRenderer.material);
+
 
     }
 
@@ -36,6 +39,49 @@ public class Mb_Tile : MonoBehaviour
     void RemoveModification(TileModifier removedModifier)
     {
         tileProperties.type = (removedModifier & tileProperties.type) | tileProperties.type;
+    }
+
+    public void UpdateTileType(TileModifier newTileType)
+    {
+        ResetBaseTile();
+
+        if ((newTileType & TileModifier.Damaging) == TileModifier.Damaging)
+        {
+            SetTileMaterial(tileMaterial);
+            tileProperties.type = TileModifier.Damaging;
+        }
+
+        else if ((newTileType & TileModifier.Ice) == TileModifier.Ice)
+        {
+            tileProperties.type = TileModifier.Ice;
+            tileMaterial = GameManager.Instance.gridFeedbackRules.iceMaterial;
+            SetTileMaterial(tileMaterial);
+        }
+
+        else if ((newTileType & TileModifier.Slow) == TileModifier.Slow)
+        {
+            tileProperties.cost = 2;
+            tileProperties.type = TileModifier.Slow;
+            SetTileMaterial(tileMaterial);
+        }
+
+        else if (newTileType==0)
+        {
+            tileProperties.type = 0;
+            SetTileMaterial(tileMaterial);
+        }
+    }
+
+    void SetTileMaterial(Material newMaterial)
+    {
+        meshRenderer.material = newMaterial;
+    }
+
+    void ResetBaseTile()
+    {
+        tileProperties.type = 0;
+        tileProperties.cost = 1;
+        SetTileMaterial(GameManager.Instance.gridFeedbackRules.baseTileMaterial);
     }
 
     public void OnMove(bool fromTP)
@@ -70,9 +116,9 @@ public class Mb_Tile : MonoBehaviour
     }
 }
 [System.Serializable]
-public class Modifier : ScriptableObject
+public struct Modifier 
 {
-    public int cost=1;
+    public int cost;
     public TileModifier type;
 }
 
