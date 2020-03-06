@@ -64,9 +64,9 @@ public class Ma_PatternManager : MonoBehaviour
         GameManager.Instance.uiManager.UpdateCancelMarkerIcon(index, flag);
     }
 
-    public void OnTurnEnd(bool isLevelFinished = false)
+    public void OnTurnEnd(bool isLevelFinished = false, bool ignoreDamages = false)
     {
-        if (patternsForCancellation.Count() != 0)
+        if (!ignoreDamages && patternsForCancellation.Count() != 0)
         {
             GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal());
         }
@@ -186,7 +186,7 @@ public class Ma_PatternManager : MonoBehaviour
 
     void GenerateStartPattern()
     {
-        for (int i = 0; i < 5; i++)
+        /*for (int i = 0; i < 5; i++)
         {
             while (true)
             {
@@ -204,7 +204,7 @@ public class Ma_PatternManager : MonoBehaviour
         /*for (int i = 0; i < 5; i++)
         {
             currentPatternsList.Add(GetRandomPatternDifferentOfCurrents());
-        }*/
+        }*
 
         while (true)
         {
@@ -215,7 +215,13 @@ public class Ma_PatternManager : MonoBehaviour
                 futurePattern = pattern;
                 break;
             }
+        }*/
+
+        for (int i = 0; i < 5; i++)
+        {
+            currentPatternsList.Add(PickPattern());
         }
+        futurePattern = PickPattern();
 
         for (int i = 0; i < currentPatternsList.Count(); i++)
         {
@@ -225,7 +231,7 @@ public class Ma_PatternManager : MonoBehaviour
         GameManager.Instance.uiManager.UpdatePatternsBarIcon(currentPatternsList.Count(), futurePattern);
     }
 
-    private Sc_Pattern GetRandomPatternDifferentOfCurrents()
+    /*private Sc_Pattern GetRandomPatternDifferentOfCurrents()
     {
         List<Sc_Pattern> backupCurrentPatternsList = new List<Sc_Pattern>();
         List<Sc_Pattern> result = null;
@@ -285,7 +291,7 @@ public class Ma_PatternManager : MonoBehaviour
         result.AddRange(backupCurrentPatternsList);
 
         return stock;
-    }
+    }*/
 
     public void RotatePattern(int indexInList)
     {
@@ -299,11 +305,113 @@ public class Ma_PatternManager : MonoBehaviour
             GameManager.Instance.uiManager.MovePatterns(i);
         }
 
-
-        GameManager.Instance.uiManager.RemovePattern(indexInList);
-
-        futurePattern = GetRandomPatternDifferentOfCurrents();
+        //futurePattern = GetRandomPatternDifferentOfCurrents();
+        futurePattern = PickPattern();
         GameManager.Instance.uiManager.UpdatePatternsBarIcon(currentPatternsList.Count(), futurePattern);
 
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    private Sc_Pattern PickPattern(List<PatternCategory> categories =null, List<Sc_Pattern> patterns=null)
+    {
+        if (categories == null)
+        {
+            categories = new List<PatternCategory>(GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].patternCategories);
+        }
+
+        if (patterns == null)
+        {
+            patterns = new List<Sc_Pattern>(availablePatternList);
+        }
+
+        // Choose a random category based on weight
+        var cat = ChooseWeightedRandomization(categories);
+
+        // If there are no category left
+        if (!cat.HasValue)
+        {
+            return null;
+        }
+
+        // Get all patterns in that category
+        var list2 = patterns.Where(e => e.Category == cat.Value.Name).ToList();
+
+        // If there aren't no patterns left
+        if (list2.Count() == 0)
+        {
+            // Remove the category from the list
+            categories.Remove(cat.Value);
+            // Try to pick a pattern from another category with no prepared patterns list
+            return PickPattern(categories, null);
+        }
+        // If there is at least a pattern left in the list
+        else
+        {
+            // Pick a random pattern in the list
+            var pattern = list2[rand.Next(list2.Count())];
+            // If pattern is already in current pattern to play or
+            // if pattern is the future pattern or
+            // if pattern is already validated with no move by the players
+            if (currentPatternsList.Contains(pattern) || (pattern == futurePattern) || PatternValidation(GameManager.Instance.allTiles, pattern))
+            {
+                // Remove the pattern from the prepared patterns list
+                list2.Remove(pattern);
+
+                // If there are no pattern left
+                if (list2.Count() == 0)
+                {
+                    // Remove the category
+                    categories.Remove(cat.Value);
+                    // Pick a new pattern from another category
+                    return PickPattern(categories, null);
+                }
+                else
+                {
+                    // Pick a new pattern from the same category
+                    return PickPattern(categories, list2);
+                }
+            }
+            else
+            {
+                // Return the valid pattern
+                return pattern;
+            }
+        }
+    }
+
+    private Optional<PatternCategory> ChooseWeightedRandomization(List<PatternCategory> dic)
+    {
+        if (dic.Count() == 0)
+        {
+            return new Optional<PatternCategory>();
+        }
+
+        int totalweight = dic.Sum(c => c.Weight);
+        int choice = rand.Next(totalweight);
+        int sum = 0;
+
+        foreach (var obj in dic)
+        {
+            for (int i = sum; i < obj.Weight + sum; i++)
+            {
+                if (i >= choice)
+                {
+                    return obj;
+                }
+            }
+            sum += obj.Weight;
+        }
+
+        return new Optional<PatternCategory>(dic.First());
     }
 }
