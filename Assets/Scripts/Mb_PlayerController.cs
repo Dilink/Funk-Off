@@ -127,8 +127,8 @@ public class Mb_PlayerController : MonoBehaviour
 
     public void Drift()
     {
-        int z = Mathf.Clamp(currentTile.posZ + velZ,-1,1);
-        int x = Mathf.Clamp(currentTile.posX + velX, -1, 1);
+        int z = currentTile.posZ + velZ;
+        int x = currentTile.posX + velX;
         CheckFreeMovement(GameManager.Instance.GetTile(x, z));
     }
 

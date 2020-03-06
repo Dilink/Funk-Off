@@ -5,6 +5,8 @@ using System;
 
 public class Ma_AIManager : MonoBehaviour
 {
+    [SerializeField] AllAIPattern[] allPatterns;
+    /*
     void PrepAttack()
     {
         throw new NotImplementedException();
@@ -18,5 +20,11 @@ public class Ma_AIManager : MonoBehaviour
     void GridModification()
     {
         throw new NotImplementedException();
-    }
+    }*/
+}
+
+[System.Serializable]
+public struct AllAIPattern
+{
+     public Sc_AIPattern[] patternsAi;
 }
