@@ -315,17 +315,6 @@ public class Ma_PatternManager : MonoBehaviour
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
     private Sc_Pattern PickPattern(List<PatternCategory> categories =null, List<Sc_Pattern> patterns=null)
     {
         if (categories == null)

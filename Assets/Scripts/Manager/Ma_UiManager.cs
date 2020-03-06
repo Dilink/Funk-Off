@@ -106,25 +106,33 @@ public class Ma_UiManager : MonoBehaviour
 
     public void MovePatterns(int emplacement)
     {
+        // Déplace le pattern concerné d'une case vers la gauche
         if(PatternsbarElements[emplacement].anchoredPosition.x >= -350)
         {
-            //Debug.Log("Ui si moving "  + emplacement);
+            // Déplacement du pattern
             PatternsbarElements[emplacement].transform.DOLocalMoveX(PatternsbarElements[emplacement].anchoredPosition.x - 200, 0.4f, false);
+
+            // Couleur du background et scale, pour qu'il se reset après avoir été sur la case grise
             PatternsbarElements[emplacement].localScale = new Vector3(1, 1, 1);
             PatternsbarElements[emplacement].GetChild(0).GetComponent<Image>().color = Color.white;
         }
-        else
+        else // Si le pattern concerné est le plus à gauche, le renvoit sur la case grise
         {
             RemovePattern(emplacement);
         }
     }
 
+    // Remet le pattern concerné sur la case grise
     public void RemovePattern(int emplacement)
     {
+        // Remet le pattern sur la case grise
         PatternsbarElements[emplacement].anchoredPosition = new Vector2(600, 0);
+
+        // Change le background et le scale pour qu'il s'adapte à la case grise 
         PatternsbarElements[emplacement].localScale = new Vector3(0.8f, 0.8f, 1);
         PatternsbarElements[emplacement].GetChild(0).GetComponent<Image>().color = Color.grey;
 
+        // Réarrange la liste pour qu'elle match le nouvel ordre visuel
         RectTransform temp = PatternsbarElements[emplacement];
         PatternsbarElements.RemoveAt(emplacement);
         PatternsbarElements.Add(temp);
@@ -171,31 +179,6 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
     // CHARACTERS UI FUNCTIONS
     // ---------------------
-    //OLD MOVEMENT SYSTEM
-    /*
-    public void UpdateCharacterUi(Mb_PlayerController playerConcerned, int MoveLeft, int MaxMove)
-    {
-        for (int i =0; i < allPlayerUi.Length; i++)
-        {
-            if (allPlayerUi[i].playerAssigned == playerConcerned)
-            {
-                //allPlayerUi[i].UpdateMoveLeftUi(MoveLeft, MaxMove);
-            }
-        }
-    }
-
-    public void UpdateCharacterIcons(Mb_PlayerController playerConcerned , Sprite icon, Sprite item, Sprite passive)
-    {
-        for (int i = 0; i < allPlayerUi.Length; i++)
-        {
-            if (allPlayerUi[i].playerAssigned == playerConcerned)
-            {
-                allPlayerUi[i].UpdateCardIcon(icon);
-                allPlayerUi[i].UpdateCardItem(item);
-                allPlayerUi[i].UpdateCardPassive(passive);
-            }
-        }
-    }*/
 
     public void UpdateMovesUi(int movesReturning, int moveForTheTurn)
     {
