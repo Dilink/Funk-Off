@@ -89,7 +89,7 @@ public class Matrix3x3Bool : IEquatable<Matrix3x3Bool>
                 case 6: return m02;
                 case 7: return m12;
                 case 8: return m22;
-                default:
+            default:
                     throw new IndexOutOfRangeException("Invalid matrix index!");
             }
         }
@@ -107,6 +107,7 @@ public class Matrix3x3Bool : IEquatable<Matrix3x3Bool>
                 case 6: m02 = value; break;
                 case 7: m12 = value; break;
                 case 8: m22 = value; break;
+                
                 default:
                     throw new IndexOutOfRangeException("Invalid matrix index!");
             }

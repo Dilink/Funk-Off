@@ -15,9 +15,17 @@ public class Matrix3x3Int : IEquatable<Matrix3x3Int>
     //            0  | m00 m10 m20
     // column no  1  | m01 m11 m21
     // (=horiz)   2  | m02 m12 m22
-    public int m00, m10, m20,
-                m01, m11, m21,
-                m02, m12, m22;
+    public int m00 { get; private set; }
+    public int m10 { get; private set; }
+    public int m20 { get; private set; }
+    public int m01 { get; private set; }
+    public int m11 { get; private set; }
+    public int m21 { get; private set; }
+    public int m02 { get; private set; }
+    public int m12 { get; private set; }
+    public int m22 { get; private set; }
+
+    public int difficultyLevel;
 
     // used to allow Matrix3x3Ints to be used as keys in hash tables
     public override int GetHashCode()

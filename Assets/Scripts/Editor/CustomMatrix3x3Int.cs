@@ -29,6 +29,62 @@ public class CustomMatrix3x3Bitwise : OdinValueDrawer<Matrix3x3Int>
         return result;
     }
 
+    void CalculateValue(int xCoord, int yCoord, Matrix3x3Int value)
+    {
+        int patternValue=0;
+
+        for (int y=0; y<3; y++)
+        {
+            for (int x = 0; x < 3; x++)
+            {
+                int tileValue = 0;
+
+                if ((value[x,y] & (int)TileModifier.Ice) != 0)
+                {
+                    tileValue += 2;
+                }
+
+                if ((value[x, y] & (int)TileModifier.Slow) != 0)
+                {
+                    tileValue += 2;
+                }
+
+                if ((value[x, y] & (int)TileModifier.Damaging) != 0)
+                {
+                    tileValue += 1;
+                }
+
+                if ((value[x, y] & (int)TileModifier.Walled) != 0)
+                {
+                    tileValue += 1;
+                }
+
+                int coordAddition = Mathf.Abs(x-1) + Mathf.Abs( y-1);
+
+                if ((value[x, y] & (int)TileModifier.Walled) != 0 || 
+                    (value[x, y] & (int)TileModifier.Damaging) != 0 ||
+                    (value[x, y] & (int)TileModifier.Ice) != 0 ||
+                    (value[x, y] & (int)TileModifier.Slow) != 0)
+                    switch (coordAddition)
+                {
+                    case 0:
+                        tileValue += 6;
+                        break;
+                    case 1:
+                        tileValue += 4;
+                        break;
+                    case 2:
+                        tileValue += 2;
+                        break;
+                
+                }
+
+                patternValue += tileValue;
+            }
+        }
+        value.difficultyLevel = patternValue;
+    }
+
     protected override void DrawPropertyLayout(GUIContent label)
     {
         Matrix3x3Int value = this.ValueEntry.SmartValue;
@@ -39,16 +95,20 @@ public class CustomMatrix3x3Bitwise : OdinValueDrawer<Matrix3x3Int>
         var menuItemClickCallback = new GenericMenu.MenuFunction2((v) => {
             var e = v as Tuple<int, int, int>;
             value[e.Item2, e.Item3] ^= e.Item1;
+            CalculateValue(e.Item2, e.Item3, value);
+
         });
 
         var resetAllClickCallback = new GenericMenu.MenuFunction2((v) => {
             var e = v as Tuple<int, int>;
             value[e.Item1, e.Item2] = 0;
+            CalculateValue(e.Item1, e.Item2, value);
         });
 
         var checkAllClickCallback = new GenericMenu.MenuFunction2((v) => {
             var e = v as Tuple<int, int>;
             value[e.Item1, e.Item2] = GetMaxFlagValue();
+            CalculateValue(e.Item1, e.Item2, value);
         });
 
         if (Event.current.type == EventType.Repaint)
