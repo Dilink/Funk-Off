@@ -24,16 +24,30 @@ public class GameManager : Singleton<GameManager>
     public Ma_UiManager uiManager;
     public Ma_PatternManager patternManager;
     public Ma_ComboManager comboManager;
+    public Ma_TurnManager turnManager;
     
     [Header("FunkRule")]
     private float funkMultiplier=1;
-    private float funkAmount = 0.5f;
+    private float _funkAmount = 0.5f;
+
+    private float funkAmount
+    {
+        get => _funkAmount;
+        set
+        {
+            _funkAmount = value;
+            uiManager.UpdateFunkBar(funkAmount);
+            CheckGameEnd();
+        }
+    }
 
     [SerializeField] float funkDamagesEnemi;
     [SerializeField] float funkAddingPlayer;
 
     [InlineEditor]
     public Sc_LevelConfig levelConfig;
+
+    public int currentRoundCountFinished = 0;
 
     private void Start()
     {
@@ -164,7 +178,7 @@ public class GameManager : Singleton<GameManager>
     {
         for (int i =0; i < allTiles.Length; i++)
         {
-            if (allTiles[i].posX == x && allTiles[i].posZ == z)
+            if (Mathf.Clamp(allTiles[i].posX,-1,1) == x && Mathf.Clamp(allTiles[i].posZ,-1,1) == z)
             {
                 return allTiles[i];
                 
@@ -185,6 +199,9 @@ public class GameManager : Singleton<GameManager>
         //INCREMENTATION DU MULTIPLIER ICI
         comboManager.RotateMultipliers(indexInList);
 
+        // RECUPERATION DU MULTIPLIER
+        comboManager.GetMultiplier();
+
         // VARIATION DU FUUUUUUUUUUUUNK
         FunkVariation(funkAddingPlayer * funkMultiplier * otherMultiplier);
     }
@@ -194,7 +211,6 @@ public class GameManager : Singleton<GameManager>
     {
         funkAmount += funkToAdd * funkMultiplier;
         funkAmount = Mathf.Clamp(funkAmount, 0, 1);
-        uiManager.UpdateFunkBar(funkAmount);
     }
 
     //FUNK MULTIPLIER SET
@@ -221,12 +237,34 @@ public class GameManager : Singleton<GameManager>
         {
             if ((allTiles[i].tileProperties.type & TileModifier.Tp) == TileModifier.Tp && currentTpUsed!= allTiles[i])
             {
-                return allTiles[i];
+                  return allTiles[i];
             }
         }
         return null;
     }
 
+    void CheckGameEnd()
+    {
+        Debug.LogError("funkAmount="+ funkAmount);
+        if (funkAmount <= 0.0f)
+        {
+            uiManager.DisplayEndgameScreen(false);
+        }
+        else if (funkAmount >= 1.0f)
+        {
+            currentRoundCountFinished += 1;
+            _funkAmount = 0.5f;
+            Debug.LogError("OnNextRound 1");
+            turnManager.OnNextRound();
+            Debug.LogError("OnNextRound");
+
+            if (currentRoundCountFinished >= levelConfig.roundCount)
+            {
+                Debug.LogError("Finished");
+                uiManager.DisplayEndgameScreen(true);
+            }
+        }
+    }
 
     [Button(ButtonSizes.Medium), GUIColor(0.89f, 0.14f, 0.14f)]
     private void UpdateReferences()

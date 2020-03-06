@@ -9,7 +9,7 @@ public class Ma_TurnManager : MonoBehaviour
 
     [Header("Turns stats")]
     [SerializeField] int MaxTurn; // Max number of turns for this level
-    private int CurrentTurn=1; // Current turn number
+    private int CurrentTurn = 1; // Current turn number
 
     private void Start()
     {
@@ -17,7 +17,7 @@ public class Ma_TurnManager : MonoBehaviour
     }
 
     public void BeginTurn()
-    { 
+    {
         /*
         // Reset all player characters move number
         for(int i =0; i < GameManager.Instance.allPlayers.Length; i++)
@@ -31,7 +31,7 @@ public class Ma_TurnManager : MonoBehaviour
     public void EndTurn()
     {
         // Pass to the next turn
-        if(CurrentTurn <= MaxTurn)
+        if (CurrentTurn <= MaxTurn)
         {
             CurrentTurn++;
 
@@ -41,14 +41,24 @@ public class Ma_TurnManager : MonoBehaviour
             {
                 GameManager.Instance.allPlayers[i].ResetMove();
             }*/
+            GameManager.Instance.patternManager.OnTurnEnd();
             GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
             GameManager.Instance.ResetMove();
             GameManager.Instance.comboManager.RemoveAllMultipliers();
         }
         else // End the level
         {
-          //  GameManager.Instance.uiManager.EndLevelPannelAppearence();
+            //  GameManager.Instance.uiManager.EndLevelPannelAppearence();
         }
-        
+
+    }
+
+    public void OnNextRound() {
+        CurrentTurn = 1;
+        MaxTurn = GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].turnLimit;
+        GameManager.Instance.patternManager.OnTurnEnd(true, true);
+        GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
+        GameManager.Instance.ResetMove();
+        GameManager.Instance.comboManager.RemoveAllMultipliers();
     }
 }

@@ -14,8 +14,10 @@ public class Ma_UiManager : MonoBehaviour
     public TMP_Text TurnsbarText;
 
     [Header("Patternsbar elements")]
+    public List <RectTransform> PatternsbarElements;
     public Image[] PatternsbarIconsImg;
     public Image[] PatternsbarMultipliersImg;
+    public Image[] PatternsbarCancelMarkersImg;
     public TMP_Text[] PatternsbarMultipliersTexts;
 
     [Header("Funkbar elements")]
@@ -51,9 +53,11 @@ public class Ma_UiManager : MonoBehaviour
         TurnsbarText = GameObject.Find("TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
 
         // Patternsbar elements
-        PatternsbarIconsImg = GameObject.Find("PatternsBar_PatternsIcons").GetComponentsInChildren<Image>();
-        PatternsbarMultipliersImg = GameObject.Find("PatternsBar_Multipliers").GetComponentsInChildren<Image>();
-        PatternsbarMultipliersTexts = GameObject.Find("PatternsBar_MultipliersTexts").GetComponentsInChildren<TMP_Text>();
+        //PatternsbarElements = GameObject.Find("PatternsBar_elements").GetComponentsInChildren<GameObject>();
+        //PatternsbarIconsImg = GameObject.Find("").GetComponentsInChildren<Image>();
+        //PatternsbarMultipliersImg = GameObject.Find("PatternsBar_Multipliers").GetComponentsInChildren<Image>();
+        //PatternsbarCancelMarkersImg = GameObject.Find("PatternsBar_CancelMarkers").GetComponentsInChildren<Image>();
+        //PatternsbarMultipliersTexts = GameObject.Find("PatternsBar_MultipliersTexts").GetComponentsInChildren<TMP_Text>();
 
         // Funkbar elements
         FunkbarFillImg = GameObject.Find("Funkbar_Fill").GetComponent<Image>();
@@ -100,10 +104,44 @@ public class Ma_UiManager : MonoBehaviour
     // PATTERNSBAR FUNCTIONS
     // ---------------------
 
+    public void MovePatterns(int emplacement)
+    {
+        // Déplace le pattern concerné d'une case vers la gauche
+        if(PatternsbarElements[emplacement].anchoredPosition.x >= -350)
+        {
+            // Déplacement du pattern
+            PatternsbarElements[emplacement].transform.DOLocalMoveX(PatternsbarElements[emplacement].anchoredPosition.x - 200, 0.4f, false);
+
+            // Couleur du background et scale, pour qu'il se reset après avoir été sur la case grise
+            PatternsbarElements[emplacement].localScale = new Vector3(1, 1, 1);
+            PatternsbarElements[emplacement].GetChild(0).GetComponent<Image>().color = Color.white;
+        }
+        else // Si le pattern concerné est le plus à gauche, le renvoit sur la case grise
+        {
+            RemovePattern(emplacement);
+        }
+    }
+
+    // Remet le pattern concerné sur la case grise
+    public void RemovePattern(int emplacement)
+    {
+        // Remet le pattern sur la case grise
+        PatternsbarElements[emplacement].anchoredPosition = new Vector2(600, 0);
+
+        // Change le background et le scale pour qu'il s'adapte à la case grise 
+        PatternsbarElements[emplacement].localScale = new Vector3(0.8f, 0.8f, 1);
+        PatternsbarElements[emplacement].GetChild(0).GetComponent<Image>().color = Color.grey;
+
+        // Réarrange la liste pour qu'elle match le nouvel ordre visuel
+        RectTransform temp = PatternsbarElements[emplacement];
+        PatternsbarElements.RemoveAt(emplacement);
+        PatternsbarElements.Add(temp);
+    }
+
     // Update the Icon of the patternsbar
     public void UpdatePatternsBarIcon(int emplacement,Sc_Pattern pattern)
     {
-        PatternsbarIconsImg[emplacement].sprite = pattern.sprite;
+        PatternsbarElements[emplacement].GetChild(1).GetComponent<Image>().sprite = pattern.sprite;
     }
 
     // Update the multipliers visuals
@@ -117,8 +155,14 @@ public class Ma_UiManager : MonoBehaviour
     // Remove the multiplier visual
     public void RemoveMultiplierIcon(int emplacement)
     {
-        GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.clear, "x1");
-        GameManager.Instance.uiManager.PatternsbarMultipliersTexts[emplacement].color = Color.clear;
+        UpdateMultiplierIcon(emplacement, Color.clear, "x1");
+        PatternsbarMultipliersTexts[emplacement].color = Color.clear;
+    }
+
+    // Update the cancel marker visuals
+    public void UpdateCancelMarkerIcon(int emplacement, bool active)
+    {
+        PatternsbarElements[emplacement].GetChild(2).GetComponent<Image>().color = active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
     }
 
     // ---------------------
@@ -135,31 +179,6 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
     // CHARACTERS UI FUNCTIONS
     // ---------------------
-    //OLD MOVEMENT SYSTEM
-    /*
-    public void UpdateCharacterUi(Mb_PlayerController playerConcerned, int MoveLeft, int MaxMove)
-    {
-        for (int i =0; i < allPlayerUi.Length; i++)
-        {
-            if (allPlayerUi[i].playerAssigned == playerConcerned)
-            {
-                //allPlayerUi[i].UpdateMoveLeftUi(MoveLeft, MaxMove);
-            }
-        }
-    }
-
-    public void UpdateCharacterIcons(Mb_PlayerController playerConcerned , Sprite icon, Sprite item, Sprite passive)
-    {
-        for (int i = 0; i < allPlayerUi.Length; i++)
-        {
-            if (allPlayerUi[i].playerAssigned == playerConcerned)
-            {
-                allPlayerUi[i].UpdateCardIcon(icon);
-                allPlayerUi[i].UpdateCardItem(item);
-                allPlayerUi[i].UpdateCardPassive(passive);
-            }
-        }
-    }*/
 
     public void UpdateMovesUi(int movesReturning, int moveForTheTurn)
     {
@@ -201,6 +220,7 @@ public class Ma_UiManager : MonoBehaviour
         Invoke("EnableOrDisableLoadScreen", 0.8f);
     }
 
+    // System
     private void EnableOrDisableLoadScreen()
     {
         if (Loadscreen.activeInHierarchy)
