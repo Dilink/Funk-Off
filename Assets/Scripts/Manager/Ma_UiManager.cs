@@ -28,6 +28,7 @@ public class Ma_UiManager : MonoBehaviour
 
     //[Header("PlayersStateBar elements")]
 
+
     [Header("PauseMenus elements")]
     public GameObject PauseMenu;
     public Image PauseMenubackgroundImg;
@@ -184,6 +185,8 @@ public class Ma_UiManager : MonoBehaviour
     {
         moveLeftText.text = movesReturning + " / " + moveForTheTurn;
     }
+
+    
 
     // ---------------------
     // ENDGAME SCREEN UI FUNCTIONS
