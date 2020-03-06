@@ -39,7 +39,7 @@ public class GameManager : Singleton<GameManager>
         {
             _funkAmount = value;
             uiManager.UpdateFunkBar(funkAmount);
-            CheckGameEnd();
+            //CheckGameEnd();
         }
     }
 
@@ -245,9 +245,9 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    void CheckGameEnd()
+    public void CheckGameEnd()
     {
-        Debug.LogError("funkAmount="+ funkAmount);
+        //Debug.LogError("funkAmount="+ funkAmount);
         if (funkAmount <= 0.0f)
         {
             uiManager.DisplayEndgameScreen(false);
@@ -256,13 +256,13 @@ public class GameManager : Singleton<GameManager>
         {
             currentRoundCountFinished += 1;
             _funkAmount = 0.5f;
-            Debug.LogError("OnNextRound 1");
+            //Debug.LogError("OnNextRound 1");
             turnManager.OnNextRound();
-            Debug.LogError("OnNextRound");
+            //Debug.LogError("OnNextRound");
 
             if (currentRoundCountFinished >= levelConfig.roundCount)
             {
-                Debug.LogError("Finished");
+                //Debug.LogError("Finished");
                 uiManager.DisplayEndgameScreen(true);
             }
         }

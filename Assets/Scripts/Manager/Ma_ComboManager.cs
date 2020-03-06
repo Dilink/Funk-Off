@@ -40,27 +40,32 @@ public class Ma_ComboManager : MonoBehaviour
 
     public void AddMultiplier(int emplacement)
     {
+        Debug.Log("adding mult to " + emplacement);
         float mult = Multipliers[emplacement];
 
         if (mult < 2)
         {
             Multipliers[emplacement] = 2;
             GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.green, "x2");
+            return;
         }
         else if (mult < 3)
         {
             Multipliers[emplacement] = 3;
             GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.yellow, "x3");
+            return;
         }
         else if (mult < 4)
         {
             Multipliers[emplacement] = 4;
             GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.red, "x4");
+            return;
         }
         else if (mult < 5)
         {
             Multipliers[emplacement] = 5;
             GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.magenta, "x5");
+            return;
         }
     }
 
