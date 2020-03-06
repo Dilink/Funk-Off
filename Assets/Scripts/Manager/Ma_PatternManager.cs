@@ -217,6 +217,8 @@ public class Ma_PatternManager : MonoBehaviour
             }
         }*/
 
+        Debug.Log("Generate first set of patterns");
+
         for (int i = 0; i < 5; i++)
         {
             currentPatternsList.Add(PickPattern());
@@ -304,6 +306,8 @@ public class Ma_PatternManager : MonoBehaviour
         {
             GameManager.Instance.uiManager.MovePatterns(i);
         }
+
+        GameManager.Instance.uiManager.RemovePattern(indexInList);
 
         //futurePattern = GetRandomPatternDifferentOfCurrents();
         futurePattern = PickPattern();
