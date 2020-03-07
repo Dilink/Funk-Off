@@ -12,94 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 132bdafe754e4ca468a8296371932e12, type: 3}
   m_Name: Level1
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: patternCategories
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Int32,
-        mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 5
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: 
-      Entry: 1
-      Data: 2x2
-    - Name: 
-      Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: 
-      Entry: 1
-      Data: 2x3
-    - Name: 
-      Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: 
-      Entry: 1
-      Data: 3x1
-    - Name: 
-      Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: 
-      Entry: 1
-      Data: 3x2
-    - Name: 
-      Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: 
-      Entry: 1
-      Data: 3x3
-    - Name: 
-      Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+  rounds:
+  - patternCategories:
+    - Name: 2x2
+      Weight: 1
+    - Name: 2x3
+      Weight: 1
+    - Name: 3x1
+      Weight: 1
+    - Name: 3x2
+      Weight: 1
+    - Name: 3x3
+      Weight: 1
+    aiPatterns:
+    - {fileID: 11400000, guid: e27065758a0667b4d9d3cf40b33f190e, type: 2}
+    - {fileID: 11400000, guid: ec9dce83d3cd2fb4cb31c27835fef15d, type: 2}
+    - {fileID: 11400000, guid: 31d8bc84c93ac5e42abc7216cec56926, type: 2}
+    - {fileID: 11400000, guid: a7a226eabec36aa4588fbb538f4f8b7d, type: 2}
+    - {fileID: 11400000, guid: 67dd0017f4ee2234cbe4e02646db405f, type: 2}
+    - {fileID: 11400000, guid: 73a3f238b357b6a4fabfcf12fd9668e8, type: 2}
+    - {fileID: 11400000, guid: a9b55630746643242b5b0843e9c97fbd, type: 2}
+    - {fileID: 11400000, guid: 6440cb7488503cf4aac39e7a00521365, type: 2}
+    - {fileID: 11400000, guid: 4db84087784365b479e5e57694ce709b, type: 2}
+    - {fileID: 11400000, guid: 11635e7f58323534c90412c1aff12a9e, type: 2}
+    turnLimit: 5
   minPatternsToCancelAttack: 1
   maxPatternsToCancelAttack: 3
+  roundCount: 1

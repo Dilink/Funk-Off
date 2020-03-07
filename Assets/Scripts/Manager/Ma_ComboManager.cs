@@ -4,16 +4,26 @@ using UnityEngine;
 
 public class Ma_ComboManager : MonoBehaviour
 {
-    public List<float> Multipliers = new List<float>(5);
+    //public List<float> Multipliers = new List<float>(5);
+    private float funkMultiplier = 1;
+    int comboedPatternSpot=100;
 
     private void Awake()
     {
-        for(int i = 0; i< GameManager.Instance.uiManager.PatternsbarMultipliersImg.Length; i++)
+        funkMultiplier = 1;
+        ClearAllMultiplierUi();
+    }
+
+    public void ClearAllMultiplierUi()
+    {
+        for (int i = 0; i < GameManager.Instance.uiManager.PatternsbarMultipliersImg.Length; i++)
         {
-            RemoveMultiplier(i);
+            //RemoveMultiplier(i);
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(i, Color.clear, "");
         }
     }
 
+    /*
     public void RotateMultipliers(int index)
     {
         // Add the multiplier to the removed pattern
@@ -24,7 +34,7 @@ public class Ma_ComboManager : MonoBehaviour
         {
             for (int j = index + 1; j < GameManager.Instance.comboManager.Multipliers.Count; j++)
             {
-                GameManager.Instance.comboManager.RemoveMultiplier(j);
+               RemoveMultiplier(j);
             }
         }
 
@@ -33,37 +43,63 @@ public class Ma_ComboManager : MonoBehaviour
         {
             for(int k = index -1; k >= 0; k--)
             {
-                GameManager.Instance.comboManager.RemoveMultiplier(k);
+               RemoveMultiplier(k);
             }
         }
-    }
-
-    public void AddMultiplier(int emplacement)
+    }*/
+    //FUNK MULTIPLIER SET
+    public void SetFunkMultiplier(float newModifier)
     {
-        float mult = Multipliers[emplacement];
+        funkMultiplier = newModifier;
+    }
 
-        if (mult < 2)
+    public float getFunkMultiplier()
+    {
+        return funkMultiplier;
+    }
+
+    public void ResetMultiplier()
+    {
+        SetFunkMultiplier(1);
+    }
+
+
+    public void
+        OnPatternAccomplished(int indexOfPatern)
+    {
+        GameManager.Instance.uiManager.RemoveAllMultiplierIcon();
+        if (indexOfPatern == comboedPatternSpot)
         {
-            Multipliers[emplacement] = 2;
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.green, "x2");
+         //   float newMultiplier = getFunkMultiplier() + 1;
+            
+            funkMultiplier += 1;
         }
-        else if (mult < 3)
+        comboedPatternSpot = indexOfPatern;
+
+        switch (getFunkMultiplier())
         {
-            Multipliers[emplacement] = 3;
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.yellow, "x3");
-        }
-        else if (mult < 4)
-        {
-            Multipliers[emplacement] = 4;
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.red, "x4");
-        }
-        else if (mult < 5)
-        {
-            Multipliers[emplacement] = 5;
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(emplacement, Color.magenta, "x5");
+            case 0:
+                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.clear, "");
+                break;
+            case 1:
+                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.green, "x2");
+                break;
+            case 2:
+                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.yellow, "x3");
+                break;
+            case 3:
+                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.red, "x4");
+                break;
+            case 4:
+                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.magenta, "x5");
+                break;
+            case 5:
+                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.magenta, "x5");
+                break;
         }
     }
 
+    /*
     public void RemoveMultiplier(int emplacement)
     {
         Multipliers[emplacement] = 1;
@@ -78,15 +114,8 @@ public class Ma_ComboManager : MonoBehaviour
             GameManager.Instance.uiManager.RemoveMultiplierIcon(l);
         }
     }
+    */
 
-    public void GetMultiplier()
-    {
-        for(int m = 0; m < Multipliers.Count; m++)
-        {
-            if(Multipliers[m] != 0)
-            {
-                GameManager.Instance.SetFunkMultiplier(Multipliers[m]);
-            }
-        }
-    }
+
+    
 }
