@@ -5,8 +5,10 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 
-public class Ma_MainMenuManager : Singleton<Ma_MainMenuManager>
+public class Ma_MainMenuManager : MonoBehaviour
 {
+    public static Ma_MainMenuManager Instance;
+
     public List<Sc_CharacterParameters> selectedCharacters;
     public Transform[] selectedCharactersEmplacements;
     public GameObject[] selectedEmplacementsGameobjects = new GameObject[3];
