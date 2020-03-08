@@ -2841,6 +2841,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  selectedEmplacementsStatus: 000000
   currentScreen: {fileID: 0}
   MainMenuRect: {fileID: 2085478813}
   OptionsRect: {fileID: 717521945}
@@ -2848,8 +2849,10 @@ MonoBehaviour:
   CharacterRect: {fileID: 1026399703}
   ItemsUpgradeRect: {fileID: 1275244023}
   cardsGrid: {fileID: 1187082410}
-  selectedCharactersEmplacementsRect: {fileID: 698621479}
-  currencyText: {fileID: 0}
+  characterEmplacementOne: {fileID: 1435050778}
+  characterEmplacementTwo: {fileID: 852313792}
+  characterEmplacementThree: {fileID: 1606670976}
+  currencyText: {fileID: 2141121283}
 --- !u!1 &389021824
 GameObject:
   m_ObjectHideFlags: 0
@@ -12313,6 +12316,36 @@ MonoBehaviour:
   characterParameters: {fileID: 11400000, guid: 6dccb1e5a504f6e4c9a04891c7e60387,
     type: 2}
   originalPosition: {x: 0, y: 0, z: 0}
+--- !u!1 &1902645289
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1902645290}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1902645290
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902645289}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 336, y: 191.5025, z: -366.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1928802304
 GameObject:
   m_ObjectHideFlags: 0
@@ -13342,7 +13375,7 @@ GameObject:
   - component: {fileID: 2141121284}
   - component: {fileID: 2141121283}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: CurrencyBar_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
