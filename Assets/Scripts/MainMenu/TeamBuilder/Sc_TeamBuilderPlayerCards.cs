@@ -7,11 +7,14 @@ using DG.Tweening;
 public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragHandler
 {
     public Sc_CharacterParameters characterParameters;
-    private Vector3 originalPosition;
+    public Vector3 originalPosition;
 
-    private void Awake()
+    private bool firstDrag;
+
+    private void Start()
     {
         SetOriginalPosition();
+        //Debug.Log("og position set");
     }
 
     public void SetOriginalPosition()
@@ -21,6 +24,12 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!firstDrag)
+        {
+            SetOriginalPosition();
+            firstDrag = true;
+        }
+
         //Ma_MainMenuManager.Instance.cardsGrid.enabled = false;
         transform.SetAsLastSibling();
     }
@@ -32,9 +41,9 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
 
     public void OnDrop(PointerEventData eventData)
     {
-        if(RectTransformUtility.RectangleContainsScreenPoint(Ma_MainMenuManager.Instance.selectedCharactersEmplacementsRect, new Vector2(Input.mousePosition.x, Input.mousePosition.y)))
+        if(RectTransformUtility.RectangleContainsScreenPoint(Ma_MainMenuManager.Instance.selectedCharactersEmplacementsRect, new Vector2(Input.mousePosition.x, Input.mousePosition.y)) && Ma_MainMenuManager.Instance.IsCharacterSelectionFull())
         {
-            Debug.Log("TBPC rect contains");
+            //Debug.Log("TBPC rect contains");
             Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
             Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject);
         }
