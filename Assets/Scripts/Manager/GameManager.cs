@@ -212,8 +212,6 @@ public class GameManager : Singleton<GameManager>
         funkAmount = Mathf.Clamp(funkAmount, 0, 1);
     }
 
- 
-
     //DAMAGES PART
     public void SetFunkDamages(float newDamages)
     {
