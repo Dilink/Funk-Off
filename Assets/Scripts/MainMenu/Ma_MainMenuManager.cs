@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using DG.Tweening;
 
 public class Ma_MainMenuManager : Singleton<Ma_MainMenuManager>
 {
     public List<Sc_CharacterParameters> selectedCharacters;
     public Transform[] selectedCharactersEmplacements;
-    private GameObject[] selectedEmplacementsGameobjects = new GameObject[3];
+    public GameObject[] selectedEmplacementsGameobjects = new GameObject[3];
     private bool[] selectedEmplacementsStatus = new bool[3];
 
     [Header("Navigation elements")]
@@ -21,9 +22,20 @@ public class Ma_MainMenuManager : Singleton<Ma_MainMenuManager>
     public RectTransform CharacterRect;
     public RectTransform ItemsUpgradeRect;
 
+    [Header("MainMenu elements")]
+
+    [Header("Options elements")]
+
+    [Header("Levels elements")]
+
+    [Header("Items elements")]
+
     [Header("Team Builder elements")]
     public GridLayoutGroup cardsGrid;
     public RectTransform selectedCharactersEmplacementsRect;
+
+    [Header("Currency bar elements")]
+    public TMP_Text currencyText;
 
     private void Start()
     {
@@ -33,7 +45,7 @@ public class Ma_MainMenuManager : Singleton<Ma_MainMenuManager>
     // -------------
     // NAVIGATION
     // -------------
-
+    #region navigation
     // MAIN MENU
     public void DisplayMainMenuScreen(bool fromLeft)
     {
@@ -154,10 +166,29 @@ public class Ma_MainMenuManager : Singleton<Ma_MainMenuManager>
         ItemsUpgradeRect.DOAnchorPos3DY(1200, 0.6f, false);
     }
 
+    #endregion
+    // -------------
+    // OPTIONS
+    // -------------
+    #region options
+
+    #endregion
+    // -------------
+    // LEVELS
+    // -------------
+    #region levels
+
+    #endregion
+    // -------------
+    // ITEMS UPGRADE
+    // -------------
+    #region items
+
+    #endregion
     // -------------
     // TEAM BUILDER
     // -------------
-
+    #region teambuilder
     // Add the card to the selected characters zone
     public void AddCardToSelectedEmplacements(GameObject card)
     {
@@ -196,4 +227,38 @@ public class Ma_MainMenuManager : Singleton<Ma_MainMenuManager>
                 selectedCharacters.Add(selectedEmplacementsGameobjects[k].GetComponent<Sc_TeamBuilderPlayerCards>().characterParameters);
         }
     }
+
+    public bool IsCharacterSelectionFull()
+    {
+        for(int i = 0; i < selectedEmplacementsStatus.Length; i++)
+        {
+            if (!selectedEmplacementsStatus[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void BrowsePlayerCardsLeft()
+    {
+
+    }
+
+    public void BrowsePlayerCardsRight()
+    {
+
+    }
+    #endregion
+    // -------------
+    // CURRENCY BAR
+    // -------------
+    #region currency
+
+    public void UpdateCurrencyBar(float value)
+    {
+        currencyText.text = value.ToString();
+    }
+
+    #endregion
 }

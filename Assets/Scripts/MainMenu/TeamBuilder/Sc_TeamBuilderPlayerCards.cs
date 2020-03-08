@@ -41,7 +41,7 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
 
     public void OnDrop(PointerEventData eventData)
     {
-        if(RectTransformUtility.RectangleContainsScreenPoint(Ma_MainMenuManager.Instance.selectedCharactersEmplacementsRect, new Vector2(Input.mousePosition.x, Input.mousePosition.y)))
+        if(RectTransformUtility.RectangleContainsScreenPoint(Ma_MainMenuManager.Instance.selectedCharactersEmplacementsRect, new Vector2(Input.mousePosition.x, Input.mousePosition.y)) && Ma_MainMenuManager.Instance.IsCharacterSelectionFull())
         {
             //Debug.Log("TBPC rect contains");
             Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
