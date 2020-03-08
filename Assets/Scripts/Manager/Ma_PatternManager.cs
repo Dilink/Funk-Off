@@ -30,7 +30,7 @@ public class Ma_PatternManager : MonoBehaviour
 
     private void OnTurnStart()
     {
-        Debug.Log("cleaning the cancel markers");
+
 
         patternsForCancellation.Clear();
 
@@ -147,6 +147,7 @@ public class Ma_PatternManager : MonoBehaviour
             Sc_Pattern pattern = currentPatternsList[i];
             if (PatternValidation(GameManager.Instance.allTiles, pattern))
             {
+                GameManager.Instance.comboManager.OnPatternAccomplished(i);
                 return new Optional<Tuple<int, Sc_Pattern>>(new Tuple<int, Sc_Pattern>(i, pattern));
             }
         }
@@ -217,7 +218,7 @@ public class Ma_PatternManager : MonoBehaviour
             }
         }*/
 
-        Debug.Log("Generate first set of patterns");
+
 
         for (int i = 0; i < 5; i++)
         {

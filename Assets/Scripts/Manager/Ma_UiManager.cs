@@ -28,6 +28,7 @@ public class Ma_UiManager : MonoBehaviour
 
     //[Header("PlayersStateBar elements")]
 
+
     [Header("PauseMenus elements")]
     public GameObject PauseMenu;
     public Image PauseMenubackgroundImg;
@@ -159,6 +160,15 @@ public class Ma_UiManager : MonoBehaviour
         PatternsbarMultipliersTexts[emplacement].color = Color.clear;
     }
 
+    public void RemoveAllMultiplierIcon()
+    {
+       for(int i =0; i<PatternsbarMultipliersImg.Length; i++)
+        {
+            UpdateMultiplierIcon(i, Color.clear, "x1");
+            PatternsbarMultipliersTexts[i].color = Color.clear;
+        }
+    }
+
     // Update the cancel marker visuals
     public void UpdateCancelMarkerIcon(int emplacement, bool active)
     {
@@ -184,6 +194,8 @@ public class Ma_UiManager : MonoBehaviour
     {
         moveLeftText.text = movesReturning + " / " + moveForTheTurn;
     }
+
+    
 
     // ---------------------
     // ENDGAME SCREEN UI FUNCTIONS

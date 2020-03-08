@@ -13,7 +13,10 @@ public class Ma_TurnManager : MonoBehaviour
 
     private void Start()
     {
+        MaxTurn = GameManager.Instance.levelConfig.rounds[0].turnLimit;
         GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
+        //AI PART A CHANGER
+        GameManager.Instance.aiManager.ChoosePattern();
     }
 
     public void BeginTurn()
@@ -30,6 +33,7 @@ public class Ma_TurnManager : MonoBehaviour
 
     public void EndTurn()
     {
+        GameManager.Instance.comboManager.ClearAllMultiplierUi();
         // Pass to the next turn
         if (CurrentTurn <= MaxTurn)
         {
@@ -44,11 +48,14 @@ public class Ma_TurnManager : MonoBehaviour
             GameManager.Instance.patternManager.OnTurnEnd();
             GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
             GameManager.Instance.ResetMove();
-            GameManager.Instance.comboManager.RemoveAllMultipliers();
+            GameManager.Instance.comboManager.ResetMultiplier();
+
+            //AI PART A CHANGER
+            GameManager.Instance.aiManager.ChoosePattern();
         }
         else // End the level
         {
-            //  GameManager.Instance.uiManager.EndLevelPannelAppearence();
+            GameManager.Instance.CheckGameEnd();
         }
 
     }
@@ -59,6 +66,6 @@ public class Ma_TurnManager : MonoBehaviour
         GameManager.Instance.patternManager.OnTurnEnd(true, true);
         GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
         GameManager.Instance.ResetMove();
-        GameManager.Instance.comboManager.RemoveAllMultipliers();
+        GameManager.Instance.comboManager.ResetMultiplier();
     }
 }
