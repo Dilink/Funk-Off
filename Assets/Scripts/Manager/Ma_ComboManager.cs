@@ -57,9 +57,8 @@ public class Ma_ComboManager : MonoBehaviour
                 funkMultiplier = Multipliers[3];
             else
                 funkMultiplier = 1;
-
-            //firstMult = true;
         }
+
         comboedPatternSpot = indexOfPatern;
 
         if (funkMultiplier < Multipliers[0])
