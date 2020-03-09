@@ -16,8 +16,10 @@ public class Sc_Pattern : ScriptableObject
     public Sprite sprite;
     public Matrix3x3Bool Matrix;
     public List<PatternModifier> modifiers;
+    public int danceToPlay=1;
     [ReadOnly]
     public string Name;
     [ReadOnly]
     public string Category;
 }
+

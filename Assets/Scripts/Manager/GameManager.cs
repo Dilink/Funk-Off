@@ -188,11 +188,14 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    public void OnPatternResolved(int indexInList, float otherMultiplier)
+    public void OnPatternResolved(int indexInList, float otherMultiplier, Sc_Pattern patternResolved)
     {
+
         //ANIM ET AUTRE FEEDBACKS DE COMPLETION
         foreach (Mb_PlayerController player in allPlayers)
-            player.anim.SetTrigger("Dance");
+        {
+            player.anim.SetTrigger("Dance" + patternResolved.danceToPlay);
+        }
 
         // VARIATION DU FUUUUUUUUUUUUNK
 
