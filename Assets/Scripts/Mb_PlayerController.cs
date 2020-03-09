@@ -246,7 +246,8 @@ public class Mb_PlayerController : MonoBehaviour
     {
         int z = Mathf.Clamp(currentTile.posZ + velZ, -1,1);
         int x = Mathf.Clamp(currentTile.posX + velX, - 1, 1); 
-        CheckFreeMovement(GameManager.Instance.GetTile(x, z));
+        if (Mathf.Abs(z)- Mathf.Abs(x) !=0)
+            CheckFreeMovement(GameManager.Instance.GetTile(x, z));
     }
 
     void Tp(Mb_Tile tileToTp)
