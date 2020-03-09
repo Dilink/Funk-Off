@@ -362,4 +362,5 @@ public class Ma_UiManager : MonoBehaviour
     {
         PatternsbarElements[emplacement].GetComponent<Mb_PatternBarElement>().PlayFX(fxIndex);
     }
+
 }
