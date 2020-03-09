@@ -112,11 +112,28 @@ public class Ma_UiManager : MonoBehaviour
 
     private IEnumerator RemovePatternAnimations(int emplacement)
     {
+        PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
+        PatternsbarMultipliersImg[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
+        PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
+        PatternsbarMultipliersTexts[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
+
         PatternsbarElements[emplacement].transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
         PatternsbarElements[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y + 75, 0.2f, false).SetEase(Ease.OutCirc);
+
         yield return new WaitForSeconds(0.2f);
+
+        //PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
+        //PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
+
         PatternsbarElements[emplacement].transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
-        yield return new WaitForSeconds(0.2f);
+
+        yield return new WaitForSeconds(0.3f);
+
+        PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
+        PatternsbarMultipliersImg[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
+        PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
+        PatternsbarMultipliersTexts[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
+
         PatternsbarElements[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y - 275, 0.25f, false).SetEase(Ease.InCubic);
     }
 
@@ -165,8 +182,8 @@ public class Ma_UiManager : MonoBehaviour
     {
         PatternsbarMultipliersImg[emplacement].transform.localScale = new Vector3(0, 0, 0);
         PatternsbarMultipliersTexts[emplacement].transform.localScale = new Vector3(0, 0, 0);
-        PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.4f).SetEase(Ease.OutBack);
-        PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.4f).SetEase(Ease.OutBack);
+        PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
+        PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
         PatternsbarMultipliersImg[emplacement].color = color;
         PatternsbarMultipliersTexts[emplacement].text = text;
         PatternsbarMultipliersTexts[emplacement].color = Color.black;
