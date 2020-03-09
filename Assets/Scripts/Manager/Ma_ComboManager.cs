@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ma_ComboManager : MonoBehaviour
 {
-    //public List<float> Multipliers = new List<float>(5);
+    public List<float> Multipliers = new List<float>(5);
     private float funkMultiplier = 1;
     int comboedPatternSpot=100;
 
@@ -70,9 +70,16 @@ public class Ma_ComboManager : MonoBehaviour
         GameManager.Instance.uiManager.RemoveAllMultiplierIcon();
         if (indexOfPatern == comboedPatternSpot)
         {
-         //   float newMultiplier = getFunkMultiplier() + 1;
-            
-            funkMultiplier += 1;
+            if (funkMultiplier < Multipliers[0])
+                funkMultiplier = Multipliers[0];
+            else if (funkMultiplier < Multipliers[1])
+                funkMultiplier = Multipliers[1];
+            else if (funkMultiplier < Multipliers[2])
+                funkMultiplier = Multipliers[2];
+            else if (funkMultiplier < Multipliers[3])
+                funkMultiplier = Multipliers[3];
+            else
+                funkMultiplier = 1;
         }
         comboedPatternSpot = indexOfPatern;
 
@@ -82,19 +89,19 @@ public class Ma_ComboManager : MonoBehaviour
                 GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.clear, "");
                 break;
             case 1:
-                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.green, "x2");
+                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "x" + Multipliers[0].ToString());
                 break;
             case 2:
-                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.yellow, "x3");
+                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "x" + Multipliers[1].ToString());
                 break;
             case 3:
-                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.red, "x4");
+                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "x" + Multipliers[2].ToString());
                 break;
             case 4:
-                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.magenta, "x5");
+                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "x" + Multipliers[3].ToString());
                 break;
             case 5:
-                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.magenta, "x5");
+                GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "x" + Multipliers[3].ToString());
                 break;
         }
     }
