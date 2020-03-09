@@ -38,7 +38,7 @@ public class GameManager : Singleton<GameManager>
         {
             _funkAmount = value;
             uiManager.UpdateFunkBar(funkAmount);
-            //CheckGameEnd();
+            CheckGameEnd();
         }
     }
 
@@ -188,15 +188,19 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    public void OnPatternResolved(int indexInList, float otherMultiplier)
+    public void OnPatternResolved(int indexInList, float otherMultiplier, Sc_Pattern patternResolved)
     {
+
         //ANIM ET AUTRE FEEDBACKS DE COMPLETION
         foreach (Mb_PlayerController player in allPlayers)
-            player.anim.SetTrigger("Dance");
+        {
+            player.anim.SetTrigger("Dance" + patternResolved.danceToPlay);
+        }
 
         // VARIATION DU FUUUUUUUUUUUUNK
 
-        FunkVariation(funkAddingPlayer * comboManager.getFunkMultiplier() * otherMultiplier);
+        Debug.Log("funkaddingPlayer " + funkAddingPlayer + " | multiplier value " + comboManager.getFunkMultiplier());
+        FunkVariation((funkAddingPlayer + comboManager.getFunkMultiplier()) * otherMultiplier);
          
 
         //DECOULEMENT DES PATTERNS
@@ -207,12 +211,8 @@ public class GameManager : Singleton<GameManager>
     //FUNK adding
     public void FunkVariation(float funkToAdd)
     {
-        float funkToAddTotal = funkToAdd * comboManager.getFunkMultiplier();
-        funkAmount += ( funkToAdd * comboManager.getFunkMultiplier());
-        funkAmount = Mathf.Clamp(funkAmount, 0, 1);
+        funkAmount = Mathf.Clamp(funkAmount + funkToAdd, 0, 1);
     }
-
- 
 
     //DAMAGES PART
     public void SetFunkDamages(float newDamages)
@@ -240,22 +240,24 @@ public class GameManager : Singleton<GameManager>
 
     public void CheckGameEnd()
     {
-        //Debug.LogError("funkAmount="+ funkAmount);
-        if (funkAmount <= 0.0f)
+        if (funkAmount <= 0.001f)
         {
+            _funkAmount = 0.0f;
             uiManager.DisplayEndgameScreen(false);
         }
-        else if (funkAmount >= 1.0f)
+        else if (funkAmount > 0.999f)
         {
             currentRoundCountFinished += 1;
             _funkAmount = 0.5f;
-            //Debug.LogError("OnNextRound 1");
-            turnManager.OnNextRound();
-            //Debug.LogError("OnNextRound");
 
-            if (currentRoundCountFinished >= levelConfig.roundCount)
+            // If there is another round
+            if (currentRoundCountFinished < levelConfig.rounds.Count)
             {
-                //Debug.LogError("Finished");
+                turnManager.OnNextRound();
+            }
+            else
+            {
+                _funkAmount = 1.0f;
                 uiManager.DisplayEndgameScreen(true);
             }
         }

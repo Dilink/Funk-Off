@@ -9,12 +9,20 @@ using Sirenix.OdinInspector;
 
 public class Mb_Tile : MonoBehaviour
 {
+
+    [Header("Movement")]
     public int posX=0, posZ=0;
     public bool avaible = true;
     [SerializeField] public Mb_PlayerController playerOnTile;
     public Modifier tileProperties;
+
+    [Header("Feedback")]
+    [SerializeField] GameObject feedBackWallUp;
+    [SerializeField] GameObject feedBackWallRight;
+
     private MeshRenderer meshRenderer;
     private Material tileMaterial;
+    private Material baseMaterial;
 
     private void Awake()
     {
@@ -26,6 +34,7 @@ public class Mb_Tile : MonoBehaviour
 
         //creer une instance du materiau pour pouvoir le set comme on veut pendant la game
         meshRenderer = GetComponent<MeshRenderer>();
+        baseMaterial = meshRenderer.material;
         tileMaterial = new Material(meshRenderer.material);
 
 
@@ -49,6 +58,7 @@ public class Mb_Tile : MonoBehaviour
         {
             SetTileMaterial(tileMaterial);
             tileProperties.type = TileModifier.Damaging;
+            SetTileMaterial(GameManager.Instance.gridFeedbackRules.damagingMaterial);
         }
 
         else if ((newTileType & TileModifier.Ice) == TileModifier.Ice)
@@ -62,14 +72,56 @@ public class Mb_Tile : MonoBehaviour
         {
             tileProperties.cost = 2;
             tileProperties.type = TileModifier.Slow;
-            SetTileMaterial(tileMaterial);
+            SetTileMaterial(GameManager.Instance.gridFeedbackRules.slowMaterial);
         }
 
-        else if (newTileType==0)
+        else if (newTileType == 0)
         {
             tileProperties.type = 0;
-            SetTileMaterial(tileMaterial);
+            SetTileMaterial(baseMaterial);
         }
+
+        if ((newTileType & TileModifier.WalledRight) == TileModifier.WalledRight)
+        {
+            tileProperties.type = (tileProperties.type| TileModifier.WalledRight);
+        }
+
+         if ((newTileType & TileModifier.WalledLeft) == TileModifier.WalledLeft)
+        {
+            tileProperties.type = (tileProperties.type | TileModifier.WalledLeft);
+        }
+
+         if ((newTileType & TileModifier.WalledUp) == TileModifier.WalledUp)
+        {
+            print("WalledUp");
+            tileProperties.type  = (tileProperties.type | TileModifier.WalledUp);
+        }
+
+         if ((newTileType & TileModifier.WalledDown) == TileModifier.WalledDown)
+        {
+            tileProperties.type = (tileProperties.type | TileModifier.WalledDown);
+        }
+
+
+        UpdateWallFeedBack();
+    }
+
+    void UpdateWallFeedBack()
+    {
+        
+        feedBackWallUp.SetActive(false);
+        feedBackWallRight.SetActive(false);
+
+        if ((tileProperties.type & TileModifier.WalledUp) == TileModifier.WalledUp)
+            {
+                feedBackWallUp.SetActive(true);
+            }
+        
+        if ((tileProperties.type & TileModifier.WalledRight) == TileModifier.WalledRight ) 
+            {
+                feedBackWallRight.SetActive(true);
+            }
+        
     }
 
     void SetTileMaterial(Material newMaterial)
@@ -81,7 +133,7 @@ public class Mb_Tile : MonoBehaviour
     {
         tileProperties.type = 0;
         tileProperties.cost = 1;
-        SetTileMaterial(GameManager.Instance.gridFeedbackRules.baseTileMaterial);
+        SetTileMaterial(baseMaterial);
     }
 
     public void OnMove(bool fromTP)

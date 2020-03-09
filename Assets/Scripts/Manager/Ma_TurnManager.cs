@@ -35,7 +35,7 @@ public class Ma_TurnManager : MonoBehaviour
     {
         GameManager.Instance.comboManager.ClearAllMultiplierUi();
         // Pass to the next turn
-        if (CurrentTurn <= MaxTurn)
+        if (CurrentTurn < MaxTurn)
         {
             CurrentTurn++;
 
@@ -53,16 +53,13 @@ public class Ma_TurnManager : MonoBehaviour
             //AI PART A CHANGER
             GameManager.Instance.aiManager.ChoosePattern();
         }
-        else // End the level
-        {
-            GameManager.Instance.CheckGameEnd();
-        }
 
     }
 
     public void OnNextRound() {
         CurrentTurn = 1;
         MaxTurn = GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].turnLimit;
+
         GameManager.Instance.patternManager.OnTurnEnd(true, true);
         GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
         GameManager.Instance.ResetMove();
