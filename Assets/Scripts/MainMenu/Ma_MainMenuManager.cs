@@ -47,7 +47,9 @@ public class Ma_MainMenuManager : MonoBehaviour
     public RectTransform characterEmplacementOne;
     public RectTransform characterEmplacementTwo;
     public RectTransform characterEmplacementThree;
-    public TextMeshProUGUI totalMovement;
+    public TMP_Text totalMovementText;
+
+    public int totalMovement;
 
     [Header("Currency bar elements")]
     public TMP_Text currencyText;
@@ -55,7 +57,6 @@ public class Ma_MainMenuManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        totalMovement = GetComponent<TextMeshProUGUI>();
     }
 
     private void Start()
@@ -283,12 +284,11 @@ public class Ma_MainMenuManager : MonoBehaviour
     // -------------
     #region teambuilder
     // Add the card to the selected characters zone
-    public void AddCardToSelectedEmplacements(GameObject card, int emplacement, int move)
+    public void AddCardToSelectedEmplacements(GameObject card, int emplacement)
     {
         card.transform.DOMove(selectedCharactersEmplacements[emplacement].position, 0.2f, false);
         selectedEmplacementsStatus[emplacement] = true;
         selectedEmplacementsGameobjects[emplacement] = card;
-        totalMovement.text = move.ToString();
     }
 
     // Remove the card to the selected characters zone
@@ -302,6 +302,18 @@ public class Ma_MainMenuManager : MonoBehaviour
                 selectedEmplacementsGameobjects[i] = null;
             }
         }
+
+
+    }
+
+    public void UpdateMovementText( int move, bool sign)
+    {
+        if (sign)
+            totalMovement += move;
+        else
+            totalMovement -= move;
+
+        totalMovementText.text = totalMovement.ToString();
     }
 
     // Return all the scriptables objects of the cards in selected characters zone
@@ -319,6 +331,18 @@ public class Ma_MainMenuManager : MonoBehaviour
         for(int i = 0; i < selectedEmplacementsStatus.Length; i++)
         {
             if (!selectedEmplacementsStatus[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool checkForCard(GameObject card)
+    {
+        for (int i = 0; i< selectedEmplacementsGameobjects.Length; i++)
+        {
+            if(selectedEmplacementsGameobjects[i] == card)
             {
                 return true;
             }
