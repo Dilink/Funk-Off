@@ -73,7 +73,7 @@ Shader "S_clock"
 }
 /*ASEBEGIN
 Version=16100
-0;0;1920;1019;1480.224;379.2185;1.35192;True;True
+0;0;1920;1019;1207.003;367.7854;1.05192;True;True
 Node;AmplifyShaderEditor.SamplerNode;2;-839.0137,-51.48548;Float;True;Property;_emissive;emissive;1;0;Create;True;0;0;False;0;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;4;-539.2875,-195.3574;Float;False;Property;_Intensity_emissive;Intensity_emissive;2;0;Create;True;0;0;False;0;1;1;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;1;-754.4626,262.2288;Float;True;Property;_texture;texture;0;0;Create;True;0;0;False;0;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -84,4 +84,4 @@ WireConnection;3;1;2;0
 WireConnection;0;2;3;0
 WireConnection;0;13;1;0
 ASEEND*/
-//CHKSM=534D92427B601961297487594985FC06D5203353
+//CHKSM=591F39EC0D69F62E1DAD41C48888932FFFCFC0CE
