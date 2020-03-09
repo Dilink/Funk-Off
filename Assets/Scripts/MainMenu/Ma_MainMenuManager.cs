@@ -62,6 +62,33 @@ public class Ma_MainMenuManager : MonoBehaviour
     private void Start()
     {
         currentScreen = MainMenuRect;
+
+        if (!PlayerPrefs.HasKey("00_JoeDinner"))
+        {
+            PlayerPrefs.SetInt("00_JoeDinner", 0);
+        }
+        else
+        {
+            GradeLevel(0, PlayerPrefs.GetInt("00_JoeDinner"));
+        }
+
+        if (!PlayerPrefs.HasKey("01_StarBowling"))
+        {
+            PlayerPrefs.SetInt("01_StarBowling", 0);
+        }
+        else
+        {
+            GradeLevel(0, PlayerPrefs.GetInt("01_StarBowling"));
+        }
+
+        if (!PlayerPrefs.HasKey("02_BrunoOffice"))
+        {
+            PlayerPrefs.SetInt("02_BrunoOffice", 0);
+        }
+        else
+        {
+            GradeLevel(0, PlayerPrefs.GetInt("02_BrunoOffice"));
+        }
     }
 
     // -------------
@@ -224,27 +251,44 @@ public class Ma_MainMenuManager : MonoBehaviour
     }
     public void GradeLevel (int level, int grade)
     {
-
-        if (level == 2)
+        // Joe's dinner
+        if (level == 0)
         {
-            for (int i = 0; i <= grade; i++)
+            Debug.Log("level one grade setting");
+            if (PlayerPrefs.GetInt("00_JoeDinner") <= grade)
             {
-                if (level3GradesGameobjects[i].activeInHierarchy)
-                {
-                    level3GradesGameobjects[i].SetActive(false);
-                    
-                }
+                Debug.Log("level one grade superior | continue");
+                PlayerPrefs.SetInt("00_JoeDinner", grade);
+            }
+            else
+            {
+                Debug.Log("level one grade inferior | return");
+                return;
+            }
 
-                level3GradesGameobjects[grade].SetActive(true);
+            for (int i = 0; i < level1GradesGameobjects.Length; i++)
+            {
+
+                level1GradesGameobjects[i].SetActive(false);
 
             }
 
-            
+            level1GradesGameobjects[grade].SetActive(true);
         }
+
+        // Star Bowling
         if (level == 1)
         {
+            if (PlayerPrefs.GetInt("01_StarBowling") < grade)
+            {
+                PlayerPrefs.SetInt("01_StarBowling", grade);
+            }
+            else
+            {
+                return;
+            }
 
-            for (int i = 0; i <= grade; i++)
+            for (int i = 0; i < grade; i++)
             {
                 if (level2GradesGameobjects[i].activeInHierarchy)
                 {
@@ -253,24 +297,32 @@ public class Ma_MainMenuManager : MonoBehaviour
                 }
 
                 level2GradesGameobjects[grade].SetActive(true);
-            }
-            
+            } 
         }
 
-        if (level == 0)
+        // Bruno's Office
+        if (level == 2)
         {
-            for (int i = 0; i <= 4; i++)
+            if (PlayerPrefs.GetInt("02_BrunoOffice") < grade)
             {
-               
-                if (level1GradesGameobjects[i].activeInHierarchy)
-                {
-                    level1GradesGameobjects[i].SetActive(false);
-                    
-                }
-                    level1GradesGameobjects[grade].SetActive(true);
+                PlayerPrefs.SetInt("02_BrunoOffice", grade);
             }
-            
-        }
+            else
+            {
+                return;
+            }
+
+            for (int i = 0; i <= grade; i++)
+            {
+                if (level3GradesGameobjects[i].activeInHierarchy)
+                {
+                    level3GradesGameobjects[i].SetActive(false);
+
+                }
+
+                level3GradesGameobjects[grade].SetActive(true);
+            }
+        }    
     }
     #endregion
     // -------------
