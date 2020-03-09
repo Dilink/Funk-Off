@@ -18,9 +18,8 @@ Shader "S_CHARA"
 		_HIGH_LIGHT_LVL("HIGH_LIGHT_LVL", Float) = 0.62
 		_OPACITY_SHADOW("OPACITY_SHADOW", Float) = 0.1
 		[Toggle(_EMISSIVE_ON)] _EMISSIVE("EMISSIVE", Float) = 0
-		_OUTLINE("OUTLINE", Float) = 0.05
 		[Toggle(_TRAME_OU_PAS_ON)] _TRAME_OU_PAS("TRAME_OU_PAS", Float) = 0
-		[Toggle]_SWITCH_OUTLINE("SWITCH_OUTLINE", Float) = 0
+		[Toggle]_SWITCH_OUTLINE("SWITCH_OUTLINE", Float) = 1
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 		[HideInInspector] __dirty( "", Int ) = 1
 	}
@@ -35,7 +34,7 @@ Shader "S_CHARA"
 		void outlineVertexDataFunc( inout appdata_full v, out Input o )
 		{
 			UNITY_INITIALIZE_OUTPUT( Input, o );
-			float outlineVar = lerp(_OUTLINE,0.0,_SWITCH_OUTLINE);
+			float outlineVar = lerp(OUTLINE,0.0,_SWITCH_OUTLINE);
 			v.vertex.xyz += ( v.normal * outlineVar );
 		}
 		inline half4 LightingOutline( SurfaceOutput s, half3 lightDir, half atten ) { return half4 ( 0,0,0, s.Alpha); }
@@ -93,7 +92,7 @@ Shader "S_CHARA"
 		uniform float4 _HIGHLIGHTCOLOR;
 		uniform float _HIGH_LIGHT_LVL;
 		uniform float _SWITCH_OUTLINE;
-		uniform float _OUTLINE;
+		uniform float OUTLINE;
 
 		void vertexDataFunc( inout appdata_full v, out Input o )
 		{
@@ -252,7 +251,7 @@ Node;AmplifyShaderEditor.WorldSpaceLightDirHlpNode;2;-4935.844,771.8527;Float;Fa
 Node;AmplifyShaderEditor.DotProductOpNode;3;-4613.739,717.2114;Float;True;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.OneMinusNode;5;-4083.753,570.6733;Float;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;4;-4106.341,243.4011;Float;True;Property;_TEXTURE_TRAME;TEXTURE_TRAME;0;0;Create;True;0;0;False;0;e4e8d406a0c61a747add86208b257ef4;e4e8d406a0c61a747add86208b257ef4;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;7;-4070.265,896.6142;Float;False;Property;_SHADOW_FULL;SHADOW_FULL;6;0;Create;True;0;0;False;0;-0.8;-0.8;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;7;-4070.265,896.6142;Float;False;Property;_SHADOW_FULL;SHADOW_FULL;6;0;Create;True;0;0;False;0;-0.8;0.2;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;6;-3752.642,555.8102;Float;True;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.OneMinusNode;9;-3525.902,562.0342;Float;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.StepOpNode;8;-3891.563,884.5164;Float;True;2;0;FLOAT;-0.8;False;1;FLOAT;0;False;1;FLOAT;0
