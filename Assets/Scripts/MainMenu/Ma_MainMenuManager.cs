@@ -30,6 +30,16 @@ public class Ma_MainMenuManager : MonoBehaviour
 
     [Header("Levels elements")]
 
+    public GameObject[] levelPlayButtonsGameobjects = new GameObject[3];
+    public GameObject[] level1GradesGameobjects = new GameObject[5]; // image du grade
+    public GameObject[] level2GradesGameobjects = new GameObject[5];
+    public GameObject[] level3GradesGameobjects = new GameObject[5];
+    public int currentLevel = 1;
+    public int levelDone;
+    public int gradeLevelDone;
+
+
+
     [Header("Items elements")]
 
     [Header("Team Builder elements")]
@@ -37,6 +47,9 @@ public class Ma_MainMenuManager : MonoBehaviour
     public RectTransform characterEmplacementOne;
     public RectTransform characterEmplacementTwo;
     public RectTransform characterEmplacementThree;
+    public TMP_Text totalMovementText;
+
+    public int totalMovement;
 
     [Header("Currency bar elements")]
     public TMP_Text currencyText;
@@ -187,6 +200,78 @@ public class Ma_MainMenuManager : MonoBehaviour
     // -------------
     #region levels
 
+    public void CheckLevelValidation(int levelClick)
+    {
+        //Check si on a débloqué le niveau que lequel on clique et si l'on a pas déja cliqué dessus
+        if(currentLevel >= levelClick && levelPlayButtonsGameobjects[levelClick].activeInHierarchy == false)
+        {
+            for (int i = 0; i < levelPlayButtonsGameobjects.Length; i++)
+            {
+                if (levelPlayButtonsGameobjects[i].activeInHierarchy)
+                {
+                    levelPlayButtonsGameobjects[i].SetActive(false);
+                    
+                }
+            }
+
+            levelPlayButtonsGameobjects[levelClick].SetActive(true);
+            
+        }
+    }
+    public void LevelDoneBtn()
+    {
+        GradeLevel(levelDone, gradeLevelDone);
+    }
+    public void GradeLevel (int level, int grade)
+    {
+
+        if (level == 2)
+        {
+            for (int i = 0; i <= grade; i++)
+            {
+                if (level3GradesGameobjects[i].activeInHierarchy)
+                {
+                    level3GradesGameobjects[i].SetActive(false);
+                    
+                }
+
+                level3GradesGameobjects[grade].SetActive(true);
+
+            }
+
+            
+        }
+        if (level == 1)
+        {
+
+            for (int i = 0; i <= grade; i++)
+            {
+                if (level2GradesGameobjects[i].activeInHierarchy)
+                {
+                    level2GradesGameobjects[i].SetActive(false);
+                    
+                }
+
+                level2GradesGameobjects[grade].SetActive(true);
+            }
+            
+        }
+
+        if (level == 0)
+        {
+            for (int i = 0; i <= 4; i++)
+            {
+               
+                if (level1GradesGameobjects[i].activeInHierarchy)
+                {
+                    level1GradesGameobjects[i].SetActive(false);
+                    
+                }
+                    level1GradesGameobjects[grade].SetActive(true);
+            }
+            
+        }
+    }
     #endregion
     // -------------
     // ITEMS UPGRADE
@@ -217,6 +302,18 @@ public class Ma_MainMenuManager : MonoBehaviour
                 selectedEmplacementsGameobjects[i] = null;
             }
         }
+
+
+    }
+
+    public void UpdateMovementText( int move, bool sign)
+    {
+        if (sign)
+            totalMovement += move;
+        else
+            totalMovement -= move;
+
+        totalMovementText.text = totalMovement.ToString();
     }
 
     // Return all the scriptables objects of the cards in selected characters zone
@@ -234,6 +331,18 @@ public class Ma_MainMenuManager : MonoBehaviour
         for(int i = 0; i < selectedEmplacementsStatus.Length; i++)
         {
             if (!selectedEmplacementsStatus[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool checkForCard(GameObject card)
+    {
+        for (int i = 0; i< selectedEmplacementsGameobjects.Length; i++)
+        {
+            if(selectedEmplacementsGameobjects[i] == card)
             {
                 return true;
             }

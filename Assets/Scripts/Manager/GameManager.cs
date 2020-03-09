@@ -38,7 +38,7 @@ public class GameManager : Singleton<GameManager>
         {
             _funkAmount = value;
             uiManager.UpdateFunkBar(funkAmount);
-            //CheckGameEnd();
+            CheckGameEnd();
         }
     }
 
@@ -208,9 +208,7 @@ public class GameManager : Singleton<GameManager>
     //FUNK adding
     public void FunkVariation(float funkToAdd)
     {
-        float funkToAddTotal = funkToAdd * comboManager.getFunkMultiplier();
-        funkAmount += ( funkToAdd * comboManager.getFunkMultiplier());
-        funkAmount = Mathf.Clamp(funkAmount, 0, 1);
+        funkAmount = Mathf.Clamp(funkAmount + funkToAdd, 0, 1);
     }
 
     //DAMAGES PART
@@ -239,22 +237,24 @@ public class GameManager : Singleton<GameManager>
 
     public void CheckGameEnd()
     {
-        //Debug.LogError("funkAmount="+ funkAmount);
-        if (funkAmount <= 0.0f)
+        if (funkAmount <= 0.001f)
         {
+            _funkAmount = 0.0f;
             uiManager.DisplayEndgameScreen(false);
         }
-        else if (funkAmount >= 1.0f)
+        else if (funkAmount > 0.999f)
         {
             currentRoundCountFinished += 1;
             _funkAmount = 0.5f;
-            //Debug.LogError("OnNextRound 1");
-            turnManager.OnNextRound();
-            //Debug.LogError("OnNextRound");
 
-            if (currentRoundCountFinished >= levelConfig.roundCount)
+            // If there is another round
+            if (currentRoundCountFinished < levelConfig.rounds.Count)
             {
-                //Debug.LogError("Finished");
+                turnManager.OnNextRound();
+            }
+            else
+            {
+                _funkAmount = 1.0f;
                 uiManager.DisplayEndgameScreen(true);
             }
         }
