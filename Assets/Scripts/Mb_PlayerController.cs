@@ -243,7 +243,11 @@ public class Mb_PlayerController : MonoBehaviour
         int z = Mathf.Clamp(currentTile.posZ + velZ, -1,1);
         int x = Mathf.Clamp(currentTile.posX + velX, - 1, 1); 
         if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) != 0)
-            CheckFreeMovement(GameManager.Instance.GetTile(x, z));
+        {
+            (Mathf.Abs(z) - Mathf.Abs(x) != 0)
+                  CheckFreeMovement(GameManager.Instance.GetTile(x, z));
+        }
+          
 
         else if (Mathf.Abs(z)- Mathf.Abs(x) !=0)
             CheckFreeMovement(GameManager.Instance.GetTile(x, z));
