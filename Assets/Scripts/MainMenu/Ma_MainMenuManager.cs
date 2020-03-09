@@ -47,6 +47,7 @@ public class Ma_MainMenuManager : MonoBehaviour
     public RectTransform characterEmplacementOne;
     public RectTransform characterEmplacementTwo;
     public RectTransform characterEmplacementThree;
+    public TextMeshProUGUI totalMovement;
 
     [Header("Currency bar elements")]
     public TMP_Text currencyText;
@@ -54,6 +55,7 @@ public class Ma_MainMenuManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        totalMovement = GetComponent<TextMeshProUGUI>();
     }
 
     private void Start()
@@ -281,11 +283,12 @@ public class Ma_MainMenuManager : MonoBehaviour
     // -------------
     #region teambuilder
     // Add the card to the selected characters zone
-    public void AddCardToSelectedEmplacements(GameObject card, int emplacement)
+    public void AddCardToSelectedEmplacements(GameObject card, int emplacement, int move)
     {
         card.transform.DOMove(selectedCharactersEmplacements[emplacement].position, 0.2f, false);
         selectedEmplacementsStatus[emplacement] = true;
         selectedEmplacementsGameobjects[emplacement] = card;
+        totalMovement.text = move.ToString();
     }
 
     // Remove the card to the selected characters zone
