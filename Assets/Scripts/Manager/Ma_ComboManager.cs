@@ -68,19 +68,19 @@ public class Ma_ComboManager : MonoBehaviour
         }
         else if(funkMultiplier < Multipliers[1])
         {
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Multipliers[0].ToString());
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[0].ToString());
         }
         else if (funkMultiplier < Multipliers[2])
         {
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Multipliers[1].ToString());
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[1].ToString());
         }
         else if (funkMultiplier < Multipliers[3])
         {
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Multipliers[2].ToString());
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[2].ToString());
         }
         else if (funkMultiplier < 100)
         {
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Multipliers[3].ToString());
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[3].ToString());
         }
         else
         {
