@@ -83,10 +83,13 @@ public class Mb_PlayerController : MonoBehaviour
         }
         else
         {
-            if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) == CharacterSkills.Swift)
+            if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) == CharacterSkills.Swift && 
+                distanceBetweenTilesX <= 1 &&
+                distanceBetweenTilesZ <= 1)
             {
                 if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
-                distanceBetweenTilesX == 1 && distanceBetweenTilesZ == 1 && 
+                distanceBetweenTilesX <= 1 && 
+                distanceBetweenTilesZ <= 1 &&
                 tileToMoveTo.avaible == true &&
                 GameManager.Instance.canAct == true &&
                 IsNotWalled(tileToMoveTo, directionX, directionZ))

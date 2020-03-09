@@ -208,8 +208,9 @@ public class GameManager : Singleton<GameManager>
     //FUNK adding
     public void FunkVariation(float funkToAdd)
     {
-        float funkToAddTotal = funkToAdd * comboManager.getFunkMultiplier();
-        funkAmount += ( funkToAdd * comboManager.getFunkMultiplier());
+        //float funkToAddTotal = funkToAdd * comboManager.getFunkMultiplier();
+        //funkAmount += ( funkToAdd * comboManager.getFunkMultiplier());
+        funkAmount += ( funkToAdd );
         funkAmount = Mathf.Clamp(funkAmount, 0, 1);
     }
 
