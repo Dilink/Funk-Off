@@ -188,11 +188,11 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    public void OnPatternResolved(int indexInList, float otherMultiplier)
+    public void OnPatternResolved(int indexInList, float otherMultiplier,int danceToTrigger)
     {
         //ANIM ET AUTRE FEEDBACKS DE COMPLETION
         foreach (Mb_PlayerController player in allPlayers)
-            player.anim.SetTrigger("Dance");
+            player.anim.SetTrigger("Dance"+ danceToTrigger);
 
         // VARIATION DU FUUUUUUUUUUUUNK
 
@@ -265,5 +265,7 @@ public class GameManager : Singleton<GameManager>
     {
         allPlayers = GameObject.FindObjectsOfType<Mb_PlayerController>();
         allTiles = GameObject.FindObjectsOfType<Mb_Tile>();
+
+        GameObject.Find("MainUICanvas").GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
     }
 }
