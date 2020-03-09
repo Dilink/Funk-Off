@@ -41,8 +41,7 @@ public class Ma_ComboManager : MonoBehaviour
     }
 
 
-    public void
-        OnPatternAccomplished(int indexOfPatern)
+    public void OnNewTurn(int indexOfPatern)
     {
         GameManager.Instance.uiManager.RemoveAllMultiplierIcon();
         if (indexOfPatern == comboedPatternSpot)
@@ -57,9 +56,8 @@ public class Ma_ComboManager : MonoBehaviour
                 funkMultiplier = Multipliers[3];
             else
                 funkMultiplier = 1;
-
-            //firstMult = true;
         }
+
         comboedPatternSpot = indexOfPatern;
 
         if (funkMultiplier < Multipliers[0])
@@ -86,5 +84,51 @@ public class Ma_ComboManager : MonoBehaviour
         {
             GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "error");
         }
+    }
+
+    public void
+        OnPatternAccomplished(int indexOfPatern)
+    {/*
+        GameManager.Instance.uiManager.RemoveAllMultiplierIcon();
+        if (indexOfPatern == comboedPatternSpot)
+        {
+            if (funkMultiplier < Multipliers[0])
+                funkMultiplier = Multipliers[0];
+            else if (funkMultiplier < Multipliers[1])
+                funkMultiplier = Multipliers[1];
+            else if (funkMultiplier < Multipliers[2])
+                funkMultiplier = Multipliers[2];
+            else if (funkMultiplier < Multipliers[3])
+                funkMultiplier = Multipliers[3];
+            else
+                funkMultiplier = 1;
+        }
+
+        comboedPatternSpot = indexOfPatern;
+
+        if (funkMultiplier < Multipliers[0])
+        {
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[0].ToString());
+        }
+        else if (funkMultiplier < Multipliers[1])
+        {
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[1].ToString());
+        }
+        else if (funkMultiplier < Multipliers[2])
+        {
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[2].ToString());
+        }
+        else if (funkMultiplier < Multipliers[3])
+        {
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[3].ToString());
+        }
+        else if (funkMultiplier < 100)
+        {
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[4].ToString());
+        }
+        else
+        {
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "error");
+        }*/
     }
 }

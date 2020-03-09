@@ -43,7 +43,4 @@ public class Sc_LevelConfig : ScriptableObject
     public int minPatternsToCancelAttack = 1;
     [Range(1, 5)]
     public int maxPatternsToCancelAttack = 3;
-
-    [Min(1)]
-    public int roundCount = 1;
 }

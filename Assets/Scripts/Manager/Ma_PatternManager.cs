@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Sirenix.OdinInspector;
+using System.Collections;
 
 public class Ma_PatternManager : MonoBehaviour
 {
@@ -298,27 +299,41 @@ public class Ma_PatternManager : MonoBehaviour
 
     public void RotatePattern(int indexInList)
     {
+        StartCoroutine(RotatePatternCoroutine(indexInList));
+    }
+
+    private IEnumerator RotatePatternCoroutine(int indexInList)
+    {
+        GameManager.Instance.DisableActing();
         currentPatternsList.RemoveAt(indexInList);
         currentPatternsList.Add(futurePattern);
-
         UpdateCancelMarker(indexInList);
 
-        for (int i = indexInList+1; i < currentPatternsList.Count()+1; i++)
+        GameManager.Instance.uiManager.RemovePattern(indexInList);
+
+        yield return new WaitForSeconds(0.6f);
+
+        for (int i = indexInList + 1; i < currentPatternsList.Count() + 1; i++)
         {
             GameManager.Instance.uiManager.MovePatterns(i);
+            yield return new WaitForSeconds(0.05f);
         }
+
+        yield return new WaitForSeconds(0.3f);
+
+        GameManager.Instance.uiManager.RespawnPattern(indexInList);
 
         if (patternsForCancellation.Contains(currentPatternsList[indexInList]))
         {
             patternsForCancellation.Remove(currentPatternsList[indexInList]);
         }
 
-        GameManager.Instance.uiManager.RemovePattern(indexInList);
-
         //futurePattern = GetRandomPatternDifferentOfCurrents();
         futurePattern = PickPattern();
         GameManager.Instance.uiManager.UpdatePatternsBarIcon(currentPatternsList.Count(), futurePattern);
 
+        GameManager.Instance.comboManager.OnNewTurn(indexInList);
+        GameManager.Instance.EnableActing();
     }
 
     private Sc_Pattern PickPattern(List<PatternCategory> categories =null, List<Sc_Pattern> patterns=null)
