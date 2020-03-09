@@ -332,6 +332,7 @@ public class Ma_PatternManager : MonoBehaviour
         futurePattern = PickPattern();
         GameManager.Instance.uiManager.UpdatePatternsBarIcon(currentPatternsList.Count(), futurePattern);
 
+        GameManager.Instance.comboManager.OnNewTurn(indexInList);
         GameManager.Instance.EnableActing();
     }
 
