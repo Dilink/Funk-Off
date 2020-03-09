@@ -105,13 +105,28 @@ public class Ma_UiManager : MonoBehaviour
     // PATTERNSBAR FUNCTIONS
     // ---------------------
 
+    public void RemovePattern(int emplacement)
+    {
+        StartCoroutine(RemovePatternAnimations(emplacement));
+    }
+
+    private IEnumerator RemovePatternAnimations(int emplacement)
+    {
+        PatternsbarElements[emplacement].transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
+        PatternsbarElements[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y + 75, 0.2f, false).SetEase(Ease.OutCirc);
+        yield return new WaitForSeconds(0.2f);
+        PatternsbarElements[emplacement].transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
+        yield return new WaitForSeconds(0.2f);
+        PatternsbarElements[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y - 275, 0.25f, false).SetEase(Ease.InCubic);
+    }
+
     public void MovePatterns(int emplacement)
     {
         // Déplace le pattern concerné d'une case vers la gauche
         if(PatternsbarElements[emplacement].anchoredPosition.x >= -350)
         {
             // Déplacement du pattern
-            PatternsbarElements[emplacement].transform.DOLocalMoveX(PatternsbarElements[emplacement].anchoredPosition.x - 200, 0.4f, false);
+            PatternsbarElements[emplacement].transform.DOLocalMoveX(PatternsbarElements[emplacement].anchoredPosition.x - 200, 0.4f, false).SetEase(Ease.InOutQuart);
 
             // Couleur du background et scale, pour qu'il se reset après avoir été sur la case grise
             PatternsbarElements[emplacement].localScale = new Vector3(1, 1, 1);
@@ -119,18 +134,18 @@ public class Ma_UiManager : MonoBehaviour
         }
         else // Si le pattern concerné est le plus à gauche, le renvoit sur la case grise
         {
-            RemovePattern(emplacement);
+            RespawnPattern(emplacement);
         }
     }
 
-    // Remet le pattern concerné sur la case grise
-    public void RemovePattern(int emplacement)
+    public void RespawnPattern(int emplacement)
     {
         // Remet le pattern sur la case grise
         PatternsbarElements[emplacement].anchoredPosition = new Vector2(600, 0);
 
         // Change le background et le scale pour qu'il s'adapte à la case grise 
-        PatternsbarElements[emplacement].localScale = new Vector3(0.8f, 0.8f, 1);
+        PatternsbarElements[emplacement].localScale = new Vector3(0, 0, 0);
+        PatternsbarElements[emplacement].transform.DOScale(new Vector3(0.8f, 0.8f, 0.8f), 0.4f).SetEase(Ease.OutBack);
         PatternsbarElements[emplacement].GetChild(0).GetComponent<Image>().color = Color.grey;
 
         // Réarrange la liste pour qu'elle match le nouvel ordre visuel
@@ -148,6 +163,10 @@ public class Ma_UiManager : MonoBehaviour
     // Update the multipliers visuals
     public void UpdateMultiplierIcon(int emplacement, Color color, string text)
     {
+        PatternsbarMultipliersImg[emplacement].transform.localScale = new Vector3(0, 0, 0);
+        PatternsbarMultipliersTexts[emplacement].transform.localScale = new Vector3(0, 0, 0);
+        PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.4f).SetEase(Ease.OutBack);
+        PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.4f).SetEase(Ease.OutBack);
         PatternsbarMultipliersImg[emplacement].color = color;
         PatternsbarMultipliersTexts[emplacement].text = text;
         PatternsbarMultipliersTexts[emplacement].color = Color.black;
