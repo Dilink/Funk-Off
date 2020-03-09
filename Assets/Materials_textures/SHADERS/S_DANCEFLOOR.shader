@@ -85,7 +85,7 @@ Shader "Shader_dancefloor"
 }
 /*ASEBEGIN
 Version=16100
-0;0;1920;1019;550.3152;233.4845;1.100608;True;True
+0;0;1920;1019;2531.57;1302.322;2.802977;True;True
 Node;AmplifyShaderEditor.TextureCoordinatesNode;1;-1619.286,-509.258;Float;False;1;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.ColorNode;20;-1241.569,-720.104;Float;False;Property;_color_pattern_global;color_pattern_global;3;0;Create;True;0;0;False;0;1,1,1,1;1,1,1,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode;4;-1366.62,-510.6622;Float;True;Property;_Image_alltiles;Image_alltiles;0;0;Create;True;0;0;False;0;4f9b9ea0ec1a1504ca4296b9f6e9076b;4f9b9ea0ec1a1504ca4296b9f6e9076b;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -127,4 +127,4 @@ WireConnection;13;1;15;0
 WireConnection;13;2;14;0
 WireConnection;0;2;13;0
 ASEEND*/
-//CHKSM=C65CB221A52A26BC53E9719FF840447618F218A7
+//CHKSM=70868612B70300D6E383C6E5D6CE326707846FF5

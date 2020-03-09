@@ -101,7 +101,7 @@ Shader "S_GODRAY"
 }
 /*ASEBEGIN
 Version=16100
-0;0;1920;1019;1394.073;461.7147;1;True;True
+0;0;1920;1019;1262.984;423.0345;1;True;True
 Node;AmplifyShaderEditor.ColorNode;3;-1013.196,-220.3514;Float;False;Constant;_Color0;Color 0;1;0;Create;True;0;0;False;0;0.972549,0.4976859,0.0509804,1;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;5;-930.6289,9.67337;Float;False;Constant;_Float1;Float 1;1;0;Create;True;0;0;False;0;0.82;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.ColorNode;8;-312.0127,-335.9046;Float;False;Constant;_Color1;Color 1;0;0;Create;True;0;0;False;0;1,0,0,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -114,4 +114,4 @@ WireConnection;0;0;8;0
 WireConnection;0;2;4;0
 WireConnection;0;9;2;0
 ASEEND*/
-//CHKSM=CB07E8FB00B65DFAB2B43B012F7D29DE6FB3EC61
+//CHKSM=41AF227778BEC6FEC2C4EF7CE2F0DFED4C0D27F2
