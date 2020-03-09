@@ -7,11 +7,17 @@ using DG.Tweening;
 public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragHandler
 {
     public Sc_CharacterParameters characterParameters;
-    private Vector3 originalPosition;
+    private RectTransform RTransfom;
+    public Vector3 originalPosition;
 
-    private void Awake()
+    private bool firstDrag;
+
+    private void Start()
     {
         SetOriginalPosition();
+        //Debug.Log("og position set");
+
+        RTransfom = GetComponent<RectTransform>();
     }
 
     public void SetOriginalPosition()
@@ -21,6 +27,12 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!firstDrag)
+        {
+            SetOriginalPosition();
+            firstDrag = true;
+        }
+
         //Ma_MainMenuManager.Instance.cardsGrid.enabled = false;
         transform.SetAsLastSibling();
     }
@@ -32,16 +44,37 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
 
     public void OnDrop(PointerEventData eventData)
     {
-        if(RectTransformUtility.RectangleContainsScreenPoint(Ma_MainMenuManager.Instance.selectedCharactersEmplacementsRect, new Vector2(Input.mousePosition.x, Input.mousePosition.y)))
+        // For emplacement One
+        if (RectTransformUtility.RectangleContainsScreenPoint(Ma_MainMenuManager.Instance.characterEmplacementOne, new Vector2(Input.mousePosition.x, Input.mousePosition.y)) && Ma_MainMenuManager.Instance.IsCharacterSelectionFull())
         {
-            Debug.Log("TBPC rect contains");
+            Debug.Log("Card " + gameObject.name + " Snapping to zone 1");
             Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
-            Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject);
+            Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject, 0);
+            return;
+        }
+        // For emplacement Two
+        else if (RectTransformUtility.RectangleContainsScreenPoint(Ma_MainMenuManager.Instance.characterEmplacementTwo, new Vector2(Input.mousePosition.x, Input.mousePosition.y)) && Ma_MainMenuManager.Instance.IsCharacterSelectionFull())
+        {
+            Debug.Log("Card " + gameObject.name + " Snapping to zone 2");
+            Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
+            Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject, 1);
+            return;
+        }
+        // For emplacement Three
+        else if (RectTransformUtility.RectangleContainsScreenPoint(Ma_MainMenuManager.Instance.characterEmplacementThree, new Vector2(Input.mousePosition.x, Input.mousePosition.y)) && Ma_MainMenuManager.Instance.IsCharacterSelectionFull())
+        {
+            Debug.Log("Card " + gameObject.name + " Snapping to zone 3");
+            Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
+            Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject, 2);
+            return;
         }
         else
         {
+            Debug.Log("Card " + gameObject.name + " Unsnapping");
             transform.DOMove(originalPosition, 0.6f, false);
             Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
+            Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
+            Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
         }
-    }
+    }   
 }

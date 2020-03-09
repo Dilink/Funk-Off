@@ -5,7 +5,7 @@ using System;
 
 public class Ma_AIManager : MonoBehaviour
 {
-    [SerializeField] AllAIPattern[] allPatterns;
+
     /*
     void PrepAttack()
     {
@@ -21,10 +21,23 @@ public class Ma_AIManager : MonoBehaviour
     {
         throw new NotImplementedException();
     }*/
+
+
+
+    public void ChoosePattern()
+    {
+        List<Sc_AIPattern> temporaryList = GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].aiPatterns;
+        int randomPattern = UnityEngine.Random.Range(0, temporaryList.Count - 1);
+        ApplyPattern(temporaryList[randomPattern]);
+    }
+
+    public void ApplyPattern(Sc_AIPattern pattern)
+    {
+        for (int i = 0; i < GameManager.Instance.allTiles.Length; i++)
+        {
+            TileModifier newType = (TileModifier)pattern.Matrix[GameManager.Instance.allTiles[i].posX + 1, GameManager.Instance.allTiles[i].posZ + 1];
+            GameManager.Instance.GetTile(GameManager.Instance.allTiles[i].posX, GameManager.Instance.allTiles[i].posZ).UpdateTileType(newType);
+        }
+    }
 }
 
-[System.Serializable]
-public struct AllAIPattern
-{
-     public Sc_AIPattern[] patternsAi;
-}

@@ -19,15 +19,16 @@ public class GameManager : Singleton<GameManager>
 
     [Header("GRID PARAMETERS")]
     public Mb_Tile[] allTiles;
+    public Sc_GridFeedBackRule gridFeedbackRules;
 
     [Header("MANAGERS")]
     public Ma_UiManager uiManager;
     public Ma_PatternManager patternManager;
     public Ma_ComboManager comboManager;
     public Ma_TurnManager turnManager;
+    public Ma_AIManager aiManager;
     
     [Header("FunkRule")]
-    private float funkMultiplier=1;
     private float _funkAmount = 0.5f;
 
     private float funkAmount
@@ -37,7 +38,7 @@ public class GameManager : Singleton<GameManager>
         {
             _funkAmount = value;
             uiManager.UpdateFunkBar(funkAmount);
-            CheckGameEnd();
+            //CheckGameEnd();
         }
     }
 
@@ -50,12 +51,12 @@ public class GameManager : Singleton<GameManager>
     public int currentRoundCountFinished = 0;
 
     private void Start()
-    {
-      
+    {     
         uiManager.UpdateFunkBar(funkAmount);
         SetupMovementLimit();
         EnableActing();
         ResetMove();
+
     }
     //ACTING
     #region
@@ -193,30 +194,22 @@ public class GameManager : Singleton<GameManager>
         foreach (Mb_PlayerController player in allPlayers)
             player.anim.SetTrigger("Dance");
 
-        //DECOULEMENT DES PATTERNS
-;        patternManager.RotatePattern(indexInList);
-
-        //INCREMENTATION DU MULTIPLIER ICI
-        comboManager.RotateMultipliers(indexInList);
-
-        // RECUPERATION DU MULTIPLIER
-        comboManager.GetMultiplier();
-
         // VARIATION DU FUUUUUUUUUUUUNK
-        FunkVariation(funkAddingPlayer * funkMultiplier * otherMultiplier);
+
+        FunkVariation(funkAddingPlayer * comboManager.getFunkMultiplier() * otherMultiplier);
+         
+
+        //DECOULEMENT DES PATTERNS
+        patternManager.RotatePattern(indexInList);
+
     }
 
     //FUNK adding
     public void FunkVariation(float funkToAdd)
     {
-        funkAmount += funkToAdd * funkMultiplier;
+        float funkToAddTotal = funkToAdd * comboManager.getFunkMultiplier();
+        funkAmount += ( funkToAdd * comboManager.getFunkMultiplier());
         funkAmount = Mathf.Clamp(funkAmount, 0, 1);
-    }
-
-    //FUNK MULTIPLIER SET
-    public void SetFunkMultiplier(float newModifier)
-    {
-        funkMultiplier = newModifier;
     }
 
     //DAMAGES PART
@@ -243,9 +236,9 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    void CheckGameEnd()
+    public void CheckGameEnd()
     {
-        Debug.LogError("funkAmount="+ funkAmount);
+        //Debug.LogError("funkAmount="+ funkAmount);
         if (funkAmount <= 0.0f)
         {
             uiManager.DisplayEndgameScreen(false);
@@ -254,13 +247,13 @@ public class GameManager : Singleton<GameManager>
         {
             currentRoundCountFinished += 1;
             _funkAmount = 0.5f;
-            Debug.LogError("OnNextRound 1");
+            //Debug.LogError("OnNextRound 1");
             turnManager.OnNextRound();
-            Debug.LogError("OnNextRound");
+            //Debug.LogError("OnNextRound");
 
             if (currentRoundCountFinished >= levelConfig.roundCount)
             {
-                Debug.LogError("Finished");
+                //Debug.LogError("Finished");
                 uiManager.DisplayEndgameScreen(true);
             }
         }
