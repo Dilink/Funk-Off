@@ -350,15 +350,7 @@ public class Ma_UiManager : MonoBehaviour
         }       
     }
 
-    int fxIndexCount = -1;
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-            for (int i = 0; i < 5; i++)
-                displayFX(i, (++fxIndexCount) % 5);
-    }
-
-    public void displayFX(int emplacement, int fxIndex)
+    public void DisplayFX(int emplacement, int fxIndex)
     {
         PatternsbarElements[emplacement].GetComponent<Mb_PatternBarElement>().PlayFX(fxIndex);
     }
