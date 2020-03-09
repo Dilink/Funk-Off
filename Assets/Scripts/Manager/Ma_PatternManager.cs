@@ -133,7 +133,7 @@ public class Ma_PatternManager : MonoBehaviour
         var res = JustCheckGridForPattern();
         if (res.HasValue)
         {
-            GameManager.Instance.OnPatternResolved(res.Value.Item1, multiplier, res.Value.Item2);
+            GameManager.Instance.OnPatternResolved(res.Value.Item1, multiplier, res.Value.Item2.danceToPlay);
 
             patternsForCancellation.Remove(res.Value.Item2);
             UpdateCancelMarker(res.Value.Item1);
