@@ -53,7 +53,7 @@ public class Mb_PlayerCard : MonoBehaviour
     private void DisplayInfoBubble(string title, string desc)
     {
         // Move the bubble & scale
-        toolTip.DOMoveX(300, 0.2f, false);
+        toolTip.DOMoveX(400, 0.2f, false);
         toolTip.DOScale(new Vector3(1, 1, 1), 0.2f);
 
         // Update the texts
@@ -63,7 +63,7 @@ public class Mb_PlayerCard : MonoBehaviour
 
     public void HideInfoBubble()
     {
-        toolTip.DOMoveX(-50, 0.2f, false);
+        toolTip.DOMoveX(0, 0.2f, false);
         toolTip.DOScale(new Vector3(0.6f, 0.6f, 1), 0.2f);
     }
 }
