@@ -9,7 +9,7 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
     public Sc_CharacterParameters characterParameters;
     private RectTransform RTransfom;
     public Vector3 originalPosition;
-
+    public int movement;
     private bool firstDrag;
 
     private void Start()
@@ -49,7 +49,7 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
         {
             Debug.Log("Card " + gameObject.name + " Snapping to zone 1");
             Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
-            Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject, 0);
+            Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject, 0, movement);
             return;
         }
         // For emplacement Two
@@ -57,7 +57,7 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
         {
             Debug.Log("Card " + gameObject.name + " Snapping to zone 2");
             Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
-            Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject, 1);
+            Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject, 1, movement);
             return;
         }
         // For emplacement Three
@@ -65,7 +65,7 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
         {
             Debug.Log("Card " + gameObject.name + " Snapping to zone 3");
             Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
-            Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject, 2);
+            Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject, 2, movement);
             return;
         }
         else

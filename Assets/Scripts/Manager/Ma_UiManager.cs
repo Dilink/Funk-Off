@@ -163,6 +163,10 @@ public class Ma_UiManager : MonoBehaviour
     // Update the multipliers visuals
     public void UpdateMultiplierIcon(int emplacement, Color color, string text)
     {
+        PatternsbarMultipliersImg[emplacement].transform.localScale = new Vector3(0, 0, 0);
+        PatternsbarMultipliersTexts[emplacement].transform.localScale = new Vector3(0, 0, 0);
+        PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.4f).SetEase(Ease.OutBack);
+        PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.4f).SetEase(Ease.OutBack);
         PatternsbarMultipliersImg[emplacement].color = color;
         PatternsbarMultipliersTexts[emplacement].text = text;
         PatternsbarMultipliersTexts[emplacement].color = Color.black;
