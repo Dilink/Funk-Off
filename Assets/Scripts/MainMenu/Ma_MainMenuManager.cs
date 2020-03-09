@@ -254,15 +254,12 @@ public class Ma_MainMenuManager : MonoBehaviour
         // Joe's dinner
         if (level == 0)
         {
-            Debug.Log("level one grade setting");
             if (PlayerPrefs.GetInt("00_JoeDinner") <= grade)
             {
-                Debug.Log("level one grade superior | continue");
                 PlayerPrefs.SetInt("00_JoeDinner", grade);
             }
             else
             {
-                Debug.Log("level one grade inferior | return");
                 return;
             }
 
@@ -279,7 +276,7 @@ public class Ma_MainMenuManager : MonoBehaviour
         // Star Bowling
         if (level == 1)
         {
-            if (PlayerPrefs.GetInt("01_StarBowling") < grade)
+            if (PlayerPrefs.GetInt("01_StarBowling") <= grade)
             {
                 PlayerPrefs.SetInt("01_StarBowling", grade);
             }
@@ -288,22 +285,20 @@ public class Ma_MainMenuManager : MonoBehaviour
                 return;
             }
 
-            for (int i = 0; i < grade; i++)
+            for (int i = 0; i < level1GradesGameobjects.Length; i++)
             {
-                if (level2GradesGameobjects[i].activeInHierarchy)
-                {
-                    level2GradesGameobjects[i].SetActive(false);
-                    
-                }
 
-                level2GradesGameobjects[grade].SetActive(true);
-            } 
+                level1GradesGameobjects[i].SetActive(false);
+
+            }
+
+            level1GradesGameobjects[grade].SetActive(true);
         }
 
         // Bruno's Office
         if (level == 2)
         {
-            if (PlayerPrefs.GetInt("02_BrunoOffice") < grade)
+            if (PlayerPrefs.GetInt("02_BrunoOffice") <= grade)
             {
                 PlayerPrefs.SetInt("02_BrunoOffice", grade);
             }
@@ -312,17 +307,15 @@ public class Ma_MainMenuManager : MonoBehaviour
                 return;
             }
 
-            for (int i = 0; i <= grade; i++)
+            for (int i = 0; i < level1GradesGameobjects.Length; i++)
             {
-                if (level3GradesGameobjects[i].activeInHierarchy)
-                {
-                    level3GradesGameobjects[i].SetActive(false);
 
-                }
+                level1GradesGameobjects[i].SetActive(false);
 
-                level3GradesGameobjects[grade].SetActive(true);
             }
-        }    
+
+            level1GradesGameobjects[grade].SetActive(true);
+        }
     }
     #endregion
     // -------------
