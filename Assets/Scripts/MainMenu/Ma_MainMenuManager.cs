@@ -12,7 +12,7 @@ public class Ma_MainMenuManager : MonoBehaviour
     public List<Sc_CharacterParameters> selectedCharacters;
     public Transform[] selectedCharactersEmplacements;
     public GameObject[] selectedEmplacementsGameobjects = new GameObject[3];
-    private bool[] selectedEmplacementsStatus = new bool[3];
+    public bool[] selectedEmplacementsStatus = new bool[3];
 
     [Header("Navigation elements")]
 
@@ -34,10 +34,17 @@ public class Ma_MainMenuManager : MonoBehaviour
 
     [Header("Team Builder elements")]
     public GridLayoutGroup cardsGrid;
-    public RectTransform selectedCharactersEmplacementsRect;
+    public RectTransform characterEmplacementOne;
+    public RectTransform characterEmplacementTwo;
+    public RectTransform characterEmplacementThree;
 
     [Header("Currency bar elements")]
     public TMP_Text currencyText;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -192,30 +199,22 @@ public class Ma_MainMenuManager : MonoBehaviour
     // -------------
     #region teambuilder
     // Add the card to the selected characters zone
-    public void AddCardToSelectedEmplacements(GameObject card)
+    public void AddCardToSelectedEmplacements(GameObject card, int emplacement)
     {
-        for(int i = 0; i < selectedEmplacementsStatus.Length; i++)
-        {
-            if (!selectedEmplacementsStatus[i])
-            {
-                card.transform.DOMove(selectedCharactersEmplacements[i].position, 0.2f, false);
-                selectedEmplacementsStatus[i] = true;
-                selectedEmplacementsGameobjects[i] = card;
-                return;
-            }
-        }
+        card.transform.DOMove(selectedCharactersEmplacements[emplacement].position, 0.2f, false);
+        selectedEmplacementsStatus[emplacement] = true;
+        selectedEmplacementsGameobjects[emplacement] = card;
     }
 
     // Remove the card to the selected characters zone
     public void RemoveCardFromSelectedEmplacement(GameObject card)
     {
-        for(int j = 0; j < selectedEmplacementsGameobjects.Length; j++)
+        for(int i =0; i< selectedEmplacementsGameobjects.Length; i++)
         {
-            if(selectedEmplacementsGameobjects[j] == card)
+            if(selectedEmplacementsGameobjects[i] == card)
             {
-                selectedEmplacementsStatus[j] = false;
-                selectedEmplacementsGameobjects[j] = null;
-                return;
+                selectedEmplacementsStatus[i] = false;
+                selectedEmplacementsGameobjects[i] = null;
             }
         }
     }
