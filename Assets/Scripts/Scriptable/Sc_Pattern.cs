@@ -16,14 +16,10 @@ public class Sc_Pattern : ScriptableObject
     public Sprite sprite;
     public Matrix3x3Bool Matrix;
     public List<PatternModifier> modifiers;
-    public DanceType danceToPlay;
+    public int danceToPlay=1;
     [ReadOnly]
     public string Name;
     [ReadOnly]
     public string Category;
 }
 
-public enum DanceType
-{
-    Dance1,Dance2,Dance3,Dance4,Dance5,Dance6
-}
