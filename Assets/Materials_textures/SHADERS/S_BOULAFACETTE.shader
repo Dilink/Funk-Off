@@ -28,7 +28,7 @@ Shader "New Amplify Shader"
 
 		void surf( Input i , inout SurfaceOutputStandard o )
 		{
-			float4 color6 = IsGammaSpace() ? float4(0.9433962,0.6750214,0.2803489,0) : float4(0.8760344,0.4132373,0.06388318,0);
+			float4 color6 = IsGammaSpace() ? float4(0.9433962,0.6750214,0.2803489,0) : float4(0.8760344,0.4132373,0.06388319,0);
 			float2 panner4 = ( 1.0 * _Time.y * float2( 0.42,0 ) + float2( 0,0 ));
 			float2 uv_TexCoord3 = i.uv_texcoord * float2( 4,4 ) + panner4;
 			float4 lerpResult9 = lerp( float4( 0,0,0,0 ) , ( ( color6 * tex2D( _boule_facette, uv_TexCoord3 ) ) * 1.52 ) , tex2D( _boule_facette2, uv_TexCoord3 ));
@@ -65,4 +65,4 @@ WireConnection;9;1;7;0
 WireConnection;9;2;2;0
 WireConnection;0;2;9;0
 ASEEND*/
-//CHKSM=2403A060884DDED9C37501614BA6EE254F6DED8C
+//CHKSM=C9A123F029326AD4FC45FE64F53170CE7DD20045

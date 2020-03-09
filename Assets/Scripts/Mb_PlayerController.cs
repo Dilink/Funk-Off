@@ -69,27 +69,25 @@ public class Mb_PlayerController : MonoBehaviour
         int distanceBetweenTilesZ = Mathf.Abs(directionZ);
         int distanceBetweenTilesXZ = Mathf.Abs(currentTile.posX - tileToMoveTo.posX) + Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
 
-        if(tileToMoveTo.avaible == false)
+        if(tileToMoveTo.avaible == false && (characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff)
         {
        
 
-            if ((characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff &&
-                GameManager.Instance.GetTile(Mathf.Clamp(currentTile.posX + directionX * 2, -1,1), Mathf.Clamp(currentTile.posZ + directionZ * 2,-1,1)).avaible == true &&
+            if (GameManager.Instance.GetTile(Mathf.Clamp(currentTile.posX + directionX * 2, -1,1), Mathf.Clamp(currentTile.posZ + directionZ * 2,-1,1)).avaible == true &&
                 GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
-                 IsNotWalled(GameManager.Instance.GetTile(currentTile.posX , currentTile.posZ ), directionX, directionZ))
+                 IsNotWalled(GameManager.Instance.GetTile(Mathf.Clamp(currentTile.posX + directionX * 2, -1, 1), Mathf.Clamp(currentTile.posZ + directionZ * 2, -1, 1)), directionX, directionZ))
             {
                     GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
-
-                    Move(GameManager.Instance.GetTile(currentTile.posX + directionX * 2, currentTile.posZ + directionZ * 2));
-                
-                }
+                    Move(GameManager.Instance.GetTile(currentTile.posX + directionX * 2, currentTile.posZ + directionZ * 2));  
+            }
         }
         else
         {
             if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) == CharacterSkills.Swift)
             {
                 if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
-                distanceBetweenTilesX + distanceBetweenTilesZ >= 1 &&
+                distanceBetweenTilesX == 1 && distanceBetweenTilesZ == 1 && 
+                tileToMoveTo.avaible == true &&
                 GameManager.Instance.canAct == true &&
                 IsNotWalled(tileToMoveTo, directionX, directionZ))
                 {
@@ -101,7 +99,6 @@ public class Mb_PlayerController : MonoBehaviour
                 tileToMoveTo.avaible == true &&
                 distanceBetweenTilesXZ <= 1 &&
                 GameManager.Instance.canAct == true && 
-                GameManager.Instance.canAct == true &&
                 IsNotWalled(tileToMoveTo, directionX, directionZ))
             {
                 GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
@@ -112,11 +109,12 @@ public class Mb_PlayerController : MonoBehaviour
        
     }
 
-    bool IsNotWalled(Mb_Tile tileToCheck, int distanceBetweenTilesX, int distanceBetweenTilesZ)
+    bool IsNotWalled(Mb_Tile tileToCheck, int directionX, int directionZ)
     {
         bool temporaryBool = true;
 
-        if (distanceBetweenTilesX + distanceBetweenTilesZ == 2)
+        print("DirectionX" + directionX);
+        if (Mathf.Abs(directionX) + Mathf.Abs(directionZ) == 2)
         {
             int directionToCheckX = tileToCheck.posX - currentTile.posX;
             int directionToCheckZ = tileToCheck.posZ - currentTile.posZ;
@@ -158,7 +156,6 @@ public class Mb_PlayerController : MonoBehaviour
                 {
                     if (directionToCheckZ <= -1)
                     {
-                        print("BAS DROITE");
                         if ((GameManager.Instance.GetTile(currentTile.posX, currentTile.posZ + directionToCheckZ).tileProperties.type & (TileModifier.WalledDown | TileModifier.WalledLeft)) != 0)
                         {
                             temporaryBool = false;
@@ -168,7 +165,6 @@ public class Mb_PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        print("HAUT DROITE");
 
                         if ((GameManager.Instance.GetTile(currentTile.posX, currentTile.posZ + directionToCheckZ).tileProperties.type & (TileModifier.WalledDown | TileModifier.WalledRight)) != 0)
                         {
@@ -181,47 +177,43 @@ public class Mb_PlayerController : MonoBehaviour
                 }
             }
         }
-        else if (distanceBetweenTilesX + distanceBetweenTilesZ == 1)
+        
+        else if (Mathf.Abs(directionX) + Mathf.Abs(directionZ) == 1)
         {
-            switch (distanceBetweenTilesX)
+            if (directionX == -1)
             {
-                case -1:
-                    if ((GameManager.Instance.GetTile(currentTile.posX + distanceBetweenTilesX, currentTile.posZ).tileProperties.type & TileModifier.WalledRight) != 0)
-                    {
-                        return false;
-                    }
-                    break;
-                case 1:
-                    if ((GameManager.Instance.GetTile(currentTile.posX + distanceBetweenTilesX, currentTile.posZ).tileProperties.type & TileModifier.WalledLeft) != 0)
-                    {
-                        return false;
-                    }
-                    break;
-                case 0:
-                    break;
+                if ((currentTile.tileProperties.type & TileModifier.WalledLeft) != 0)
+                {
+                    temporaryBool = false;
+                }
+            }
+            else if (directionX == 1)
+            {
+                if ((currentTile.tileProperties.type & TileModifier.WalledRight) != 0)
+                {
+                    temporaryBool = false;
+                }
+            }
+            else if (directionZ == -1)
+            {
+                if ((currentTile.tileProperties.type & TileModifier.WalledUp) != 0)
+                {
+                    temporaryBool = false;
+                }
+
+            }
+            else if (directionZ == 1)
+            {
+                if ((currentTile.tileProperties.type & TileModifier.WalledDown) != 0)
+                {
+                    temporaryBool = false;
+                }
             }
 
-            switch (distanceBetweenTilesZ)
-            {
-                case -1:
-                    if ((GameManager.Instance.GetTile(currentTile.posX, currentTile.posZ + distanceBetweenTilesZ).tileProperties.type & TileModifier.WalledUp) != 0)
-                    {
-                        return false;
-                    }
-                    break;
-                case 1:
-                    if ((GameManager.Instance.GetTile(currentTile.posX, currentTile.posZ + distanceBetweenTilesZ).tileProperties.type & TileModifier.WalledDown) != 0)
-                    {
-                        return false;
-                    }
-                    break;
-                case 0:
-                    break;
-            }
+
         }
-            
-       
-        return temporaryBool;
+        
+            return temporaryBool;
     }
         
 

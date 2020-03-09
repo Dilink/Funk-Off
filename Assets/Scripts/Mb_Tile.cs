@@ -58,6 +58,7 @@ public class Mb_Tile : MonoBehaviour
         {
             SetTileMaterial(tileMaterial);
             tileProperties.type = TileModifier.Damaging;
+            SetTileMaterial(GameManager.Instance.gridFeedbackRules.damagingMaterial);
         }
 
         else if ((newTileType & TileModifier.Ice) == TileModifier.Ice)
@@ -71,34 +72,36 @@ public class Mb_Tile : MonoBehaviour
         {
             tileProperties.cost = 2;
             tileProperties.type = TileModifier.Slow;
-            SetTileMaterial(tileMaterial);
+            SetTileMaterial(GameManager.Instance.gridFeedbackRules.slowMaterial);
         }
 
-        else if ((newTileType & TileModifier.WalledRight) == TileModifier.WalledRight)
-        {
-            tileProperties.type = TileModifier.WalledRight;
-        }
-
-        else if ((newTileType & TileModifier.WalledLeft) == TileModifier.WalledLeft)
-        {
-            tileProperties.type = TileModifier.WalledLeft;
-        }
-
-        else if ((newTileType & TileModifier.WalledUp) == TileModifier.WalledUp)
-        {
-            tileProperties.type = TileModifier.WalledUp;
-        }
-
-        else if ((newTileType & TileModifier.WalledDown) == TileModifier.WalledDown)
-        {
-            tileProperties.type = TileModifier.WalledDown;
-        }
-
-        else if (newTileType==0)
+        else if (newTileType == 0)
         {
             tileProperties.type = 0;
             SetTileMaterial(baseMaterial);
         }
+
+        if ((newTileType & TileModifier.WalledRight) == TileModifier.WalledRight)
+        {
+            tileProperties.type = (tileProperties.type| TileModifier.WalledRight);
+        }
+
+         if ((newTileType & TileModifier.WalledLeft) == TileModifier.WalledLeft)
+        {
+            tileProperties.type = (tileProperties.type | TileModifier.WalledLeft);
+        }
+
+         if ((newTileType & TileModifier.WalledUp) == TileModifier.WalledUp)
+        {
+            print("WalledUp");
+            tileProperties.type  = (tileProperties.type | TileModifier.WalledUp);
+        }
+
+         if ((newTileType & TileModifier.WalledDown) == TileModifier.WalledDown)
+        {
+            tileProperties.type = (tileProperties.type | TileModifier.WalledDown);
+        }
+
 
         UpdateWallFeedBack();
     }
@@ -109,7 +112,7 @@ public class Mb_Tile : MonoBehaviour
         feedBackWallUp.SetActive(false);
         feedBackWallRight.SetActive(false);
 
-        if ((tileProperties.type & TileModifier.WalledUp) == TileModifier.WalledUp  )
+        if ((tileProperties.type & TileModifier.WalledUp) == TileModifier.WalledUp)
             {
                 feedBackWallUp.SetActive(true);
             }

@@ -196,7 +196,8 @@ public class GameManager : Singleton<GameManager>
 
         // VARIATION DU FUUUUUUUUUUUUNK
 
-        FunkVariation(funkAddingPlayer * comboManager.getFunkMultiplier() * otherMultiplier);
+        Debug.Log("funkaddingPlayer " + funkAddingPlayer + " | multiplier value " + comboManager.getFunkMultiplier());
+        FunkVariation((funkAddingPlayer + comboManager.getFunkMultiplier()) * otherMultiplier);
          
 
         //DECOULEMENT DES PATTERNS
