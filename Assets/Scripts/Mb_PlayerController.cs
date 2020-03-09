@@ -17,14 +17,10 @@ public class Mb_PlayerController : MonoBehaviour
     // private int moveLeft;
     int velX=0, velZ=0;
 
-    void UpdateVel()
-    {
-        velX = currentTile.posX - oldTile.posX;
-        velZ = currentTile.posZ- oldTile.posZ;
-    }
 
-    //ANIM ET FEEDBACKS
-    [HideInInspector] public Animator anim;
+//ANIM ET FEEDBACKS
+[HideInInspector] public Animator anim;
+
 
     private void Awake()
     {
@@ -46,7 +42,7 @@ public class Mb_PlayerController : MonoBehaviour
         currentTile = tileToMoveTo;
         currentTile.setOccupent(this);
         currentTile.avaible = false;
-        UpdateVel();
+        UpdateVelocity();
         //bouger le joueur                                               //declenchement parametre de la tuile
         transform.DOMove(tileToMoveTo.transform.position + new Vector3(0,.5f,0), .33f,false).OnComplete(OnMoveCallBack);
     } 
@@ -246,7 +242,10 @@ public class Mb_PlayerController : MonoBehaviour
     {
         int z = Mathf.Clamp(currentTile.posZ + velZ, -1,1);
         int x = Mathf.Clamp(currentTile.posX + velX, - 1, 1); 
-        if (Mathf.Abs(z)- Mathf.Abs(x) !=0)
+        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) != 0)
+            CheckFreeMovement(GameManager.Instance.GetTile(x, z));
+
+        else if (Mathf.Abs(z)- Mathf.Abs(x) !=0)
             CheckFreeMovement(GameManager.Instance.GetTile(x, z));
     }
 
@@ -281,6 +280,11 @@ public class Mb_PlayerController : MonoBehaviour
             GameManager.Instance.patternManager.CheckGridForPatternAndReact(1);
     }
 
-        
+    void UpdateVelocity()
+    {
+        velX = currentTile.posX - oldTile.posX;
+        velZ = currentTile.posZ - oldTile.posZ;
+    }
+
 }
 
