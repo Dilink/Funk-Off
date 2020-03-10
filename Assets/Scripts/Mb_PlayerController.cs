@@ -292,10 +292,7 @@ public class Mb_PlayerController : MonoBehaviour
 
     void CheckPatternCallBack()
     {
-        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Finisher) == CharacterSkills.Finisher)
-            GameManager.Instance.patternManager.CheckGridForPatternAndReact(0.05f);
-        else
-            GameManager.Instance.patternManager.CheckGridForPatternAndReact(0);
+       GameManager.Instance.patternManager.CheckGridForPatternAndReact();
     }
 
     void UpdateVelocity()
