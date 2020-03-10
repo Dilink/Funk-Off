@@ -60,25 +60,33 @@ public class Ma_ComboManager : MonoBehaviour
 
         comboedPatternSpot = indexOfPatern;
 
+        int multiplierIndex = -1;
+
         if (funkMultiplier < Multipliers[0])
         {
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[0].ToString());
+            multiplierIndex = 0;
         }
         else if (funkMultiplier < Multipliers[1])
         {
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[1].ToString());
+            multiplierIndex = 1;
         }
         else if (funkMultiplier < Multipliers[2])
         {
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[2].ToString());
+            multiplierIndex = 2;
         }
         else if (funkMultiplier < Multipliers[3])
         {
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[3].ToString());
+            multiplierIndex = 3;
         }
         else if (funkMultiplier < 100)
         {
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[4].ToString());
+            multiplierIndex = 4;
+        }
+
+        if (multiplierIndex > -1)
+        {
+            GameManager.Instance.uiManager.DisplayFX(indexOfPatern, multiplierIndex);
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[multiplierIndex].ToString());
         }
         else
         {
