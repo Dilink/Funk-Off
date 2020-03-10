@@ -27,6 +27,7 @@ public class GameManager : Singleton<GameManager>
     public Ma_ComboManager comboManager;
     public Ma_TurnManager turnManager;
     public Ma_AIManager aiManager;
+    public Ma_SoundManager soundManager;
     
     [Header("FunkRule")]
     private float _funkAmount = 0.5f;
@@ -102,15 +103,13 @@ public class GameManager : Singleton<GameManager>
 
         if (Physics.Raycast(ray, out hit,Mathf.Infinity,1 << 9))
         {
-            if (currentPlayerSelectionned != null)
+            if (currentPlayerSelectionned != null && currentPlayerSelectionned != hit.collider.GetComponent<Mb_PlayerController>())
                 currentPlayerSelectionned.OnDeselection();
             currentPlayerSelectionned = hit.collider.GetComponent<Mb_PlayerController>();
             currentPlayerSelectionned.OnSelection();
 
         }
-        else
-            currentPlayerSelectionned = null;
-
+       
     }
 
     void CastRayTile()
@@ -150,6 +149,12 @@ public class GameManager : Singleton<GameManager>
         uiManager.UpdateMovesUi(moveLeft, movePerTurn);
     }
 
+    public void IncreaseMovesLeft(int toDecrease)
+    {
+        moveLeft += toDecrease;
+        uiManager.UpdateMovesUi(moveLeft, movePerTurn);
+    }
+
     public void ResetMove()
     {
         int reservedMoves = moveLeft;
@@ -157,6 +162,7 @@ public class GameManager : Singleton<GameManager>
             moveLeft = Mathf.Clamp(totalMoveReseted + reservedMoves, 0, maxMovesPerTurn);
         else
             moveLeft = totalMoveReseted;
+
         uiManager.UpdateMovesUi(moveLeft, maxMovesPerTurn);
     }
     //PREVIEW
@@ -194,7 +200,7 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    public void OnPatternResolved(int indexInList, float otherMultiplier,int danceToTrigger)
+    public void OnPatternResolved(int indexInList, int danceToTrigger, CharacterSkills allCharacterSkills)
     {
         //ANIM ET AUTRE FEEDBACKS DE COMPLETION
         foreach (Mb_PlayerController player in allPlayers)
@@ -202,9 +208,12 @@ public class GameManager : Singleton<GameManager>
 
         // VARIATION DU FUUUUUUUUUUUUNK
 
-        Debug.Log("funkaddingPlayer " + funkAddingPlayer + " | multiplier value " + comboManager.getFunkMultiplier());
-        FunkVariation((funkAddingPlayer + comboManager.getFunkMultiplier()) * otherMultiplier);
+        FunkVariation(funkAddingPlayer + comboManager.getFunkMultiplier());
          
+        if ((allCharacterSkills & CharacterSkills.FinisherMove) == CharacterSkills.FinisherMove)
+        {
+            IncreaseMovesLeft(1);
+        }
         if (!isGameFinished)
         {
             //DECOULEMENT DES PATTERNS
@@ -267,6 +276,11 @@ public class GameManager : Singleton<GameManager>
                 isGameFinished = true;
             }
         }
+        else if (turnManager.IsLastRoundFinished())
+        {
+            // Set value to 0 to re-check if game end
+            funkAmount = 0.0f;
+        }
     }
 
     [Button(ButtonSizes.Medium), GUIColor(0.89f, 0.14f, 0.14f)]
@@ -275,6 +289,14 @@ public class GameManager : Singleton<GameManager>
         allPlayers = GameObject.FindObjectsOfType<Mb_PlayerController>();
         allTiles = GameObject.FindObjectsOfType<Mb_Tile>();
 
-        GameObject.Find("MainUICanvas").GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        GameObject cameraGo = GameObject.Find("Main Camera");
+        if (!cameraGo)
+        {
+            cameraGo = Camera.main.gameObject;
+        }
+        if (cameraGo)
+        {
+            GameObject.Find("MainUICanvas").GetComponent<Canvas>().worldCamera = cameraGo.GetComponent<Camera>();
+        }
     }
 }

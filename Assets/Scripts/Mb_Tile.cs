@@ -129,9 +129,16 @@ public class Mb_Tile : MonoBehaviour
         meshRenderer.material = newMaterial;
     }
 
-    void ResetBaseTile()
+    public void ResetBaseTile()
     {
         tileProperties.type = 0;
+        tileProperties.cost = 1;
+        SetTileMaterial(baseMaterial);
+    }
+
+    public void RestBaseTileButWalls()
+    {
+        tileProperties.type = (tileProperties.type & (TileModifier.WalledDown | TileModifier.WalledUp | TileModifier.WalledRight | TileModifier.WalledLeft));
         tileProperties.cost = 1;
         SetTileMaterial(baseMaterial);
     }
@@ -140,7 +147,7 @@ public class Mb_Tile : MonoBehaviour
     {
         if ((tileProperties.type & TileModifier.Damaging) == TileModifier.Damaging)
         {
-            GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal());
+            GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal()/3);
         }
 
         if ((tileProperties.type & TileModifier.Tp) == TileModifier.Tp && fromTP == false)

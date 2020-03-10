@@ -8,10 +8,15 @@ using DG.Tweening;
 public class Ma_UiManager : MonoBehaviour
 {
     //   [SerializeField] Mb_PlayerCard[] allPlayerUi;
-    [SerializeField] TextMeshProUGUI moveLeftText;
+    [Header("PARAMETERS")]
+    public float FunkBarFillSpeed = 0.5f;
 
+    [Space]
     [Header("Turnsbar elements")]
     public TMP_Text TurnsbarText;
+
+    [Header("Movebar elements")]
+    [SerializeField] TextMeshProUGUI moveLeftText;
 
     [Header("Patternsbar elements")]
     public List <RectTransform> PatternsbarElements;
@@ -23,8 +28,6 @@ public class Ma_UiManager : MonoBehaviour
     [Header("Funkbar elements")]
     public Image FunkbarFillImg;
     public RectTransform FunkbarFillRect;
-    public Image FunkbarCursorImg;
-    public RectTransform FunkbarCursorRect;
 
     //[Header("PlayersStateBar elements")]
 
@@ -41,6 +44,9 @@ public class Ma_UiManager : MonoBehaviour
     public RectTransform EndGameScreen_winRect;
     public RectTransform EndGameScreen_looseRect;
 
+
+    [Header("UiCharacter")]
+    public Image[] AllCharacterUi;
 
     private void Reset()
     {
@@ -60,8 +66,6 @@ public class Ma_UiManager : MonoBehaviour
         // Funkbar elements
         FunkbarFillImg = GameObject.Find("Funkbar_Fill").GetComponent<Image>();
         FunkbarFillRect = GameObject.Find("Funkbar_Fill").GetComponent<RectTransform>();
-        FunkbarCursorImg = GameObject.Find("Funkbar_Cursor").GetComponent<Image>();
-        FunkbarCursorRect = GameObject.Find("Funkbar_Cursor").GetComponent<RectTransform>();
 
         // PlayerStateBar elements
 
@@ -88,10 +92,23 @@ public class Ma_UiManager : MonoBehaviour
     // TURNSBAR FUNCTIONS
     // ---------------------
 
+    public void TESTUpdateTurns()
+    {
+        UpdateTurnsbarText(1, 1);
+    }
+
     // Update the text of the Turnsbar to display current turn / Max turns
     public void UpdateTurnsbarText(int currentTurn, int maxTurn)
     {
-        TurnsbarText.text = currentTurn + "/" + maxTurn;
+        //Animation
+        Sequence moveSeq = DOTween.Sequence();
+        moveSeq.Append(TurnsbarText.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.1f));
+        moveSeq.Append(TurnsbarText.transform.DORotate(new Vector3(0, 0, 20), 0.1f));
+        moveSeq.PrependInterval(0.1f);
+        moveSeq.Append(TurnsbarText.transform.DOScale(new Vector3(1, 1, 1), 0.1f));
+        moveSeq.Append(TurnsbarText.transform.DORotate(new Vector3(0, 0, 0), 0.1f));
+
+        TurnsbarText.text = (maxTurn - currentTurn).ToString();
     }
 
     // ---------------------
@@ -170,13 +187,18 @@ public class Ma_UiManager : MonoBehaviour
         PatternsbarElements[emplacement].GetChild(1).GetComponent<Image>().sprite = pattern.sprite;
     }
 
+    // MULTIPLIERS
+
     // Update the multipliers visuals
     public void UpdateMultiplierIcon(int emplacement, Color color, string text)
     {
+        // Animation
         PatternsbarMultipliersImg[emplacement].transform.localScale = new Vector3(0, 0, 0);
         PatternsbarMultipliersTexts[emplacement].transform.localScale = new Vector3(0, 0, 0);
         PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
         PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
+
+        // Color and text
         PatternsbarMultipliersImg[emplacement].color = color;
         PatternsbarMultipliersTexts[emplacement].text = text;
         PatternsbarMultipliersTexts[emplacement].color = Color.black;
@@ -211,16 +233,28 @@ public class Ma_UiManager : MonoBehaviour
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        FunkbarFillImg.fillAmount = funkPercentage;
-        FunkbarCursorRect.anchoredPosition = new Vector2(FunkbarFillRect.sizeDelta.x * FunkbarFillImg.fillAmount, FunkbarCursorRect.anchoredPosition.y);
+        FunkbarFillImg.DOFillAmount(funkPercentage, FunkBarFillSpeed);
     }
 
     // ---------------------
     // CHARACTERS UI FUNCTIONS
     // ---------------------
+    public void TESTUpdateMoves()
+    {
+        UpdateMovesUi(1, 1);
+    }
 
     public void UpdateMovesUi(int movesReturning, int moveForTheTurn)
     {
+        //Animation
+        Sequence moveSeq = DOTween.Sequence();
+        moveSeq.Append(moveLeftText.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.1f));
+        moveSeq.Append(moveLeftText.transform.DORotate(new Vector3(0,0, 20), 0.1f));
+        moveSeq.PrependInterval(0.1f);
+        moveSeq.Append(moveLeftText.transform.DOScale(new Vector3(1, 1, 1), 0.1f));
+        moveSeq.Append(moveLeftText.transform.DORotate(new Vector3(0, 0, 0), 0.1f));
+
+        // Change the text
         moveLeftText.text = movesReturning + " / " + moveForTheTurn;
     }
 
@@ -317,6 +351,16 @@ public class Ma_UiManager : MonoBehaviour
     public void DisplayFX(int emplacement, int fxIndex)
     {
         PatternsbarElements[emplacement].GetComponent<Mb_PatternBarElement>().PlayFX(fxIndex);
+    }
+
+    public void DeployUi(RectTransform uiToDeploy)
+    {
+       uiToDeploy.transform.DOLocalMoveX(uiToDeploy.localPosition.x+ 20, 0.1f);
+    }
+
+    public void CleanUi(RectTransform uiToClean)
+    {
+        uiToClean.transform.DOLocalMoveX(uiToClean.localPosition.x - 20, 0.1f);
     }
 
 }
