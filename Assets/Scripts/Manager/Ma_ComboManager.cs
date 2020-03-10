@@ -85,7 +85,28 @@ public class Ma_ComboManager : MonoBehaviour
             }
 
             GameManager.Instance.uiManager.DisplayFX(indexOfPatern, multiplierIndex);
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "+" + Multipliers[multiplierIndex].ToString());
+            switch(multiplierIndex)
+            {
+                case 0:
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "Good");
+                    break;
+
+                case 1:
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "Nice");
+                    break;
+
+                case 2:
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "Great");
+                    break;
+
+                case 3:
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "Perfect");
+                    break;
+
+                case 4:
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "Funkulouss");
+                    break;
+            }
         }
         else
         {

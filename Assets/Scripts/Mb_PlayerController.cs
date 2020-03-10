@@ -291,9 +291,9 @@ public class Mb_PlayerController : MonoBehaviour
     void CheckPatternCallBack()
     {
         if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Finisher) == CharacterSkills.Finisher)
-            GameManager.Instance.patternManager.CheckGridForPatternAndReact(1.5f);
+            GameManager.Instance.patternManager.CheckGridForPatternAndReact(0.05f);
         else
-            GameManager.Instance.patternManager.CheckGridForPatternAndReact(1);
+            GameManager.Instance.patternManager.CheckGridForPatternAndReact(0);
     }
 
     void UpdateVelocity()
@@ -326,7 +326,6 @@ public class Mb_PlayerController : MonoBehaviour
 
     public void OnDeselection()
     {
-        print("Deselect");
         if (isSelected == true)
         {
             GameManager.Instance.uiManager.CleanUi(UiAssociated);
