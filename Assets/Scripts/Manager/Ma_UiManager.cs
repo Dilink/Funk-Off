@@ -187,13 +187,18 @@ public class Ma_UiManager : MonoBehaviour
         PatternsbarElements[emplacement].GetChild(1).GetComponent<Image>().sprite = pattern.sprite;
     }
 
+    // MULTIPLIERS
+
     // Update the multipliers visuals
     public void UpdateMultiplierIcon(int emplacement, Color color, string text)
     {
+        // Animation
         PatternsbarMultipliersImg[emplacement].transform.localScale = new Vector3(0, 0, 0);
         PatternsbarMultipliersTexts[emplacement].transform.localScale = new Vector3(0, 0, 0);
         PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
         PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
+
+        // Color and text
         PatternsbarMultipliersImg[emplacement].color = color;
         PatternsbarMultipliersTexts[emplacement].text = text;
         PatternsbarMultipliersTexts[emplacement].color = Color.black;
