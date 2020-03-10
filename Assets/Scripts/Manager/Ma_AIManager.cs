@@ -33,10 +33,12 @@ public class Ma_AIManager : MonoBehaviour
 
     public void ApplyPattern(Sc_AIPattern pattern)
     {
-        for (int i = 0; i < GameManager.Instance.allTiles.Length; i++)
+        var tiles = GameManager.Instance.allTiles;
+
+        for (int i = 0; i < tiles.Length; i++)
         {
-            TileModifier newType = (TileModifier)pattern.Matrix[GameManager.Instance.allTiles[i].posX + 1, GameManager.Instance.allTiles[i].posZ + 1];
-            GameManager.Instance.GetTile(GameManager.Instance.allTiles[i].posX, GameManager.Instance.allTiles[i].posZ).UpdateTileType(newType);
+            TileModifier newType = (TileModifier)pattern.Matrix.FromLocation(tiles[i].posX, tiles[i].posZ);
+            GameManager.Instance.GetTile(tiles[i].posX, tiles[i].posZ).UpdateTileType(newType);
         }
     }
 }
