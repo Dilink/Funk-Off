@@ -81,11 +81,17 @@ public class Mb_PlayerController : MonoBehaviour
         GameManager.Instance.EnableActing();
         CheckPatternCallBack();
 
-        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.RandomizerFirstMove) == CharacterSkills.RandomizerFirstMove && 
-            GameManager.Instance.isTheFirstMove == true)
+        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.RandomizerFirstMove) == CharacterSkills.RandomizerFirstMove)
         {
-            GameManager.Instance.isTheFirstMove = false;
-            GameManager.Instance.patternManager.RandomizeCurrentPatterns();
+            if (GameManager.Instance.isTheFirstMove == true)
+            {
+                GameManager.Instance.patternManager.RandomizeCurrentPatterns();
+                GameManager.Instance.isTheFirstMove = false;
+
+            }
+            else
+                GameManager.Instance.isTheFirstMove = false;
+
         }
 
     }
