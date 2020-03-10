@@ -10,11 +10,11 @@ FBXHeaderExtension:  {
 		Version: 1000
 		Year: 2020
 		Month: 3
-		Day: 6
-		Hour: 14
-		Minute: 53
-		Second: 41
-		Millisecond: 730
+		Day: 10
+		Hour: 10
+		Minute: 32
+		Second: 47
+		Millisecond: 792
 	}
 	Creator: "FBX SDK/FBX Plugins version 2016.1.1"
 	SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
@@ -77,7 +77,7 @@ GlobalSettings:  {
 
 Documents:  {
 	Count: 1
-	Document: 3587380224, "", "Scene" {
+	Document: 222150144, "", "Scene" {
 		Properties70:  {
 			P: "SourceObject", "object", "", ""
 			P: "ActiveAnimStackName", "KString", "", "", ""
@@ -227,7 +227,7 @@ Definitions:  {
 ;------------------------------------------------------------------
 
 Objects:  {
-	Geometry: 3585990656, "Geometry::transform7", "Mesh" {
+	Geometry: 121832448, "Geometry::transform7", "Mesh" {
 		Vertices: *12 {
 			a: 57.7705268859863,27.9952144622803,59.1810111999512,57.7705268859863,27.9951953887939,-55.9444122314453,-57.3548431396484,27.9951953887939,-55.9444351196289,-57.3549385070801,27.9952144622803,59.1809883117676
 		} 
@@ -278,7 +278,7 @@ Objects:  {
 			MappingInformationType: "ByPolygonVertex"
 			ReferenceInformationType: "IndexToDirect"
 			UV: *8 {
-				a: 0,0.999979257583618,0,2.07090309345404e-07,0.99997866153717,0,0.999979496002197,0.999979078769684
+				a: 0.999979496002197,0,0.999979496002197,0.999979019165039,8.34465026855469e-07,0.999979257583618,0,1.78813934326172e-07
 			} 
 			UVIndex: *4 {
 				a: 0,1,2,3
@@ -477,7 +477,7 @@ Objects:  {
 			}
 		}
 	}
-	Model: 3597241216, "Model::transform7", "Mesh" {
+	Model: 121443840, "Model::transform7", "Mesh" {
 		Version: 232
 		Properties70:  {
 			P: "RotationActive", "bool", "", "",1
@@ -489,7 +489,7 @@ Objects:  {
 		Shading: Y
 		Culling: "CullingOff"
 	}
-	Material: 3585987584, "Material::m.m", "" {
+	Material: 121834496, "Material::m.m", "" {
 		Version: 102
 		ShadingModel: "phong"
 		MultiLayer: 0
@@ -512,13 +512,13 @@ Objects:  {
 Connections:  {
 	
 	;Model::transform7, Model::RootNode
-	C: "OO",3597241216,0
+	C: "OO",121443840,0
 	
 	;Geometry::transform7, Model::transform7
-	C: "OO",3585990656,3597241216
+	C: "OO",121832448,121443840
 	
 	;Material::m.m, Model::transform7
-	C: "OO",3585987584,3597241216
+	C: "OO",121834496,121443840
 }
 ;Takes section
 ;----------------------------------------------------
