@@ -8,10 +8,15 @@ using DG.Tweening;
 public class Ma_UiManager : MonoBehaviour
 {
     //   [SerializeField] Mb_PlayerCard[] allPlayerUi;
-    [SerializeField] TextMeshProUGUI moveLeftText;
+    [Header("PARAMETERS")]
+    public float FunkBarFillSpeed = 0.5f;
 
+    [Space]
     [Header("Turnsbar elements")]
     public TMP_Text TurnsbarText;
+
+    [Header("Movebar elements")]
+    [SerializeField] TextMeshProUGUI moveLeftText;
 
     [Header("Patternsbar elements")]
     public List <RectTransform> PatternsbarElements;
@@ -23,8 +28,6 @@ public class Ma_UiManager : MonoBehaviour
     [Header("Funkbar elements")]
     public Image FunkbarFillImg;
     public RectTransform FunkbarFillRect;
-    public Image FunkbarCursorImg;
-    public RectTransform FunkbarCursorRect;
 
     //[Header("PlayersStateBar elements")]
 
@@ -63,8 +66,6 @@ public class Ma_UiManager : MonoBehaviour
         // Funkbar elements
         FunkbarFillImg = GameObject.Find("Funkbar_Fill").GetComponent<Image>();
         FunkbarFillRect = GameObject.Find("Funkbar_Fill").GetComponent<RectTransform>();
-        FunkbarCursorImg = GameObject.Find("Funkbar_Cursor").GetComponent<Image>();
-        FunkbarCursorRect = GameObject.Find("Funkbar_Cursor").GetComponent<RectTransform>();
 
         // PlayerStateBar elements
 
@@ -227,9 +228,7 @@ public class Ma_UiManager : MonoBehaviour
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        FunkbarFillImg.DOFillAmount(funkPercentage, 0.2f);
-        //FunkbarCursorRect.DOAnchorPos(new Vector2(FunkbarFillRect.sizeDelta.x * FunkbarFillImg.fillAmount, FunkbarCursorRect.anchoredPosition.y), 0.2f, false);
-        FunkbarCursorRect.anchoredPosition = new Vector2(FunkbarFillRect.sizeDelta.x * FunkbarFillImg.fillAmount, FunkbarCursorRect.anchoredPosition.y);
+        FunkbarFillImg.DOFillAmount(funkPercentage, FunkBarFillSpeed);
     }
 
     // ---------------------
