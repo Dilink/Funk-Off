@@ -355,12 +355,12 @@ public class Ma_UiManager : MonoBehaviour
 
     public void DeployUi(RectTransform uiToDeploy)
     {
-       uiToDeploy.transform.DOMoveX(uiToDeploy.position.x+ 20, 0.1f);
+       uiToDeploy.transform.DOLocalMoveX(uiToDeploy.localPosition.x+ 20, 0.1f);
     }
 
     public void CleanUi(RectTransform uiToClean)
     {
-        uiToClean.transform.DOMoveX(uiToClean.position.x - 20, 0.1f);
+        uiToClean.transform.DOLocalMoveX(uiToClean.localPosition.x - 20, 0.1f);
     }
 
 }
