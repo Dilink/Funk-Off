@@ -45,6 +45,9 @@ public class Ma_UiManager : MonoBehaviour
     public GameObject Loadscreen;
     public RectTransform LoadscreenRect;
 
+    [Header("UiCharacter")]
+    public Image[] AllCharacterUi;
+
     private void Reset()
     {
         // PlayerCards elements
@@ -353,6 +356,16 @@ public class Ma_UiManager : MonoBehaviour
     public void DisplayFX(int emplacement, int fxIndex)
     {
         PatternsbarElements[emplacement].GetComponent<Mb_PatternBarElement>().PlayFX(fxIndex);
+    }
+
+    public void DeployUi(RectTransform uiToDeploy)
+    {
+       uiToDeploy.transform.DOMoveX(uiToDeploy.position.x+ 20, 0.1f);
+    }
+
+    public void CleanUi(RectTransform uiToClean)
+    {
+        uiToClean.transform.DOMoveX(uiToClean.position.x - 20, 0.1f);
     }
 
 }
