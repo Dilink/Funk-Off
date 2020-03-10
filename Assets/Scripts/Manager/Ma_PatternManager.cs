@@ -138,7 +138,6 @@ public class Ma_PatternManager : MonoBehaviour
 
     public void RandomizeCurrentPatterns()
     {
-        print("WALLAH");
         RandomizeList(ref currentPatternsList);
 
         for (int i = 0; i < currentPatternsList.Count(); i++)
@@ -332,8 +331,13 @@ public class Ma_PatternManager : MonoBehaviour
     {
         GameManager.Instance.DisableActing();
         UpdateCancelMarker(indexInList, false);
-        currentPatternsList.RemoveAt(indexInList);
-        currentPatternsList.Add(futurePattern);
+
+        if (indexInList < currentPatternsList.Count())
+        {
+            currentPatternsList.RemoveAt(indexInList);
+            currentPatternsList.Add(futurePattern);
+        }
+
 
         GameManager.Instance.uiManager.RemovePattern(indexInList);
 
@@ -349,7 +353,7 @@ public class Ma_PatternManager : MonoBehaviour
 
         GameManager.Instance.uiManager.RespawnPattern(indexInList);
 
-        if (patternsForCancellation.Contains(currentPatternsList[indexInList]))
+        if (indexInList < currentPatternsList.Count() && patternsForCancellation.Contains(currentPatternsList[indexInList]))
         {
             patternsForCancellation.Remove(currentPatternsList[indexInList]);
         }
