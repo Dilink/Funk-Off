@@ -10,11 +10,11 @@ FBXHeaderExtension:  {
 		Version: 1000
 		Year: 2020
 		Month: 3
-		Day: 6
-		Hour: 14
-		Minute: 53
-		Second: 37
-		Millisecond: 295
+		Day: 10
+		Hour: 10
+		Minute: 32
+		Second: 43
+		Millisecond: 672
 	}
 	Creator: "FBX SDK/FBX Plugins version 2016.1.1"
 	SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
@@ -77,7 +77,7 @@ GlobalSettings:  {
 
 Documents:  {
 	Count: 1
-	Document: 3587390208, "", "Scene" {
+	Document: 121470208, "", "Scene" {
 		Properties70:  {
 			P: "SourceObject", "object", "", ""
 			P: "ActiveAnimStackName", "KString", "", "", ""
@@ -227,7 +227,7 @@ Definitions:  {
 ;------------------------------------------------------------------
 
 Objects:  {
-	Geometry: 3585990656, "Geometry::transform5", "Mesh" {
+	Geometry: 121832448, "Geometry::transform5", "Mesh" {
 		Vertices: *12 {
 			a: -65.6754608154297,27.9952220916748,-64.2650146484375,-65.6754608154297,27.9952049255371,-179.390426635742,-180.800827026367,27.9952049255371,-179.390441894531,-180.800827026367,27.9952220916748,-64.2650299072266
 		} 
@@ -278,7 +278,7 @@ Objects:  {
 			MappingInformationType: "ByPolygonVertex"
 			ReferenceInformationType: "IndexToDirect"
 			UV: *8 {
-				a: 0.999979496002197,0.999979019165039,1.03545190199839e-07,0.999979019165039,0,0,0.999979376792908,1.13462458799767e-16
+				a: -2.38418579101563e-07,-0.999979257583618,-2.38418579101563e-07,1.34110450744629e-07,-0.999979257583618,2.38418579101563e-07,-0.999979257583618,-0.999979138374329
 			} 
 			UVIndex: *4 {
 				a: 0,1,2,3
@@ -477,7 +477,7 @@ Objects:  {
 			}
 		}
 	}
-	Model: 3597249280, "Model::transform5", "Mesh" {
+	Model: 121531136, "Model::transform5", "Mesh" {
 		Version: 232
 		Properties70:  {
 			P: "RotationActive", "bool", "", "",1
@@ -489,7 +489,7 @@ Objects:  {
 		Shading: Y
 		Culling: "CullingOff"
 	}
-	Material: 3585987584, "Material::d.r", "" {
+	Material: 121834496, "Material::d.r", "" {
 		Version: 102
 		ShadingModel: "phong"
 		MultiLayer: 0
@@ -512,13 +512,13 @@ Objects:  {
 Connections:  {
 	
 	;Model::transform5, Model::RootNode
-	C: "OO",3597249280,0
+	C: "OO",121531136,0
 	
 	;Geometry::transform5, Model::transform5
-	C: "OO",3585990656,3597249280
+	C: "OO",121832448,121531136
 	
 	;Material::d.r, Model::transform5
-	C: "OO",3585987584,3597249280
+	C: "OO",121834496,121531136
 }
 ;Takes section
 ;----------------------------------------------------
