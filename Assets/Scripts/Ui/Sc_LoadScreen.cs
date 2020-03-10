@@ -9,6 +9,9 @@ public class Sc_LoadScreen : MonoBehaviour
 {
     public static Sc_LoadScreen Instance;
 
+    [Header("PARAMETERS")]
+    public float transitionTime = 1f;
+
     [Header("Loadscreen elements")]
     public GameObject Loadscreen;
     public RectTransform LoadscreenRect;
@@ -46,7 +49,7 @@ public class Sc_LoadScreen : MonoBehaviour
     {
         SceneManager.LoadScene(sceneToLoad);
         LoadscreenRect.DOAnchorPosX(2225, 0.8f, false);
-        Invoke("EnableOrDisableLoadScreen", 0.8f);
+        Invoke("EnableOrDisableLoadScreen", transitionTime);
     }
 
     // System
