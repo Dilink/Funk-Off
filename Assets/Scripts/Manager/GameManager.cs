@@ -27,6 +27,7 @@ public class GameManager : Singleton<GameManager>
     public Ma_ComboManager comboManager;
     public Ma_TurnManager turnManager;
     public Ma_AIManager aiManager;
+    public Ma_SoundManager soundManager;
     
     [Header("FunkRule")]
     private float _funkAmount = 0.5f;
@@ -278,6 +279,14 @@ public class GameManager : Singleton<GameManager>
         allPlayers = GameObject.FindObjectsOfType<Mb_PlayerController>();
         allTiles = GameObject.FindObjectsOfType<Mb_Tile>();
 
-        GameObject.Find("MainUICanvas").GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        GameObject cameraGo = GameObject.Find("Main Camera");
+        if (!cameraGo)
+        {
+            cameraGo = Camera.main.gameObject;
+        }
+        if (cameraGo)
+        {
+            GameObject.Find("MainUICanvas").GetComponent<Canvas>().worldCamera = cameraGo.GetComponent<Camera>();
+        }
     }
 }

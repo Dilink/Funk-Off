@@ -20,6 +20,8 @@ public class Ma_PatternManager : MonoBehaviour
     public Sc_Pattern futurePattern;
     public readonly int patternCount = 5;
 
+    public bool canForesight = false;
+
     private static System.Random rand = new System.Random();
 
     private void Awake()
@@ -133,18 +135,44 @@ public class Ma_PatternManager : MonoBehaviour
         }
     }
 
+    public void RandomizeCurrentPatterns()
+    {
+        RandomizeList(ref currentPatternsList);
+
+        for (int i = 0; i < currentPatternsList.Count(); i++)
+            UpdateCancelMarker(i, false);
+
+        for (int i = 0; i < patternsForCancellation.Count(); i++)
+            UpdateCancelMarker(currentPatternsList.IndexOf(patternsForCancellation[i]), true);
+    }
+
     private Optional<Tuple<int, Sc_Pattern>> JustCheckGridForPattern()
     {
+        Func<int, Sc_Pattern, Optional<Tuple<int, Sc_Pattern>>> Validation = (index, pattern) => {
+            if (PatternValidation(GameManager.Instance.allTiles, pattern))
+            {
+                GameManager.Instance.comboManager.OnPatternAccomplished(index);
+                return new Optional<Tuple<int, Sc_Pattern>>(new Tuple<int, Sc_Pattern>(index, pattern));
+            }
+            return new Optional<Tuple<int, Sc_Pattern>>();
+        };
+
         // take scene grid and check each pattern if currentPatternsList if it matches
         for (int i = 0; i < currentPatternsList.Count(); i++)
         {
-            Sc_Pattern pattern = currentPatternsList[i];
-            if (PatternValidation(GameManager.Instance.allTiles, pattern))
-            {
-                GameManager.Instance.comboManager.OnPatternAccomplished(i);
-                return new Optional<Tuple<int, Sc_Pattern>>(new Tuple<int, Sc_Pattern>(i, pattern));
-            }
+            var res = Validation(i, currentPatternsList[i]);
+            if (res.HasValue)
+                return res;
         }
+
+        if (canForesight)
+        {
+            // Use last index + 1
+            var res = Validation(currentPatternsList.Count(), futurePattern);
+            if (res.HasValue)
+                return res;
+        }
+
         return new Optional<Tuple<int, Sc_Pattern>>();
     }
 
