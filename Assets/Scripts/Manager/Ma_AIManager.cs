@@ -5,28 +5,34 @@ using System;
 
 public class Ma_AIManager : MonoBehaviour
 {
-
-    /*
-    void PrepAttack()
-    {
-        throw new NotImplementedException();
-    }
-
-    void CancelAttack()
-    {
-        throw new NotImplementedException();
-    }
-
-    void GridModification()
-    {
-        throw new NotImplementedException();
-    }*/
-
-
-
+    Sc_AIPattern oldPatternUsed = null;
+    
     public void ChoosePattern()
     {
+        TileModifier tileModifierExeption = (TileModifier.WalledDown | TileModifier.WalledLeft | TileModifier.WalledRight | TileModifier.WalledUp);
+        List<Vector2> posOfEachPlayer = new List<Vector2>();
+
+        foreach(Mb_PlayerController player in GameManager.Instance.allPlayers)
+        {
+            posOfEachPlayer.Add( new Vector2(player.currentTile.posX, player.currentTile.posZ));
+        }
+
         List<Sc_AIPattern> temporaryList = GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].aiPatterns;
+        foreach (Sc_AIPattern aiPotentialMove in temporaryList)
+        {
+            if (aiPotentialMove == oldPatternUsed)
+            {
+                temporaryList.Remove(aiPotentialMove);
+            }
+            foreach(Vector2 playerCoord in posOfEachPlayer)
+            {
+                if (((aiPotentialMove.Matrix.FromLocation((int )playerCoord.x , (int)playerCoord.y)) | (int) tileModifierExeption) != (int)tileModifierExeption)
+                {
+                    temporaryList.Remove(aiPotentialMove);
+                    break;
+                }
+            }
+        }       
         int randomPattern = UnityEngine.Random.Range(0, temporaryList.Count - 1);
         ApplyPattern(temporaryList[randomPattern]);
     }
