@@ -35,7 +35,7 @@ public class Mb_PlayerController : MonoBehaviour
         Material materialInstance = transform.GetChild(0).GetComponent<MeshRenderer>().material;
         meshMaterial = materialInstance;
         transform.GetChild(0).GetComponent<MeshRenderer>().material = materialInstance;
-        OnDeselection();
+        ResetOutline();
 
     }
 
@@ -304,18 +304,23 @@ public class Mb_PlayerController : MonoBehaviour
     //FEEDBACK
     public void OnSelection()
     {
-        //print("BEfore"+isSelected);
         if (isSelected == false)
         {
-            //print("during"+isSelected);
-
+            SetOutline();
             GameManager.Instance.uiManager.DeployUi(UiAssociated);
-            meshMaterial.SetFloat("_OUTLINE", 0.05f);
+            
         }
         anim.SetTrigger("OnPick");
         isSelected = true;
-        //print("after" + isSelected);
+    }
 
+    void SetOutline()
+    {
+        meshMaterial.SetFloat("_OUTLINE", 0.05f);
+    }
+    void ResetOutline()
+    {
+        meshMaterial.SetFloat("_OUTLINE", 0);
     }
 
     public void OnDeselection()
@@ -324,7 +329,7 @@ public class Mb_PlayerController : MonoBehaviour
         if (isSelected == true)
         {
             GameManager.Instance.uiManager.CleanUi(UiAssociated);
-            meshMaterial.SetFloat("_OUTLINE", 0);
+            ResetOutline();
         }
         isSelected = false;
 
