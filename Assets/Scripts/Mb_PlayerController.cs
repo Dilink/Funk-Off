@@ -75,7 +75,8 @@ public class Mb_PlayerController : MonoBehaviour
         int distanceBetweenTilesZ = Mathf.Abs(directionZ);
         int distanceBetweenTilesXZ = Mathf.Abs(currentTile.posX - tileToMoveTo.posX) + Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
 
-        if(tileToMoveTo.avaible == false && (characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff)
+        if(tileToMoveTo.avaible == false && (characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff &&
+            distanceBetweenTilesXZ ==1)
         {
        
 
@@ -106,7 +107,7 @@ public class Mb_PlayerController : MonoBehaviour
             }
             else if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
                 tileToMoveTo.avaible == true &&
-                distanceBetweenTilesXZ <= 1 &&
+                distanceBetweenTilesXZ <= 1&&
                 GameManager.Instance.canAct == true && 
                 IsNotWalled(tileToMoveTo, directionX, directionZ))
             {
@@ -260,7 +261,7 @@ public class Mb_PlayerController : MonoBehaviour
         }
           
 
-        else if (Mathf.Abs(z)- Mathf.Abs(x) !=0)
+        else 
             CheckFreeMovement(GameManager.Instance.GetTile(x, z));
     }
 

@@ -150,6 +150,7 @@ public class Mb_Tile : MonoBehaviour
 
         if ((tileProperties.type & TileModifier.Ice) == TileModifier.Ice)
         {
+            print("Iced");
             playerOnTile.Drift();
 
         }
