@@ -53,7 +53,9 @@ public class Mb_PlayerController : MonoBehaviour
         currentTile.setOccupent(this);
         currentTile.avaible = false;
         UpdateVelocity();
-        //bouger le joueur                                               //declenchement parametre de la tuile
+        //bouger le joueur    
+        //declenchement parametre de la tuile
+        GameManager.Instance.patternManager.SetLastPlayerMove(this);
         transform.DOMove(tileToMoveTo.transform.position + new Vector3(0,.5f,0), .33f,false).OnComplete(OnMoveCallBack);
     } 
 
@@ -81,13 +83,13 @@ public class Mb_PlayerController : MonoBehaviour
        
 
             if (GameManager.Instance.GetTile(Mathf.Clamp(currentTile.posX + directionX * 2, -1,1), Mathf.Clamp(currentTile.posZ + directionZ * 2,-1,1)).avaible == true &&
-                GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
-                 IsNotWalled(GameManager.Instance.GetTile(Mathf.Clamp(currentTile.posX + directionX * 2, -1, 1), Mathf.Clamp(currentTile.posZ + directionZ * 2, -1, 1)), directionX, directionZ))
+                GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost)
             {
                     GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
                     Move(GameManager.Instance.GetTile(currentTile.posX + directionX * 2, currentTile.posZ + directionZ * 2));  
             }
         }
+
         else
         {
             if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) == CharacterSkills.Swift && 
@@ -290,10 +292,7 @@ public class Mb_PlayerController : MonoBehaviour
 
     void CheckPatternCallBack()
     {
-        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Finisher) == CharacterSkills.Finisher)
-            GameManager.Instance.patternManager.CheckGridForPatternAndReact(0.05f);
-        else
-            GameManager.Instance.patternManager.CheckGridForPatternAndReact(0);
+       GameManager.Instance.patternManager.CheckGridForPatternAndReact();
     }
 
     void UpdateVelocity()
