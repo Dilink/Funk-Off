@@ -10,11 +10,11 @@ FBXHeaderExtension:  {
 		Version: 1000
 		Year: 2020
 		Month: 3
-		Day: 6
-		Hour: 14
-		Minute: 53
-		Second: 34
-		Millisecond: 795
+		Day: 10
+		Hour: 10
+		Minute: 32
+		Second: 41
+		Millisecond: 419
 	}
 	Creator: "FBX SDK/FBX Plugins version 2016.1.1"
 	SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
@@ -77,7 +77,7 @@ GlobalSettings:  {
 
 Documents:  {
 	Count: 1
-	Document: 3587385088, "", "Scene" {
+	Document: 121470208, "", "Scene" {
 		Properties70:  {
 			P: "SourceObject", "object", "", ""
 			P: "ActiveAnimStackName", "KString", "", "", ""
@@ -227,7 +227,7 @@ Definitions:  {
 ;------------------------------------------------------------------
 
 Objects:  {
-	Geometry: 3585997312, "Geometry::transform4", "Mesh" {
+	Geometry: 121836032, "Geometry::transform4", "Mesh" {
 		Vertices: *12 {
 			a: 57.7705268859863,27.9952163696289,-64.2649917602539,57.7705268859863,27.9951992034912,-179.390411376953,-57.3548431396484,27.9951992034912,-179.390426635742,-57.3548431396484,27.9952163696289,-64.265007019043
 		} 
@@ -278,7 +278,7 @@ Objects:  {
 			MappingInformationType: "ByPolygonVertex"
 			ReferenceInformationType: "IndexToDirect"
 			UV: *8 {
-				a: 0.999979496002197,0.999978840351105,2.07090351977968e-07,0.999978840351105,0,0,0.999979257583618,1.13462458799767e-16
+				a: -2.98023223876953e-07,-0.999979138374329,-2.98023223876953e-07,1.19209289550781e-07,-0.999979138374329,3.27825546264648e-07,-0.999979138374329,-0.99997889995575
 			} 
 			UVIndex: *4 {
 				a: 0,1,2,3
@@ -477,7 +477,7 @@ Objects:  {
 			}
 		}
 	}
-	Model: 3598330624, "Model::transform4", "Mesh" {
+	Model: 222243584, "Model::transform4", "Mesh" {
 		Version: 232
 		Properties70:  {
 			P: "RotationActive", "bool", "", "",1
@@ -489,7 +489,7 @@ Objects:  {
 		Shading: Y
 		Culling: "CullingOff"
 	}
-	Material: 3585991168, "Material::d.m", "" {
+	Material: 121835520, "Material::d.m", "" {
 		Version: 102
 		ShadingModel: "phong"
 		MultiLayer: 0
@@ -512,13 +512,13 @@ Objects:  {
 Connections:  {
 	
 	;Model::transform4, Model::RootNode
-	C: "OO",3598330624,0
+	C: "OO",222243584,0
 	
 	;Geometry::transform4, Model::transform4
-	C: "OO",3585997312,3598330624
+	C: "OO",121836032,222243584
 	
 	;Material::d.m, Model::transform4
-	C: "OO",3585991168,3598330624
+	C: "OO",121835520,222243584
 }
 ;Takes section
 ;----------------------------------------------------

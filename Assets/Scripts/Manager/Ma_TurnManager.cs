@@ -35,7 +35,7 @@ public class Ma_TurnManager : MonoBehaviour
     {
         GameManager.Instance.comboManager.ClearAllMultiplierUi();
         // Pass to the next turn
-        if (CurrentTurn < MaxTurn)
+        if (CurrentTurn <= MaxTurn)
         {
             CurrentTurn++;
 
@@ -45,15 +45,23 @@ public class Ma_TurnManager : MonoBehaviour
             {
                 GameManager.Instance.allPlayers[i].ResetMove();
             }*/
-            GameManager.Instance.patternManager.OnTurnEnd();
-            GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
-            GameManager.Instance.ResetMove();
-            GameManager.Instance.comboManager.ResetMultiplier();
 
-            //AI PART A CHANGER
-            GameManager.Instance.aiManager.ChoosePattern();
+            // If not game end
+            if (CurrentTurn <= MaxTurn)
+            {
+                GameManager.Instance.patternManager.OnTurnEnd();
+                GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
+                GameManager.Instance.ResetMove();
+                GameManager.Instance.comboManager.ResetMultiplier();
+
+                //AI PART A CHANGER
+                GameManager.Instance.aiManager.ChoosePattern();
+            }
+            else
+            {
+                GameManager.Instance.patternManager.OnTurnEnd(true);
+            }
         }
-
     }
 
     public void OnNextRound() {
@@ -64,5 +72,10 @@ public class Ma_TurnManager : MonoBehaviour
         GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
         GameManager.Instance.ResetMove();
         GameManager.Instance.comboManager.ResetMultiplier();
+    }
+
+    public bool IsLastRoundFinished()
+    {
+        return CurrentTurn > MaxTurn;
     }
 }

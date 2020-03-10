@@ -49,6 +49,8 @@ public class GameManager : Singleton<GameManager>
     public Sc_LevelConfig levelConfig;
 
     public int currentRoundCountFinished = 0;
+    [ReadOnly]
+    public bool isGameFinished = false;
 
     private void Start()
     {     
@@ -100,15 +102,13 @@ public class GameManager : Singleton<GameManager>
 
         if (Physics.Raycast(ray, out hit,Mathf.Infinity,1 << 9))
         {
-            if (currentPlayerSelectionned != null)
+            if (currentPlayerSelectionned != null && currentPlayerSelectionned != hit.collider.GetComponent<Mb_PlayerController>())
                 currentPlayerSelectionned.OnDeselection();
             currentPlayerSelectionned = hit.collider.GetComponent<Mb_PlayerController>();
             currentPlayerSelectionned.OnSelection();
 
         }
-        else
-            currentPlayerSelectionned = null;
-
+       
     }
 
     void CastRayTile()
@@ -155,6 +155,7 @@ public class GameManager : Singleton<GameManager>
             moveLeft = Mathf.Clamp(totalMoveReseted + reservedMoves, 0, maxMovesPerTurn);
         else
             moveLeft = totalMoveReseted;
+
         uiManager.UpdateMovesUi(moveLeft, maxMovesPerTurn);
     }
     //PREVIEW
@@ -200,13 +201,13 @@ public class GameManager : Singleton<GameManager>
 
         // VARIATION DU FUUUUUUUUUUUUNK
 
-        Debug.Log("funkaddingPlayer " + funkAddingPlayer + " | multiplier value " + comboManager.getFunkMultiplier());
-        FunkVariation((funkAddingPlayer + comboManager.getFunkMultiplier()) * otherMultiplier);
+        FunkVariation((funkAddingPlayer + comboManager.getFunkMultiplier()) + otherMultiplier);
          
-
-        //DECOULEMENT DES PATTERNS
-        patternManager.RotatePattern(indexInList);
-
+        if (!isGameFinished)
+        {
+            //DECOULEMENT DES PATTERNS
+            patternManager.RotatePattern(indexInList);
+        }
     }
 
     //FUNK adding
@@ -245,22 +246,29 @@ public class GameManager : Singleton<GameManager>
         {
             _funkAmount = 0.0f;
             uiManager.DisplayEndgameScreen(false);
+            isGameFinished = true;
         }
         else if (funkAmount > 0.999f)
         {
             currentRoundCountFinished += 1;
-            _funkAmount = 0.5f;
 
             // If there is another round
             if (currentRoundCountFinished < levelConfig.rounds.Count)
             {
+                _funkAmount = 0.5f;
                 turnManager.OnNextRound();
             }
             else
             {
                 _funkAmount = 1.0f;
                 uiManager.DisplayEndgameScreen(true);
+                isGameFinished = true;
             }
+        }
+        else if (turnManager.IsLastRoundFinished())
+        {
+            // Set value to 0 to re-check if game end
+            funkAmount = 0.0f;
         }
     }
 

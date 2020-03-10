@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class Mb_PlayerController : MonoBehaviour
 {
   //  private List<Mb_Tile> tileToGo = new List<Mb_Tile>();
+  [Header("GRID")]
     public Mb_Tile currentTile;
     public Mb_Tile oldTile;
     public Sc_CharacterParameters characterBaseCharacteristics;
@@ -17,6 +19,9 @@ public class Mb_PlayerController : MonoBehaviour
     // private int moveLeft;
     int velX=0, velZ=0;
     Material meshMaterial;
+    [Header("feedBacks")]
+    private bool isSelected=false;
+    [SerializeField] RectTransform UiAssociated;
 
 //ANIM ET FEEDBACKS
 [HideInInspector] public Animator anim;
@@ -30,6 +35,8 @@ public class Mb_PlayerController : MonoBehaviour
         Material materialInstance = transform.GetChild(0).GetComponent<MeshRenderer>().material;
         meshMaterial = materialInstance;
         transform.GetChild(0).GetComponent<MeshRenderer>().material = materialInstance;
+        ResetOutline();
+
     }
 
     private void Move(Mb_Tile tileToMoveTo)
@@ -68,7 +75,8 @@ public class Mb_PlayerController : MonoBehaviour
         int distanceBetweenTilesZ = Mathf.Abs(directionZ);
         int distanceBetweenTilesXZ = Mathf.Abs(currentTile.posX - tileToMoveTo.posX) + Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
 
-        if(tileToMoveTo.avaible == false && (characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff)
+        if(tileToMoveTo.avaible == false && (characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff &&
+            distanceBetweenTilesXZ ==1)
         {
        
 
@@ -83,8 +91,8 @@ public class Mb_PlayerController : MonoBehaviour
         else
         {
             if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) == CharacterSkills.Swift && 
-                distanceBetweenTilesX <= 1 &&
-                distanceBetweenTilesZ <= 1)
+                distanceBetweenTilesX == 1 &&
+                distanceBetweenTilesZ == 1)
             {
                 if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
                 distanceBetweenTilesX <= 1 && 
@@ -99,7 +107,7 @@ public class Mb_PlayerController : MonoBehaviour
             }
             else if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
                 tileToMoveTo.avaible == true &&
-                distanceBetweenTilesXZ <= 1 &&
+                distanceBetweenTilesXZ <= 1&&
                 GameManager.Instance.canAct == true && 
                 IsNotWalled(tileToMoveTo, directionX, directionZ))
             {
@@ -115,7 +123,6 @@ public class Mb_PlayerController : MonoBehaviour
     {
         bool temporaryBool = true;
 
-        print("DirectionX" + directionX);
         if (Mathf.Abs(directionX) + Mathf.Abs(directionZ) == 2)
         {
             int directionToCheckX = tileToCheck.posX - currentTile.posX;
@@ -254,7 +261,7 @@ public class Mb_PlayerController : MonoBehaviour
         }
           
 
-        else if (Mathf.Abs(z)- Mathf.Abs(x) !=0)
+        else 
             CheckFreeMovement(GameManager.Instance.GetTile(x, z));
     }
 
@@ -284,9 +291,9 @@ public class Mb_PlayerController : MonoBehaviour
     void CheckPatternCallBack()
     {
         if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Finisher) == CharacterSkills.Finisher)
-            GameManager.Instance.patternManager.CheckGridForPatternAndReact(1.5f);
+            GameManager.Instance.patternManager.CheckGridForPatternAndReact(0.05f);
         else
-            GameManager.Instance.patternManager.CheckGridForPatternAndReact(1);
+            GameManager.Instance.patternManager.CheckGridForPatternAndReact(0);
     }
 
     void UpdateVelocity()
@@ -298,17 +305,33 @@ public class Mb_PlayerController : MonoBehaviour
     //FEEDBACK
     public void OnSelection()
     {
-        print(meshMaterial);
-        //meshMaterial.set("SWITCH_OUTLINE", 0.1f);
+        if (isSelected == false)
+        {
+            SetOutline();
+            GameManager.Instance.uiManager.DeployUi(UiAssociated);
+            
+        }
         anim.SetTrigger("OnPick");
+        isSelected = true;
+    }
 
+    void SetOutline()
+    {
+        meshMaterial.SetFloat("_OUTLINE", 0.05f);
+    }
+    void ResetOutline()
+    {
+        meshMaterial.SetFloat("_OUTLINE", 0);
     }
 
     public void OnDeselection()
     {
-        print(meshMaterial);
-
-        meshMaterial.SetFloat("SWITCH_OUTLINE", 1);
+        if (isSelected == true)
+        {
+            GameManager.Instance.uiManager.CleanUi(UiAssociated);
+            ResetOutline();
+        }
+        isSelected = false;
 
     }
 }
