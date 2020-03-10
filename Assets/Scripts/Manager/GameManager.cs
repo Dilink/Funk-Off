@@ -13,6 +13,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] int maxMovesPerTurn;
     private int moveLeft;
     int totalMoveReseted = 0;
+    [HideInInspector] public bool isTheFirstMove = true;
 
     public Mb_PlayerController currentPlayerSelectionned;
     public Mb_PlayerController[] allPlayers;
@@ -157,6 +158,7 @@ public class GameManager : Singleton<GameManager>
 
     public void ResetMove()
     {
+        isTheFirstMove = true;
         int reservedMoves = moveLeft;
         if (canStore)
             moveLeft = Mathf.Clamp(totalMoveReseted + reservedMoves, 0, maxMovesPerTurn);

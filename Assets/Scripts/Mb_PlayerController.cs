@@ -36,6 +36,10 @@ public class Mb_PlayerController : MonoBehaviour
         meshMaterial = materialInstance;
         transform.GetChild(0).GetComponent<MeshRenderer>().material = materialInstance;
         ResetOutline();
+        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Foresight) == CharacterSkills.Foresight)
+        {
+            GameManager.Instance.patternManager.canForesight = true;
+        }
 
     }
 
@@ -76,6 +80,13 @@ public class Mb_PlayerController : MonoBehaviour
         currentTile.OnMove(false);
         GameManager.Instance.EnableActing();
         CheckPatternCallBack();
+
+        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.RandomizerFirstMove) == CharacterSkills.RandomizerFirstMove && 
+            GameManager.Instance.isTheFirstMove == true)
+        {
+            GameManager.Instance.isTheFirstMove = false;
+            GameManager.Instance.patternManager.RandomizeCurrentPatterns();
+        }
 
     }
 
