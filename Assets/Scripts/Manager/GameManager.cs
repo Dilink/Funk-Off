@@ -148,6 +148,12 @@ public class GameManager : Singleton<GameManager>
         uiManager.UpdateMovesUi(moveLeft, movePerTurn);
     }
 
+    public void IncreaseMovesLeft(int toDecrease)
+    {
+        moveLeft += toDecrease;
+        uiManager.UpdateMovesUi(moveLeft, movePerTurn);
+    }
+
     public void ResetMove()
     {
         int reservedMoves = moveLeft;
@@ -193,7 +199,7 @@ public class GameManager : Singleton<GameManager>
         return null;
     }
 
-    public void OnPatternResolved(int indexInList, float otherMultiplier,int danceToTrigger)
+    public void OnPatternResolved(int indexInList, int danceToTrigger, CharacterSkills allCharacterSkills)
     {
         //ANIM ET AUTRE FEEDBACKS DE COMPLETION
         foreach (Mb_PlayerController player in allPlayers)
@@ -201,8 +207,12 @@ public class GameManager : Singleton<GameManager>
 
         // VARIATION DU FUUUUUUUUUUUUNK
 
-        FunkVariation((funkAddingPlayer + comboManager.getFunkMultiplier()) + otherMultiplier);
+        FunkVariation(funkAddingPlayer + comboManager.getFunkMultiplier());
          
+        if ((allCharacterSkills & CharacterSkills.FinisherMove) == CharacterSkills.FinisherMove)
+        {
+            IncreaseMovesLeft(1);
+        }
         if (!isGameFinished)
         {
             //DECOULEMENT DES PATTERNS

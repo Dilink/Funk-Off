@@ -19,6 +19,7 @@ public class Ma_PatternManager : MonoBehaviour
     [ReadOnly]
     public Sc_Pattern futurePattern;
     public readonly int patternCount = 5;
+    [HideInInspector] public Mb_PlayerController lastMovedPlayer=null;
 
     private static System.Random rand = new System.Random();
 
@@ -125,7 +126,7 @@ public class Ma_PatternManager : MonoBehaviour
         var res = JustCheckGridForPattern();
         if (res.HasValue)
         {
-            GameManager.Instance.OnPatternResolved(res.Value.Item1, multiplier, res.Value.Item2.danceToPlay);
+            GameManager.Instance.OnPatternResolved(res.Value.Item1, res.Value.Item2.danceToPlay, lastMovedPlayer.characterBaseCharacteristics.characterSkills);
 
             patternsForCancellation.Remove(res.Value.Item2);
             UpdateCancelMarker(res.Value.Item1, false);
@@ -420,5 +421,10 @@ public class Ma_PatternManager : MonoBehaviour
         }
 
         return new Optional<PatternCategory>(dic.First());
+    }
+
+    public void SetLastPlayerMove(Mb_PlayerController playerToSet)
+    {
+        lastMovedPlayer = playerToSet;
     }
 }
