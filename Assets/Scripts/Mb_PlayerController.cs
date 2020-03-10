@@ -299,7 +299,7 @@ public class Mb_PlayerController : MonoBehaviour
     public void OnSelection()
     {
         print(meshMaterial);
-        meshMaterial.SetFloat("SWITCH_OUTLINE", 0.1f);
+        //meshMaterial.set("SWITCH_OUTLINE", 0.1f);
         anim.SetTrigger("OnPick");
 
     }
