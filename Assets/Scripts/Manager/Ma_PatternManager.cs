@@ -141,7 +141,10 @@ public class Ma_PatternManager : MonoBehaviour
         RandomizeList(ref currentPatternsList);
 
         for (int i = 0; i < currentPatternsList.Count(); i++)
+        {
+            GameManager.Instance.uiManager.UpdatePatternsBarIcon(i, currentPatternsList[i]);
             UpdateCancelMarker(i, false);
+        }
 
         for (int i = 0; i < patternsForCancellation.Count(); i++)
             UpdateCancelMarker(currentPatternsList.IndexOf(patternsForCancellation[i]), true);
@@ -454,5 +457,12 @@ public class Ma_PatternManager : MonoBehaviour
     public void SetLastPlayerMove(Mb_PlayerController playerToSet)
     {
         lastMovedPlayer = playerToSet;
+    }
+
+    public void CutRandomPattern()
+    {
+        int index = rand.Next(currentPatternsList.Count());
+        currentPatternsList.RemoveAt(index);
+        currentPatternsList.Add(PickPattern());
     }
 }
