@@ -31,13 +31,11 @@ public class Ma_PatternManager : MonoBehaviour
 
     private void OnTurnStart()
     {
-
-
         patternsForCancellation.Clear();
 
         for (int j = 0; j < currentPatternsList.Count; j++)
         {
-            UpdateCancelMarker(j);
+            UpdateCancelMarker(j, false);
         }
 
         var level = GameManager.Instance.levelConfig;
@@ -49,19 +47,13 @@ public class Ma_PatternManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             var pattern = queue.Dequeue();
-            UpdateCancelMarker(currentPatternsList.IndexOf(pattern));
+            UpdateCancelMarker(currentPatternsList.IndexOf(pattern), true);
             patternsForCancellation.Add(pattern);
-        }
-
-        for (int j = 0; j < currentPatternsList.Count; j++)
-        {
-            UpdateCancelMarker(j);
         }
     }
 
-    private void UpdateCancelMarker(int index)
+    private void UpdateCancelMarker(int index, bool flag = false)
     {
-        bool flag = patternsForCancellation.Contains(currentPatternsList[index]);
         GameManager.Instance.uiManager.UpdateCancelMarkerIcon(index, flag);
     }
 
@@ -136,7 +128,7 @@ public class Ma_PatternManager : MonoBehaviour
             GameManager.Instance.OnPatternResolved(res.Value.Item1, multiplier, res.Value.Item2.danceToPlay);
 
             patternsForCancellation.Remove(res.Value.Item2);
-            UpdateCancelMarker(res.Value.Item1);
+            UpdateCancelMarker(res.Value.Item1, false);
             return;
         }
     }
@@ -306,9 +298,9 @@ public class Ma_PatternManager : MonoBehaviour
     private IEnumerator RotatePatternCoroutine(int indexInList)
     {
         GameManager.Instance.DisableActing();
+        UpdateCancelMarker(indexInList, false);
         currentPatternsList.RemoveAt(indexInList);
         currentPatternsList.Add(futurePattern);
-        UpdateCancelMarker(indexInList);
 
         GameManager.Instance.uiManager.RemovePattern(indexInList);
 
