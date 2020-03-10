@@ -326,7 +326,6 @@ public class Mb_PlayerController : MonoBehaviour
 
     public void OnDeselection()
     {
-        print("Deselect");
         if (isSelected == true)
         {
             GameManager.Instance.uiManager.CleanUi(UiAssociated);
