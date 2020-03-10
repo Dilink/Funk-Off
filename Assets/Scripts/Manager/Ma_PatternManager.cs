@@ -138,6 +138,7 @@ public class Ma_PatternManager : MonoBehaviour
 
     public void RandomizeCurrentPatterns()
     {
+        print("WALLAH");
         RandomizeList(ref currentPatternsList);
 
         for (int i = 0; i < currentPatternsList.Count(); i++)

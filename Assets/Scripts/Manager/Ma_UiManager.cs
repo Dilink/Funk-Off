@@ -108,7 +108,7 @@ public class Ma_UiManager : MonoBehaviour
         moveSeq.Append(TurnsbarText.transform.DOScale(new Vector3(1, 1, 1), 0.1f));
         moveSeq.Append(TurnsbarText.transform.DORotate(new Vector3(0, 0, 0), 0.1f));
 
-        TurnsbarText.text = currentTurn + "/" + maxTurn;
+        TurnsbarText.text = (maxTurn - currentTurn).ToString();
     }
 
     // ---------------------
