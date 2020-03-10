@@ -21,5 +21,6 @@ public enum CharacterSkills
 {
     Swift = 1 << 0,
     JumpOff = 1 << 1,
-    Finisher = 1 << 2
+    FinisherMove = 1 << 2,
+    Absorber = 1<< 3
 }
