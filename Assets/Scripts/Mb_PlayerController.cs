@@ -65,7 +65,7 @@ public class Mb_PlayerController : MonoBehaviour
 
     void OnMoveCallBack()
     {
-        TileModifier allTileModifierButWalls = (TileModifier.Damaging | TileModifier.Ice | TileModifier.Slow | TileModifier.Tp);
+        TileModifier allTileModifierButWalls = (TileModifier.Destroyer | TileModifier.Ice | TileModifier.Slow | TileModifier.Tp);
 
         if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Absorber) == CharacterSkills.Absorber &&
             (currentTile.tileProperties.type & allTileModifierButWalls)!=0)

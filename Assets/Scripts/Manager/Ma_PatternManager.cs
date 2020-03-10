@@ -322,12 +322,12 @@ public class Ma_PatternManager : MonoBehaviour
         return stock;
     }*/
 
-    public void RotatePattern(int indexInList)
+    public void RotatePattern(int indexInList, bool isPatternDestroyed= false)
     {
-        StartCoroutine(RotatePatternCoroutine(indexInList));
+        StartCoroutine(RotatePatternCoroutine(indexInList, isPatternDestroyed));
     }
 
-    private IEnumerator RotatePatternCoroutine(int indexInList)
+    private IEnumerator RotatePatternCoroutine(int indexInList, bool isPatternDestroyed)
     {
         GameManager.Instance.DisableActing();
         UpdateCancelMarker(indexInList, false);
@@ -338,8 +338,7 @@ public class Ma_PatternManager : MonoBehaviour
             currentPatternsList.Add(futurePattern);
         }
 
-
-        GameManager.Instance.uiManager.RemovePattern(indexInList);
+        GameManager.Instance.uiManager.RemovePattern(indexInList, isPatternDestroyed);
 
         yield return new WaitForSeconds(0.6f);
 
@@ -362,7 +361,7 @@ public class Ma_PatternManager : MonoBehaviour
         futurePattern = PickPattern();
         GameManager.Instance.uiManager.UpdatePatternsBarIcon(currentPatternsList.Count(), futurePattern);
 
-        GameManager.Instance.comboManager.OnNewTurn(indexInList);
+        GameManager.Instance.comboManager.OnNewTurn(indexInList, isPatternDestroyed);
         GameManager.Instance.EnableActing();
     }
 
@@ -469,5 +468,16 @@ public class Ma_PatternManager : MonoBehaviour
         int index = rand.Next(currentPatternsList.Count());
         currentPatternsList.RemoveAt(index);
         currentPatternsList.Add(PickPattern());
+
+        UpdateCancelMarker(index, false);
+
+        patternsForCancellation.Remove(currentPatternsList[index]);
+
+        for (int i = 0; i < currentPatternsList.Count(); i++)
+        {
+            GameManager.Instance.uiManager.UpdatePatternsBarIcon(i, currentPatternsList[i]);
+        }
+
+        RotatePattern(index, true);
     }
 }
