@@ -102,15 +102,13 @@ public class GameManager : Singleton<GameManager>
 
         if (Physics.Raycast(ray, out hit,Mathf.Infinity,1 << 9))
         {
-            if (currentPlayerSelectionned != null)
+            if (currentPlayerSelectionned != null && currentPlayerSelectionned != hit.collider.GetComponent<Mb_PlayerController>())
                 currentPlayerSelectionned.OnDeselection();
             currentPlayerSelectionned = hit.collider.GetComponent<Mb_PlayerController>();
             currentPlayerSelectionned.OnSelection();
 
         }
-        else
-            currentPlayerSelectionned = null;
-
+       
     }
 
     void CastRayTile()
@@ -157,6 +155,7 @@ public class GameManager : Singleton<GameManager>
             moveLeft = Mathf.Clamp(totalMoveReseted + reservedMoves, 0, maxMovesPerTurn);
         else
             moveLeft = totalMoveReseted;
+
         uiManager.UpdateMovesUi(moveLeft, maxMovesPerTurn);
     }
     //PREVIEW

@@ -18,7 +18,6 @@ public class Mb_PlayerCard : MonoBehaviour
     [TextArea()]
     public string powerDesc;
 
-    public Mb_PlayerController playerAssigned;
 
     public void UpdateMoveLeftUi(int MoveLeft, int MaxMove)
     {
