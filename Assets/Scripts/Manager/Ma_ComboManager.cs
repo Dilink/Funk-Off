@@ -44,35 +44,38 @@ public class Ma_ComboManager : MonoBehaviour
     public void OnNewTurn(int indexOfPatern)
     {
         GameManager.Instance.uiManager.RemoveAllMultiplierIcon();
-      
-        comboedPatternSpot = indexOfPatern;
 
         int multiplierIndex = -1;
 
-        if (funkBonus < Multipliers[0])
+        if(indexOfPatern == comboedPatternSpot)
+        {
+            if (funkBonus < Multipliers[0])
+            {
+                multiplierIndex = 0;
+            }
+            else if (funkBonus < Multipliers[1])
+            {
+                multiplierIndex = 1;
+            }
+            else if (funkBonus < Multipliers[2])
+            {
+                multiplierIndex = 2;
+            }
+            else if (funkBonus < Multipliers[3])
+            {
+                multiplierIndex = 3;
+            }
+            else if (funkBonus < 100)
+            {
+                multiplierIndex = 4;
+            }
+        }
+        else
         {
             multiplierIndex = 0;
         }
-        else if (funkBonus < Multipliers[1])
-        {
-            multiplierIndex = 1;
-        }
-        else if (funkBonus < Multipliers[2])
-        {
-            multiplierIndex = 2;
-        }
-        else if (funkBonus < Multipliers[3])
-        {
-            multiplierIndex = 3;
-        }
-        else if (funkBonus < 100)
-        {
-            multiplierIndex = 4;
-        }
 
-       
-
-
+        comboedPatternSpot = indexOfPatern;
 
         if (multiplierIndex > -1)
         {
