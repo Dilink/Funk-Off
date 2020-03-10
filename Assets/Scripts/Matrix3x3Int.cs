@@ -115,6 +115,33 @@ public class Matrix3x3Int : IEquatable<Matrix3x3Int>
         }
     }
 
+    // Access element at [row, column].
+    public int FromLocation(int x, int z)
+    {
+        if (x == -1 && z == 1)
+            return this[0];
+        if (x == 0 && z == 1)
+            return this[1];
+        if (x == 1 && z == 1)
+            return this[2];
+
+        if (x == -1 && z == 0)
+            return this[3];
+        if (x == 0 && z == 0)
+            return this[4];
+        if (x == 1 && z == 0)
+            return this[5];
+
+        if (x == -1 && z == -1)
+            return this[6];
+        if (x == 0 && z == -1)
+            return this[7];
+        if (x == 1 && z == -1)
+            return this[8];
+
+        throw new IndexOutOfRangeException("Invalid location!");
+    }
+
     public Vector2Int GetLocation(int index)
     {
         switch (index)
@@ -131,5 +158,10 @@ public class Matrix3x3Int : IEquatable<Matrix3x3Int>
             default:
                 throw new IndexOutOfRangeException("Invalid matrix index!");
         }
+    }
+
+    public override string ToString()
+    {
+        return m00 + ", " + m10 + ", " + m20 + "\n" + m01 + ", " + m11 + ", " + m21 + "\n" + m02 + ", " + m12 + ", " + m22;
     }
 }

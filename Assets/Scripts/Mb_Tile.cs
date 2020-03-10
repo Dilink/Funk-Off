@@ -140,7 +140,7 @@ public class Mb_Tile : MonoBehaviour
     {
         if ((tileProperties.type & TileModifier.Damaging) == TileModifier.Damaging)
         {
-            GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal());
+            GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal()/3);
         }
 
         if ((tileProperties.type & TileModifier.Tp) == TileModifier.Tp && fromTP == false)
