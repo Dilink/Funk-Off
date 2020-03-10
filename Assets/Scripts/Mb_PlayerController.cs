@@ -16,7 +16,7 @@ public class Mb_PlayerController : MonoBehaviour
     //[SerializeField] int basicMoves = 3;
     // private int moveLeft;
     int velX=0, velZ=0;
-
+    Material meshMaterial;
 
 //ANIM ET FEEDBACKS
 [HideInInspector] public Animator anim;
@@ -26,7 +26,10 @@ public class Mb_PlayerController : MonoBehaviour
     {
         // ResetMove();
         oldTile = currentTile;
-         anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
+        Material materialInstance = transform.GetChild(0).GetComponent<MeshRenderer>().material;
+        meshMaterial = materialInstance;
+        transform.GetChild(0).GetComponent<MeshRenderer>().material = materialInstance;
     }
 
     private void Move(Mb_Tile tileToMoveTo)
@@ -292,5 +295,21 @@ public class Mb_PlayerController : MonoBehaviour
         velZ = currentTile.posZ - oldTile.posZ;
     }
 
+    //FEEDBACK
+    public void OnSelection()
+    {
+        print(meshMaterial);
+        //meshMaterial.set("SWITCH_OUTLINE", 0.1f);
+        anim.SetTrigger("OnPick");
+
+    }
+
+    public void OnDeselection()
+    {
+        print(meshMaterial);
+
+        meshMaterial.SetFloat("SWITCH_OUTLINE", 1);
+
+    }
 }
 

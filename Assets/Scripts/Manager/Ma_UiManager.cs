@@ -317,4 +317,10 @@ public class Ma_UiManager : MonoBehaviour
             PauseMenu.SetActive(true);
         }       
     }
+
+    public void DisplayFX(int emplacement, int fxIndex)
+    {
+        PatternsbarElements[emplacement].GetComponent<Mb_PatternBarElement>().PlayFX(fxIndex);
+    }
+
 }

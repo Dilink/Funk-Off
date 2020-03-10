@@ -100,7 +100,11 @@ public class GameManager : Singleton<GameManager>
 
         if (Physics.Raycast(ray, out hit,Mathf.Infinity,1 << 9))
         {
+            if (currentPlayerSelectionned != null)
+                currentPlayerSelectionned.OnDeselection();
             currentPlayerSelectionned = hit.collider.GetComponent<Mb_PlayerController>();
+            currentPlayerSelectionned.OnSelection();
+
         }
         else
             currentPlayerSelectionned = null;
