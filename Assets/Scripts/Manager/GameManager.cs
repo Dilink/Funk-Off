@@ -267,6 +267,11 @@ public class GameManager : Singleton<GameManager>
                 isGameFinished = true;
             }
         }
+        else if (turnManager.IsLastRoundFinished())
+        {
+            // Set value to 0 to re-check if game end
+            funkAmount = 0.0f;
+        }
     }
 
     [Button(ButtonSizes.Medium), GUIColor(0.89f, 0.14f, 0.14f)]
