@@ -88,9 +88,22 @@ public class Ma_UiManager : MonoBehaviour
     // TURNSBAR FUNCTIONS
     // ---------------------
 
+    public void TESTUpdateTurns()
+    {
+        UpdateTurnsbarText(1, 1);
+    }
+
     // Update the text of the Turnsbar to display current turn / Max turns
     public void UpdateTurnsbarText(int currentTurn, int maxTurn)
     {
+        //Animation
+        Sequence moveSeq = DOTween.Sequence();
+        moveSeq.Append(TurnsbarText.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.1f));
+        moveSeq.Append(TurnsbarText.transform.DORotate(new Vector3(0, 0, 20), 0.1f));
+        moveSeq.PrependInterval(0.1f);
+        moveSeq.Append(TurnsbarText.transform.DOScale(new Vector3(1, 1, 1), 0.1f));
+        moveSeq.Append(TurnsbarText.transform.DORotate(new Vector3(0, 0, 0), 0.1f));
+
         TurnsbarText.text = currentTurn + "/" + maxTurn;
     }
 
@@ -211,16 +224,30 @@ public class Ma_UiManager : MonoBehaviour
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        FunkbarFillImg.fillAmount = funkPercentage;
+        FunkbarFillImg.DOFillAmount(funkPercentage, 0.2f);
+        //FunkbarCursorRect.DOAnchorPos(new Vector2(FunkbarFillRect.sizeDelta.x * FunkbarFillImg.fillAmount, FunkbarCursorRect.anchoredPosition.y), 0.2f, false);
         FunkbarCursorRect.anchoredPosition = new Vector2(FunkbarFillRect.sizeDelta.x * FunkbarFillImg.fillAmount, FunkbarCursorRect.anchoredPosition.y);
     }
 
     // ---------------------
     // CHARACTERS UI FUNCTIONS
     // ---------------------
+    public void TESTUpdateMoves()
+    {
+        UpdateMovesUi(1, 1);
+    }
 
     public void UpdateMovesUi(int movesReturning, int moveForTheTurn)
     {
+        //Animation
+        Sequence moveSeq = DOTween.Sequence();
+        moveSeq.Append(moveLeftText.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.1f));
+        moveSeq.Append(moveLeftText.transform.DORotate(new Vector3(0,0, 20), 0.1f));
+        moveSeq.PrependInterval(0.1f);
+        moveSeq.Append(moveLeftText.transform.DOScale(new Vector3(1, 1, 1), 0.1f));
+        moveSeq.Append(moveLeftText.transform.DORotate(new Vector3(0, 0, 0), 0.1f));
+
+        // Change the text
         moveLeftText.text = movesReturning + " / " + moveForTheTurn;
     }
 
