@@ -146,4 +146,9 @@ public class Matrix3x3Bool : IEquatable<Matrix3x3Bool>
        
         return indices.ToArray();
     }
+
+    public override string ToString()
+    {
+        return m00 + ", " + m10 + ", " + m20 + "\n" + m01 + ", " + m11 + ", " + m21 + "\n" + m02 + ", " + m12 + ", " + m22;
+    }
 }
