@@ -76,10 +76,6 @@ public class Ma_UiManager : MonoBehaviour
         EndGameScreen = GameObject.Find("EndGameScreen");
         EndGameScreen_winRect = GameObject.Find("EndGameScreen_Win").GetComponent<RectTransform>();
         EndGameScreen_looseRect = GameObject.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
-
-        // Loadscreen elements
-        Loadscreen = GameObject.Find("LoadScreen");
-        LoadscreenRect = Loadscreen.GetComponent<RectTransform>();
 }
 
     private void Awake()
