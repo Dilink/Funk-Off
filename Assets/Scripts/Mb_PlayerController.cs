@@ -236,7 +236,7 @@ public class Mb_PlayerController : MonoBehaviour
             }
             else if (directionZ == -1)
             {
-                if ((currentTile.tileProperties.type & TileModifier.WalledUp) != 0)
+                if ((currentTile.tileProperties.type & TileModifier.WalledDown) != 0)
                 {
                     temporaryBool = false;
                 }
@@ -244,7 +244,7 @@ public class Mb_PlayerController : MonoBehaviour
             }
             else if (directionZ == 1)
             {
-                if ((currentTile.tileProperties.type & TileModifier.WalledDown) != 0)
+                if ((currentTile.tileProperties.type & TileModifier.WalledUp) != 0)
                 {
                     temporaryBool = false;
                 }
