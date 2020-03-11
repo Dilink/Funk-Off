@@ -19,6 +19,8 @@ public class Mb_Tile : MonoBehaviour
     [Header("Feedback")]
     [SerializeField] GameObject feedBackWallUp;
     [SerializeField] GameObject feedBackWallRight;
+    [SerializeField] ParticleSystem onCompleteFeedBack;
+
 
     private MeshRenderer meshRenderer;
     private Material tileMaterial;
@@ -173,7 +175,14 @@ public class Mb_Tile : MonoBehaviour
     {
         playerOnTile = player;
     }
+
+    public void OnPatternCompleteFeedback()
+    {
+        onCompleteFeedBack.Play();
+    }
 }
+
+
 [System.Serializable]
 public struct Modifier 
 {

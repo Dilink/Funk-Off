@@ -21,7 +21,7 @@ public class Mb_PlayerController : MonoBehaviour
     Material meshMaterial;
     [Header("feedBacks")]
     private bool isSelected=false;
-    [SerializeField] RectTransform UiAssociated;
+    [SerializeField] Mb_PlayerCard UiAssociated;
 
 //ANIM ET FEEDBACKS
 [HideInInspector] public Animator anim;
@@ -102,8 +102,8 @@ public class Mb_PlayerController : MonoBehaviour
         int directionX = Mathf.Clamp(tileToMoveTo.posX - currentTile.posX,-1,1);
         int directionZ = Mathf.Clamp(tileToMoveTo.posZ - currentTile.posZ,-1,1);
 
-        int distanceBetweenTilesX = Mathf.Abs(directionX);
-        int distanceBetweenTilesZ = Mathf.Abs(directionZ);
+        int distanceBetweenTilesX = Mathf.Abs(currentTile.posX - tileToMoveTo.posX);
+        int distanceBetweenTilesZ = Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
         int distanceBetweenTilesXZ = Mathf.Abs(currentTile.posX - tileToMoveTo.posX) + Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
 
         if(tileToMoveTo.avaible == false && (characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff &&
@@ -121,13 +121,14 @@ public class Mb_PlayerController : MonoBehaviour
 
         else
         {
-            if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) == CharacterSkills.Swift && 
+            if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) == CharacterSkills.Swift &&
                 distanceBetweenTilesX == 1 &&
                 distanceBetweenTilesZ == 1)
             {
+                print(distanceBetweenTilesX);
+                print(distanceBetweenTilesZ);
+
                 if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
-                distanceBetweenTilesX <= 1 && 
-                distanceBetweenTilesZ <= 1 &&
                 tileToMoveTo.avaible == true &&
                 GameManager.Instance.canAct == true &&
                 IsNotWalled(tileToMoveTo, directionX, directionZ))

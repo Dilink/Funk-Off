@@ -206,7 +206,10 @@ public class GameManager : Singleton<GameManager>
     {
         //ANIM ET AUTRE FEEDBACKS DE COMPLETION
         foreach (Mb_PlayerController player in allPlayers)
-            player.anim.SetTrigger("Dance"+ danceToTrigger);
+        {
+            player.anim.SetTrigger("Dance" + danceToTrigger);
+            player.currentTile.OnPatternCompleteFeedback();
+        }
 
         // VARIATION DU FUUUUUUUUUUUUNK
 
