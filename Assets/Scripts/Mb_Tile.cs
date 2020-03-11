@@ -19,7 +19,7 @@ public class Mb_Tile : MonoBehaviour
     [Header("Feedback")]
     [SerializeField] GameObject feedBackWallUp;
     [SerializeField] GameObject feedBackWallRight;
-    [SerializeField] GameObject onCompleteFeedBack;
+    public ParticleSystem onCompleteFeedBack;
     [SerializeField] float timeBeforeDeasaparence = 1;
    
 
@@ -179,20 +179,8 @@ public class Mb_Tile : MonoBehaviour
 
     public void OnPatternCompleteFeedback()
     {
-        onCompleteFeedBack.SetActive(true);
-        StartCoroutine("DelayBeforeDesaparence");
-    }
-
-    public void DeasaparenceOfFeedback()
-    {
-        onCompleteFeedBack.SetActive(false);
-
-    }
-
-    IEnumerator DelayBeforeDesaparence()
-    {
-        yield return new WaitForSeconds(timeBeforeDeasaparence);
-        DeasaparenceOfFeedback();
+        print(onCompleteFeedBack);
+        onCompleteFeedBack.Play();
     }
 }
 

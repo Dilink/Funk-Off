@@ -269,7 +269,7 @@ public class Ma_UiManager : MonoBehaviour
 
     public void ShakePattern(int indexToShake)
     {
-        print("PATTERN IS GOING TO BE ACCOMPLISHED");
+
 
         PatternsbarElements[indexToShake].DOScale(1.4f,0.3f).OnComplete(()=>
         {

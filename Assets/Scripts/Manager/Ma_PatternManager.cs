@@ -219,9 +219,6 @@ public class Ma_PatternManager : MonoBehaviour
 
         int[] patternKeyPointsIndices = pattern.Matrix.GetTrueValuesIndices().OrderBy(i => pattern.Matrix.GetLocation(i).x).ThenBy(i => pattern.Matrix.GetLocation(i).y).ToArray();
 
-        print(playerTiles[0]);
-        print(playerTiles[1]);
-        print(playerTiles[2]);
 
         // Check for keypoints distance in patterns
         bool flagX1 = playerTiles[0].posX - playerTiles[1].posX == pattern.Matrix.GetLocation(patternKeyPointsIndices[0]).x - pattern.Matrix.GetLocation(patternKeyPointsIndices[1]).x;
@@ -230,7 +227,6 @@ public class Ma_PatternManager : MonoBehaviour
         bool flagZ1 = playerTiles[0].posZ - playerTiles[1].posZ == pattern.Matrix.GetLocation(patternKeyPointsIndices[0]).y - pattern.Matrix.GetLocation(patternKeyPointsIndices[1]).y;
         bool flagZ2 = playerTiles[0].posZ - playerTiles[2].posZ == pattern.Matrix.GetLocation(patternKeyPointsIndices[0]).y - pattern.Matrix.GetLocation(patternKeyPointsIndices[2]).y;
 
-        print(flagX1 && flagX2 && flagZ1 && flagZ2);
         return flagX1 && flagX2 && flagZ1 && flagZ2;
     }
 
