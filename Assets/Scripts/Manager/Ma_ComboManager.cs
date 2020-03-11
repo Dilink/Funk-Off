@@ -8,13 +8,23 @@ public class Ma_ComboManager : MonoBehaviour
     private float funkBonus = 0;
     private bool firstMult;
     int comboedPatternSpot=100;
-    [Space]
+
+
+    [Header("Colors pattern background")]
     public Color colorNone = Color.white;
+    [Space]
     public Color colorX2 = Color.white;
     public Color colorX3 = Color.white;
     public Color colorX4 = Color.white;
     public Color colorX5 = Color.white;
     public Color colorX6 = Color.white;
+
+    [Header("Colors Multiplier icon background")]
+    public Color colorMX2 = Color.white;
+    public Color colorMX3 = Color.white;
+    public Color colorMX4 = Color.white;
+    public Color colorMX5 = Color.white;
+    public Color colorMX6 = Color.white;
 
     private void Awake()
     {
@@ -98,23 +108,23 @@ public class Ma_ComboManager : MonoBehaviour
             switch(multiplierIndex)
             {
                 case 0:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, colorX2 , "Good");
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX2, colorX2 , "Good");
                     break;
 
                 case 1:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, colorX3, "Nice");
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX3, colorX3, "Nice");
                     break;
 
                 case 2:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, colorX4, "Great");
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX4, colorX4, "Great");
                     break;
 
                 case 3:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, colorX5, "Perfect");
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX5, colorX5, "Perfect");
                     break;
 
                 case 4:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, colorX6, "Funkulouss");
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX6, colorX6, "Funkulouss");
                     break;
             }
         }
