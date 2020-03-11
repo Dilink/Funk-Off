@@ -41,9 +41,12 @@ public class Ma_ComboManager : MonoBehaviour
     }
 
 
-    public void OnNewTurn(int indexOfPatern)
+    public void OnNewTurn(int indexOfPatern, bool isPatternDestroyed = false)
     {
         GameManager.Instance.uiManager.RemoveAllMultiplierIcon();
+
+        if (isPatternDestroyed)
+            return;
 
         int multiplierIndex = -1;
 

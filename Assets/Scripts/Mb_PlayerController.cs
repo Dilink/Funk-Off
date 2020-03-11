@@ -36,6 +36,10 @@ public class Mb_PlayerController : MonoBehaviour
         meshMaterial = materialInstance;
         transform.GetChild(0).GetComponent<MeshRenderer>().material = materialInstance;
         ResetOutline();
+        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Foresight) == CharacterSkills.Foresight)
+        {
+            GameManager.Instance.patternManager.canForesight = true;
+        }
 
     }
 
@@ -53,15 +57,42 @@ public class Mb_PlayerController : MonoBehaviour
         currentTile.setOccupent(this);
         currentTile.avaible = false;
         UpdateVelocity();
-        //bouger le joueur                                               //declenchement parametre de la tuile
+        //bouger le joueur    
+        //declenchement parametre de la tuile
+        GameManager.Instance.patternManager.SetLastPlayerMove(this);
         transform.DOMove(tileToMoveTo.transform.position + new Vector3(0,.5f,0), .33f,false).OnComplete(OnMoveCallBack);
     } 
 
     void OnMoveCallBack()
     {
+        TileModifier allTileModifierButWalls = (TileModifier.Destroyer | TileModifier.Ice | TileModifier.Slow | TileModifier.Tp);
+
+        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Absorber) == CharacterSkills.Absorber &&
+            (currentTile.tileProperties.type & allTileModifierButWalls)!=0)
+        {
+            if( currentTile.tileProperties.cost>=2)
+            {
+                GameManager.Instance.IncreaseMovesLeft(currentTile.tileProperties.cost - 1);
+            }
+            currentTile.RestBaseTileButWalls();
+            GameManager.Instance.IncreaseMovesLeft(1);
+        }
         currentTile.OnMove(false);
         GameManager.Instance.EnableActing();
         CheckPatternCallBack();
+
+        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.RandomizerFirstMove) == CharacterSkills.RandomizerFirstMove)
+        {
+            if (GameManager.Instance.isTheFirstMove == true)
+            {
+                GameManager.Instance.patternManager.RandomizeCurrentPatterns();
+                GameManager.Instance.isTheFirstMove = false;
+
+            }
+            else
+                GameManager.Instance.isTheFirstMove = false;
+
+        }
 
     }
 
@@ -81,13 +112,13 @@ public class Mb_PlayerController : MonoBehaviour
        
 
             if (GameManager.Instance.GetTile(Mathf.Clamp(currentTile.posX + directionX * 2, -1,1), Mathf.Clamp(currentTile.posZ + directionZ * 2,-1,1)).avaible == true &&
-                GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
-                 IsNotWalled(GameManager.Instance.GetTile(Mathf.Clamp(currentTile.posX + directionX * 2, -1, 1), Mathf.Clamp(currentTile.posZ + directionZ * 2, -1, 1)), directionX, directionZ))
+                GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost)
             {
                     GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
                     Move(GameManager.Instance.GetTile(currentTile.posX + directionX * 2, currentTile.posZ + directionZ * 2));  
             }
         }
+
         else
         {
             if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) == CharacterSkills.Swift && 
@@ -205,7 +236,7 @@ public class Mb_PlayerController : MonoBehaviour
             }
             else if (directionZ == -1)
             {
-                if ((currentTile.tileProperties.type & TileModifier.WalledUp) != 0)
+                if ((currentTile.tileProperties.type & TileModifier.WalledDown) != 0)
                 {
                     temporaryBool = false;
                 }
@@ -213,7 +244,7 @@ public class Mb_PlayerController : MonoBehaviour
             }
             else if (directionZ == 1)
             {
-                if ((currentTile.tileProperties.type & TileModifier.WalledDown) != 0)
+                if ((currentTile.tileProperties.type & TileModifier.WalledUp) != 0)
                 {
                     temporaryBool = false;
                 }
@@ -290,10 +321,7 @@ public class Mb_PlayerController : MonoBehaviour
 
     void CheckPatternCallBack()
     {
-        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Finisher) == CharacterSkills.Finisher)
-            GameManager.Instance.patternManager.CheckGridForPatternAndReact(0.05f);
-        else
-            GameManager.Instance.patternManager.CheckGridForPatternAndReact(0);
+       GameManager.Instance.patternManager.CheckGridForPatternAndReact();
     }
 
     void UpdateVelocity()
