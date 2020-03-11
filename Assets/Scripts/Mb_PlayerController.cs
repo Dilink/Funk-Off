@@ -20,8 +20,9 @@ public class Mb_PlayerController : MonoBehaviour
     int velX=0, velZ=0;
     Material meshMaterial;
     [Header("feedBacks")]
+    public ParticleSystem particleFeedback;
     private bool isSelected=false;
-    [SerializeField] RectTransform UiAssociated;
+    [SerializeField] Mb_PlayerCard UiAssociated;
 
 //ANIM ET FEEDBACKS
 [HideInInspector] public Animator anim;
@@ -46,6 +47,7 @@ public class Mb_PlayerController : MonoBehaviour
     private void Move(Mb_Tile tileToMoveTo)
     {
         GameManager.Instance.DisableActing();
+        currentTile.DeasaparenceOfFeedback();
         //reset de la vieille tuile
         currentTile.avaible = true;
         currentTile.ResetOccupent();
@@ -102,8 +104,8 @@ public class Mb_PlayerController : MonoBehaviour
         int directionX = Mathf.Clamp(tileToMoveTo.posX - currentTile.posX,-1,1);
         int directionZ = Mathf.Clamp(tileToMoveTo.posZ - currentTile.posZ,-1,1);
 
-        int distanceBetweenTilesX = Mathf.Abs(directionX);
-        int distanceBetweenTilesZ = Mathf.Abs(directionZ);
+        int distanceBetweenTilesX = Mathf.Abs(currentTile.posX - tileToMoveTo.posX);
+        int distanceBetweenTilesZ = Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
         int distanceBetweenTilesXZ = Mathf.Abs(currentTile.posX - tileToMoveTo.posX) + Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
 
         if(tileToMoveTo.avaible == false && (characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff &&
@@ -121,13 +123,14 @@ public class Mb_PlayerController : MonoBehaviour
 
         else
         {
-            if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) == CharacterSkills.Swift && 
+            if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) == CharacterSkills.Swift &&
                 distanceBetweenTilesX == 1 &&
                 distanceBetweenTilesZ == 1)
             {
+                print(distanceBetweenTilesX);
+                print(distanceBetweenTilesZ);
+
                 if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
-                distanceBetweenTilesX <= 1 && 
-                distanceBetweenTilesZ <= 1 &&
                 tileToMoveTo.avaible == true &&
                 GameManager.Instance.canAct == true &&
                 IsNotWalled(tileToMoveTo, directionX, directionZ))
@@ -347,6 +350,7 @@ public class Mb_PlayerController : MonoBehaviour
     {
         meshMaterial.SetFloat("_OUTLINE", 0.05f);
     }
+
     void ResetOutline()
     {
         meshMaterial.SetFloat("_OUTLINE", 0);
