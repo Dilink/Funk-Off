@@ -10,6 +10,7 @@ public class Ma_UiManager : MonoBehaviour
     //   [SerializeField] Mb_PlayerCard[] allPlayerUi;
     [Header("PARAMETERS")]
     public float FunkBarFillSpeed = 0.5f;
+    public Gradient funkBarGradient;
 
     [Space]
     [Header("Turnsbar elements")]
@@ -29,7 +30,9 @@ public class Ma_UiManager : MonoBehaviour
 
     [Header("Funkbar elements")]
     public Image FunkbarFillImg;
+    public List<Image> FunkbarMasksImg;
     public RectTransform FunkbarFillRect;
+    public GameObject funkbarMasks;
 
     //[Header("PlayersStateBar elements")]
 
@@ -239,10 +242,29 @@ public class Ma_UiManager : MonoBehaviour
     // FUNKBAR FUNCTIONS
     // ---------------------
 
+    public void GetAllMasksImages()
+    {
+        Transform[] masks = funkbarMasks.GetComponentsInChildren<Transform>();
+
+        for(int i = 0; i < masks.Length;i++)
+        {
+            for (int j = 0; j < masks[i].childCount; j++)
+            {
+                FunkbarMasksImg.Add(masks[i].GetChild(j).GetComponent<Image>());
+            }
+
+        }
+    }
+
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        FunkbarFillImg.DOFillAmount(funkPercentage, FunkBarFillSpeed);
+        float filledMasksIndex = funkPercentage  * FunkbarMasksImg.Count;
+
+        for (int i = 0; i < filledMasksIndex; i++)
+        {
+            FunkbarMasksImg[i].color = funkBarGradient.Evaluate(funkPercentage);
+        }
     }
 
     // ---------------------
