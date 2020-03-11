@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public class Mb_PlayerCard : MonoBehaviour
 {
+    [HideInInspector] public RectTransform cardTransform; 
+
     [SerializeField] TextMeshProUGUI moveText;
     [SerializeField] Image CardIcon;
     [SerializeField] Image CardItem;
@@ -14,16 +16,26 @@ public class Mb_PlayerCard : MonoBehaviour
     [SerializeField] RectTransform toolTip;
     [SerializeField] Sc_Item item;
 
+    [Header("NAME PART")]
+    [SerializeField] Vector3 nameMovementDeployment = new Vector3(200,0,0);
+    [SerializeField] RectTransform nameSprite;
+    private Vector3 nameLocalBasePos;
+
     public string powerName;
     [TextArea()]
     public string powerDesc;
 
-
+    private void Start()
+    {
+        cardTransform = GetComponent<RectTransform>();
+        nameLocalBasePos = nameSprite.localPosition;
+    }
+    /*
     public void UpdateMoveLeftUi(int MoveLeft, int MaxMove)
     {
         moveText.text = MoveLeft + "/" + MaxMove;
     }
-
+    */
     public void UpdateCardIcon(Sprite img)
     {
         CardIcon.sprite = img;
@@ -34,11 +46,20 @@ public class Mb_PlayerCard : MonoBehaviour
         CardItem.sprite = img;
     }
 
+    public void DeployName()
+    {
+        nameSprite.DOLocalMove(nameLocalBasePos + nameMovementDeployment, .2f);
+    }
+
+    public void CleanName()
+    {
+        nameSprite.DOLocalMove(nameLocalBasePos - nameMovementDeployment, .2f);
+    }
+    /*
     public void UpdateCardPassive(Sprite img)
     {
         CardPassive.sprite = img;
     }
-
     public void DisplayItemBubble()
     {
         DisplayInfoBubble(item.itemName, item.itemDesc);
@@ -47,7 +68,8 @@ public class Mb_PlayerCard : MonoBehaviour
     public void DisplayPowerBubble()
     {
         DisplayInfoBubble(powerName, powerDesc);
-    }
+    }*/
+
 
     private void DisplayInfoBubble(string title, string desc)
     {

@@ -29,6 +29,10 @@ public class GameManager : Singleton<GameManager>
     public Ma_TurnManager turnManager;
     public Ma_AIManager aiManager;
     public Ma_SoundManager soundManager;
+    public Ma_MusicManager musicManager;
+
+    [Header("BrunoPart")]
+    [SerializeField] Animator animBruno;
     
     [Header("FunkRule")]
     private float _funkAmount = 0.5f;
@@ -62,6 +66,7 @@ public class GameManager : Singleton<GameManager>
         ResetMove();
 
     }
+
     //ACTING
     #region
 
@@ -92,6 +97,9 @@ public class GameManager : Singleton<GameManager>
                 CastRayTile();
             }
         }
+
+        if (currentPlayerSelectionned != null)
+            CheckingPatternPreview();
     }
 
     //SELECTION
@@ -121,7 +129,7 @@ public class GameManager : Singleton<GameManager>
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 8))
         {
-            currentPlayerSelectionned.CheckCostingMovement(hit.collider.GetComponent<Mb_Tile>());
+            currentPlayerSelectionned.CheckCostingMovement( hit.collider.GetComponent<Mb_Tile>());
             
         }
     }
@@ -167,6 +175,7 @@ public class GameManager : Singleton<GameManager>
 
         uiManager.UpdateMovesUi(moveLeft, maxMovesPerTurn);
     }
+
     //PREVIEW
     /*
     public void SetPreviewLine(List<Mb_Tile> allTilesToMove, Mb_PlayerController currentPlayer)
@@ -206,7 +215,11 @@ public class GameManager : Singleton<GameManager>
     {
         //ANIM ET AUTRE FEEDBACKS DE COMPLETION
         foreach (Mb_PlayerController player in allPlayers)
-            player.anim.SetTrigger("Dance"+ danceToTrigger);
+        {
+            player.anim.SetTrigger("Dance" + danceToTrigger);
+            player.particleFeedback.Play();
+            player.currentTile.OnPatternCompleteFeedback();
+        }
 
         // VARIATION DU FUUUUUUUUUUUUNK
 
@@ -226,6 +239,11 @@ public class GameManager : Singleton<GameManager>
     //FUNK adding
     public void FunkVariation(float funkToAdd)
     {
+        if (funkToAdd > 0)
+            FunkAddingAnim();
+        else
+            DealDamageAnim();
+
         funkAmount = Mathf.Clamp(funkAmount + funkToAdd, 0, 1);
     }
 
@@ -299,6 +317,51 @@ public class GameManager : Singleton<GameManager>
         if (cameraGo)
         {
             GameObject.Find("MainUICanvas").GetComponent<Canvas>().worldCamera = cameraGo.GetComponent<Camera>();
+        }
+    }
+
+    //FEEDBACK BRUNO
+    void FunkAddingAnim()
+    {
+        animBruno.SetTrigger("Damaged");
+    }
+
+    void DealDamageAnim()
+    {
+        animBruno.SetTrigger("Attack");
+    }
+
+    void ActingAnim()
+    {
+        animBruno.SetTrigger("Acting");
+    }
+
+    //PATTERN COMPLETION PREVIEW
+    void CheckingPatternPreview()
+    {
+        RaycastHit hit;
+        Ray ray;
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+   
+
+        // SI LA SOURIS EST AU DESSUS D UNE TILE
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 8))
+        {
+            List<Mb_Tile> tilesToCheck = new List<Mb_Tile>();
+
+            foreach(Mb_PlayerController players in allPlayers)
+            {
+                tilesToCheck.Add(players.currentTile);
+            }
+            tilesToCheck.Remove(currentPlayerSelectionned.currentTile);
+            tilesToCheck.Add(hit.collider.GetComponent<Mb_Tile>());
+
+            var patternToBeAccomplished = patternManager.JustCheckGridForPattern(tilesToCheck.ToArray(), true);
+            
+            if (patternToBeAccomplished.HasValue)
+            {
+                uiManager.ShakePattern(patternToBeAccomplished.Value.Item1);
+            }
         }
     }
 }

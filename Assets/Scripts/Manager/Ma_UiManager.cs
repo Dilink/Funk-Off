@@ -26,6 +26,8 @@ public class Ma_UiManager : MonoBehaviour
     public Image[] PatternsbarCancelMarkersImg;
     public TMP_Text[] PatternsbarMultipliersTexts;
 
+    private bool isPaternShaking;
+
     [Header("Funkbar elements")]
     public Image FunkbarFillImg;
     public List<Image> FunkbarMasksImg;
@@ -46,7 +48,6 @@ public class Ma_UiManager : MonoBehaviour
     public GameObject EndGameScreen;
     public RectTransform EndGameScreen_winRect;
     public RectTransform EndGameScreen_looseRect;
-
 
     [Header("UiCharacter")]
     public Image[] AllCharacterUi;
@@ -288,7 +289,15 @@ public class Ma_UiManager : MonoBehaviour
         moveLeftText.text = movesReturning + " / " + moveForTheTurn;
     }
 
-    
+    public void ShakePattern(int indexToShake)
+    {
+        print("PATTERN IS GOING TO BE ACCOMPLISHED");
+
+        PatternsbarElements[indexToShake].DOScale(1.4f,0.3f).OnComplete(()=>
+        {
+            PatternsbarElements[indexToShake].DOScale(1f, 0.3f);
+        });
+    }
 
     // ---------------------
     // ENDGAME SCREEN UI FUNCTIONS
@@ -383,14 +392,18 @@ public class Ma_UiManager : MonoBehaviour
         PatternsbarElements[emplacement].GetComponent<Mb_PatternBarElement>().PlayFX(fxIndex);
     }
 
-    public void DeployUi(RectTransform uiToDeploy)
+    public void DeployUi(Mb_PlayerCard uiToDeploy)
     {
-       uiToDeploy.transform.DOLocalMoveX(uiToDeploy.localPosition.x+ 20, 0.1f);
+        uiToDeploy.transform.DOLocalMoveX(uiToDeploy.cardTransform.localPosition.x+ 70, 0.2f);
+        uiToDeploy.DeployName();
+        uiToDeploy.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.2f);
     }
 
-    public void CleanUi(RectTransform uiToClean)
+    public void CleanUi(Mb_PlayerCard uiToClean)
     {
-        uiToClean.transform.DOLocalMoveX(uiToClean.localPosition.x - 20, 0.1f);
+        uiToClean.transform.DOLocalMoveX(uiToClean.cardTransform.localPosition.x - 70, 0.2f);
+        uiToClean.CleanName();
+        uiToClean.transform.DOScale(new Vector3(1, 1, 1), 0.2f);
     }
 
 }
