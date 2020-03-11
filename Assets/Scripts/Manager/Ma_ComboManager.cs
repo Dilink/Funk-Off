@@ -20,7 +20,7 @@ public class Ma_ComboManager : MonoBehaviour
         for (int i = 0; i < GameManager.Instance.uiManager.PatternsbarMultipliersImg.Length; i++)
         {
             //RemoveMultiplier(i);
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(i, Color.clear, "");
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(i, Color.clear, Color.red, "");
         }
     }
 
@@ -91,29 +91,29 @@ public class Ma_ComboManager : MonoBehaviour
             switch(multiplierIndex)
             {
                 case 0:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "Good");
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Color.magenta , "Good");
                     break;
 
                 case 1:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "Nice");
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Color.green, "Nice");
                     break;
 
                 case 2:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "Great");
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Color.blue, "Great");
                     break;
 
                 case 3:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "Perfect");
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Color.cyan, "Perfect");
                     break;
 
                 case 4:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "Funkulouss");
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Color.yellow, "Funkulouss");
                     break;
             }
         }
         else
         {
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, "error");
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Color.red, "error");
         }
     }
 

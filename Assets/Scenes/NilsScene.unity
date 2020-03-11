@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44944674, g: 0.49952108, b: 0.57569075, a: 1}
+  m_IndirectSpecularColor: {r: 0.44841707, g: 0.49845207, b: 0.57562816, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -988,6 +988,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 25887889}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Spacing.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Padding.m_Left
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Padding.m_Right
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 330794540882709352, guid: b4907cd18c6e01c42aa7e55f11eb5c99,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1103,21 +1115,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Richard
       objectReference: {fileID: 0}
-    - target: {fileID: 3413413838833278097, guid: b4907cd18c6e01c42aa7e55f11eb5c99,
-        type: 3}
-      propertyPath: m_Spacing.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3413413838833278097, guid: b4907cd18c6e01c42aa7e55f11eb5c99,
-        type: 3}
-      propertyPath: m_Padding.m_Left
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3413413838833278097, guid: b4907cd18c6e01c42aa7e55f11eb5c99,
-        type: 3}
-      propertyPath: m_Padding.m_Right
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3575928828065969786, guid: b4907cd18c6e01c42aa7e55f11eb5c99,
         type: 3}
       propertyPath: m_Name
@@ -1188,6 +1185,11 @@ PrefabInstance:
       propertyPath: PatternsbarMultipliersTexts.Array.data[5]
       value: 
       objectReference: {fileID: 741249105}
+    - target: {fileID: 8275209766941544917, guid: b4907cd18c6e01c42aa7e55f11eb5c99,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 24.37207
+      objectReference: {fileID: 0}
     - target: {fileID: 8860609764790202673, guid: b4907cd18c6e01c42aa7e55f11eb5c99,
         type: 3}
       propertyPath: m_FollowOffset.x

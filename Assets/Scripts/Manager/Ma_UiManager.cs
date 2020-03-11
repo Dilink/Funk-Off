@@ -164,7 +164,7 @@ public class Ma_UiManager : MonoBehaviour
 
             // Couleur du background et scale, pour qu'il se reset après avoir été sur la case grise
             PatternsbarElements[emplacement].localScale = new Vector3(1, 1, 1);
-            PatternsbarElements[emplacement].GetChild(0).GetComponent<Image>().color = Color.white;
+            PatternsbarElements[emplacement].GetChild(1).GetComponent<Image>().color = Color.white;
         }
         else // Si le pattern concerné est le plus à gauche, le renvoit sur la case grise
         {
@@ -180,7 +180,7 @@ public class Ma_UiManager : MonoBehaviour
         // Change le background et le scale pour qu'il s'adapte à la case grise 
         PatternsbarElements[emplacement].localScale = new Vector3(0, 0, 0);
         PatternsbarElements[emplacement].transform.DOScale(new Vector3(0.8f, 0.8f, 0.8f), 0.4f).SetEase(Ease.OutBack);
-        PatternsbarElements[emplacement].GetChild(0).GetComponent<Image>().color = Color.grey;
+        PatternsbarElements[emplacement].GetChild(1).GetComponent<Image>().color = Color.grey;
 
         // Réarrange la liste pour qu'elle match le nouvel ordre visuel
         RectTransform temp = PatternsbarElements[emplacement];
@@ -191,13 +191,13 @@ public class Ma_UiManager : MonoBehaviour
     // Update the Icon of the patternsbar
     public void UpdatePatternsBarIcon(int emplacement,Sc_Pattern pattern)
     {
-        PatternsbarElements[emplacement].GetChild(1).GetComponent<Image>().sprite = pattern.sprite;
+        PatternsbarElements[emplacement].GetChild(2).GetComponent<Image>().sprite = pattern.sprite;
     }
 
     // MULTIPLIERS
 
     // Update the multipliers visuals
-    public void UpdateMultiplierIcon(int emplacement, Color color, string text)
+    public void UpdateMultiplierIcon(int emplacement, Color color, Color colorbkg, string text)
     {
         // Animation
         PatternsbarMultipliersImg[emplacement].transform.localScale = new Vector3(0, 0, 0);
@@ -207,6 +207,7 @@ public class Ma_UiManager : MonoBehaviour
 
         // Color and text
         PatternsbarMultipliersImg[emplacement].color = color;
+        PatternsbarElements[emplacement].GetChild(0).GetComponent<Image>().color = colorbkg;
         PatternsbarMultipliersTexts[emplacement].text = text;
         PatternsbarMultipliersTexts[emplacement].color = Color.black;
     }
@@ -214,7 +215,7 @@ public class Ma_UiManager : MonoBehaviour
     // Remove the multiplier visual
     public void RemoveMultiplierIcon(int emplacement)
     {
-        UpdateMultiplierIcon(emplacement, Color.clear, "x1");
+        UpdateMultiplierIcon(emplacement, Color.clear, Color.red , "x1");
         PatternsbarMultipliersTexts[emplacement].color = Color.clear;
     }
 
@@ -222,7 +223,7 @@ public class Ma_UiManager : MonoBehaviour
     {
        for(int i =0; i<PatternsbarMultipliersImg.Length; i++)
         {
-            UpdateMultiplierIcon(i, Color.clear, "x1");
+            UpdateMultiplierIcon(i, Color.clear, Color.red, "x1");
             PatternsbarMultipliersTexts[i].color = Color.clear;
         }
     }
@@ -230,7 +231,7 @@ public class Ma_UiManager : MonoBehaviour
     // Update the cancel marker visuals
     public void UpdateCancelMarkerIcon(int emplacement, bool active)
     {
-        PatternsbarElements[emplacement].GetChild(2).GetComponent<Image>().color = active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
+        PatternsbarElements[emplacement].GetChild(3).GetComponent<Image>().color = active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
     }
 
     // ---------------------
