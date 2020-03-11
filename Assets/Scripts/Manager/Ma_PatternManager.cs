@@ -27,7 +27,6 @@ public class Ma_PatternManager : MonoBehaviour
 
     private void Awake()
     {
-        LoadAvailablePatterns();
         GenerateStartPattern();
         OnTurnStart();
     }
@@ -73,6 +72,8 @@ public class Ma_PatternManager : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
+    [Button(ButtonSizes.Medium), GUIColor(0.89f, 0.14f, 0.14f)]
     private void LoadAvailablePatterns()
     {
         availablePatternList.Clear();
@@ -92,6 +93,7 @@ public class Ma_PatternManager : MonoBehaviour
 
         RandomizeList(ref availablePatternList);
     }
+#endif
 
     private void RandomizeList(ref List<Sc_Pattern> list)
     {
@@ -150,10 +152,14 @@ public class Ma_PatternManager : MonoBehaviour
             UpdateCancelMarker(currentPatternsList.IndexOf(patternsForCancellation[i]), true);
     }
 
-    private Optional<Tuple<int, Sc_Pattern>> JustCheckGridForPattern()
+    public Optional<Tuple<int, Sc_Pattern>> JustCheckGridForPattern(Mb_Tile[] allTiles = null, bool isPreview=false)
     {
+        if (allTiles == null)
+            allTiles = GameManager.Instance.allTiles;
+
+
         Func<int, Sc_Pattern, Optional<Tuple<int, Sc_Pattern>>> Validation = (index, pattern) => {
-            if (PatternValidation(GameManager.Instance.allTiles, pattern))
+            if (PatternValidation(allTiles, pattern, isPreview))
             {
                 GameManager.Instance.comboManager.OnPatternAccomplished(index);
                 return new Optional<Tuple<int, Sc_Pattern>>(new Tuple<int, Sc_Pattern>(index, pattern));
@@ -196,10 +202,22 @@ public class Ma_PatternManager : MonoBehaviour
         return tiles.OrderBy(o => o.posX).ThenBy(o => o.posZ).ToArray();
     }
 
-    bool PatternValidation(Mb_Tile[] allTiles, Sc_Pattern pattern)
+    bool PatternValidation(Mb_Tile[] allTiles, Sc_Pattern pattern, bool isPreview =false)
     {
-        Mb_Tile[] playerTiles = GetAllTileWithPlayer(allTiles);
+        Mb_Tile[] playerTiles;
+
+        if (isPreview == false)
+        {
+            playerTiles = GetAllTileWithPlayer(allTiles);
+        }
+        else
+        {
+            playerTiles = allTiles.OrderBy(o => o.posX).ThenBy(o => o.posZ).ToArray(); 
+           
+        }
+
         int[] patternKeyPointsIndices = pattern.Matrix.GetTrueValuesIndices().OrderBy(i => pattern.Matrix.GetLocation(i).x).ThenBy(i => pattern.Matrix.GetLocation(i).y).ToArray();
+
 
         // Check for keypoints distance in patterns
         bool flagX1 = playerTiles[0].posX - playerTiles[1].posX == pattern.Matrix.GetLocation(patternKeyPointsIndices[0]).x - pattern.Matrix.GetLocation(patternKeyPointsIndices[1]).x;

@@ -1,7 +1,6 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
 using System.Collections.Generic;
-using Sirenix.OdinInspector.Editor;
 
 [CreateAssetMenu(fileName = "New AI Pattern", menuName = "Custom/AI Pattern")]
 public class Sc_AIPattern : ScriptableObject

@@ -9,7 +9,6 @@ public class Ma_AIManager : MonoBehaviour
     
     public void ChoosePattern()
     {
-        print(oldPatternUsed);
         TileModifier tileModifierExeption = (TileModifier.WalledDown | TileModifier.WalledLeft | TileModifier.WalledRight | TileModifier.WalledUp);
         List<Vector2> posOfEachPlayer = new List<Vector2>();
 
@@ -25,7 +24,6 @@ public class Ma_AIManager : MonoBehaviour
             if (temporaryList[i] == oldPatternUsed)
             {
                 temporaryList.Remove(temporaryList[i]);
-                print(temporaryList[i]);
             }
 
             foreach(Vector2 playerCoord in posOfEachPlayer)
