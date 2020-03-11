@@ -115,36 +115,43 @@ public class Ma_UiManager : MonoBehaviour
     // PATTERNSBAR FUNCTIONS
     // ---------------------
 
-    public void RemovePattern(int emplacement)
+    public void RemovePattern(int emplacement, bool isPatternDestroyed=false)
     {
-        StartCoroutine(RemovePatternAnimations(emplacement));
+        StartCoroutine(RemovePatternAnimations(emplacement, isPatternDestroyed));
     }
 
-    private IEnumerator RemovePatternAnimations(int emplacement)
+    private IEnumerator RemovePatternAnimations(int emplacement, bool isPatternDestroyed)
     {
-        PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
-        PatternsbarMultipliersImg[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
-        PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
-        PatternsbarMultipliersTexts[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
+        if (!isPatternDestroyed)
+        {
+            PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
+            PatternsbarMultipliersImg[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
+            PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
+            PatternsbarMultipliersTexts[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
 
-        PatternsbarElements[emplacement].transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
-        PatternsbarElements[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y + 75, 0.2f, false).SetEase(Ease.OutCirc);
+            PatternsbarElements[emplacement].transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
+            PatternsbarElements[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y + 75, 0.2f, false).SetEase(Ease.OutCirc);
 
-        yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.2f);
 
-        //PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
-        //PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
+            //PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
+            //PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
 
-        PatternsbarElements[emplacement].transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
+            PatternsbarElements[emplacement].transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
 
-        yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.3f);
 
-        PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
-        PatternsbarMultipliersImg[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
-        PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
-        PatternsbarMultipliersTexts[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
+            PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
+            PatternsbarMultipliersImg[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
+            PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
+            PatternsbarMultipliersTexts[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
 
-        PatternsbarElements[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y - 275, 0.25f, false).SetEase(Ease.InCubic);
+            PatternsbarElements[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y - 275, 0.25f, false).SetEase(Ease.InCubic);
+        }
+        else
+        {
+            Debug.LogError("TODO: animation cancel");
+        }
     }
 
     public void MovePatterns(int emplacement)

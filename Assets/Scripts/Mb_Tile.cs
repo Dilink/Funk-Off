@@ -54,10 +54,10 @@ public class Mb_Tile : MonoBehaviour
     {
         ResetBaseTile();
 
-        if ((newTileType & TileModifier.Damaging) == TileModifier.Damaging)
+        if ((newTileType & TileModifier.Destroyer) == TileModifier.Destroyer)
         {
             SetTileMaterial(tileMaterial);
-            tileProperties.type = TileModifier.Damaging;
+            tileProperties.type = TileModifier.Destroyer;
             SetTileMaterial(GameManager.Instance.gridFeedbackRules.damagingMaterial);
         }
 
@@ -145,9 +145,9 @@ public class Mb_Tile : MonoBehaviour
 
     public void OnMove(bool fromTP)
     {
-        if ((tileProperties.type & TileModifier.Damaging) == TileModifier.Damaging)
+        if ((tileProperties.type & TileModifier.Destroyer) == TileModifier.Destroyer)
         {
-            GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal()/3);
+            GameManager.Instance.patternManager.CutRandomPattern();
         }
 
         if ((tileProperties.type & TileModifier.Tp) == TileModifier.Tp && fromTP == false)
@@ -185,7 +185,7 @@ public struct Modifier
 [System.Serializable]
 public enum TileModifier
 {
-    Damaging    = 1 << 0,
+    Destroyer    = 1 << 0,
     Ice         = 1 << 1,
     Tp          = 1 << 2,
     Slow        = 1 << 3,

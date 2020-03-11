@@ -36,6 +36,10 @@ public class Mb_PlayerController : MonoBehaviour
         meshMaterial = materialInstance;
         transform.GetChild(0).GetComponent<MeshRenderer>().material = materialInstance;
         ResetOutline();
+        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Foresight) == CharacterSkills.Foresight)
+        {
+            GameManager.Instance.patternManager.canForesight = true;
+        }
 
     }
 
@@ -61,7 +65,7 @@ public class Mb_PlayerController : MonoBehaviour
 
     void OnMoveCallBack()
     {
-        TileModifier allTileModifierButWalls = (TileModifier.Damaging | TileModifier.Ice | TileModifier.Slow | TileModifier.Tp);
+        TileModifier allTileModifierButWalls = (TileModifier.Destroyer | TileModifier.Ice | TileModifier.Slow | TileModifier.Tp);
 
         if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Absorber) == CharacterSkills.Absorber &&
             (currentTile.tileProperties.type & allTileModifierButWalls)!=0)
@@ -76,6 +80,19 @@ public class Mb_PlayerController : MonoBehaviour
         currentTile.OnMove(false);
         GameManager.Instance.EnableActing();
         CheckPatternCallBack();
+
+        if ((characterBaseCharacteristics.characterSkills & CharacterSkills.RandomizerFirstMove) == CharacterSkills.RandomizerFirstMove)
+        {
+            if (GameManager.Instance.isTheFirstMove == true)
+            {
+                GameManager.Instance.patternManager.RandomizeCurrentPatterns();
+                GameManager.Instance.isTheFirstMove = false;
+
+            }
+            else
+                GameManager.Instance.isTheFirstMove = false;
+
+        }
 
     }
 
@@ -219,7 +236,7 @@ public class Mb_PlayerController : MonoBehaviour
             }
             else if (directionZ == -1)
             {
-                if ((currentTile.tileProperties.type & TileModifier.WalledUp) != 0)
+                if ((currentTile.tileProperties.type & TileModifier.WalledDown) != 0)
                 {
                     temporaryBool = false;
                 }
@@ -227,7 +244,7 @@ public class Mb_PlayerController : MonoBehaviour
             }
             else if (directionZ == 1)
             {
-                if ((currentTile.tileProperties.type & TileModifier.WalledDown) != 0)
+                if ((currentTile.tileProperties.type & TileModifier.WalledUp) != 0)
                 {
                     temporaryBool = false;
                 }
