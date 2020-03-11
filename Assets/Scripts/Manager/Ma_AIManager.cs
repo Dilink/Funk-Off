@@ -9,6 +9,7 @@ public class Ma_AIManager : MonoBehaviour
     
     public void ChoosePattern()
     {
+        print(oldPatternUsed);
         TileModifier tileModifierExeption = (TileModifier.WalledDown | TileModifier.WalledLeft | TileModifier.WalledRight | TileModifier.WalledUp);
         List<Vector2> posOfEachPlayer = new List<Vector2>();
 
@@ -17,18 +18,21 @@ public class Ma_AIManager : MonoBehaviour
             posOfEachPlayer.Add( new Vector2(player.currentTile.posX, player.currentTile.posZ));
         }
 
-        List<Sc_AIPattern> temporaryList = GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].aiPatterns;
-        foreach (Sc_AIPattern aiPotentialMove in temporaryList)
+        List<Sc_AIPattern> temporaryList = new List<Sc_AIPattern>(GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].aiPatterns);
+
+        for (int i=0; i < temporaryList.Count; i++)
         {
-            if (aiPotentialMove == oldPatternUsed)
+            if (temporaryList[i] == oldPatternUsed)
             {
-                temporaryList.Remove(aiPotentialMove);
+                temporaryList.Remove(temporaryList[i]);
+                print(temporaryList[i]);
             }
+
             foreach(Vector2 playerCoord in posOfEachPlayer)
             {
-                if (((aiPotentialMove.Matrix.FromLocation((int )playerCoord.x , (int)playerCoord.y)) | (int) tileModifierExeption) != (int)tileModifierExeption)
+                if (((temporaryList[i].Matrix.FromLocation((int )playerCoord.x , (int)playerCoord.y)) | (int) tileModifierExeption) != (int)tileModifierExeption)
                 {
-                    temporaryList.Remove(aiPotentialMove);
+                    temporaryList.Remove(temporaryList[i]);
                     break;
                 }
             }
@@ -39,6 +43,8 @@ public class Ma_AIManager : MonoBehaviour
 
     public void ApplyPattern(Sc_AIPattern pattern)
     {
+        oldPatternUsed = pattern;
+
         var tiles = GameManager.Instance.allTiles;
 
         for (int i = 0; i < tiles.Length; i++)
