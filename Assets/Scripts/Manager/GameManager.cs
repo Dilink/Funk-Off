@@ -96,6 +96,9 @@ public class GameManager : Singleton<GameManager>
                 CastRayTile();
             }
         }
+
+        if (currentPlayerSelectionned != null)
+            CheckingPatternPreview();
     }
 
     //SELECTION
@@ -125,7 +128,7 @@ public class GameManager : Singleton<GameManager>
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 8))
         {
-            currentPlayerSelectionned.CheckCostingMovement(hit.collider.GetComponent<Mb_Tile>());
+            currentPlayerSelectionned.CheckCostingMovement( hit.collider.GetComponent<Mb_Tile>());
             
         }
     }
@@ -316,6 +319,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    //FEEDBACK BRUNO
     void FunkAddingAnim()
     {
         animBruno.SetTrigger("Damaged");
@@ -329,5 +333,34 @@ public class GameManager : Singleton<GameManager>
     void ActingAnim()
     {
         animBruno.SetTrigger("Acting");
+    }
+
+    //PATTERN COMPLETION PREVIEW
+    void CheckingPatternPreview()
+    {
+        RaycastHit hit;
+        Ray ray;
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+   
+
+        // SI LA SOURIS EST AU DESSUS D UNE TILE
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 8))
+        {
+            List<Mb_Tile> tilesToCheck = new List<Mb_Tile>();
+
+            foreach(Mb_PlayerController players in allPlayers)
+            {
+                tilesToCheck.Add(players.currentTile);
+            }
+            tilesToCheck.Remove(currentPlayerSelectionned.currentTile);
+            tilesToCheck.Add(hit.collider.GetComponent<Mb_Tile>());
+
+            var patternToBeAccomplished = patternManager.JustCheckGridForPattern(tilesToCheck.ToArray(), true);
+            
+            if (patternToBeAccomplished.HasValue)
+            {
+                uiManager.ShakePattern(patternToBeAccomplished.Value.Item1);
+            }
+        }
     }
 }

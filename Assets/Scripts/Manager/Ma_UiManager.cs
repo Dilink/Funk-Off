@@ -25,6 +25,8 @@ public class Ma_UiManager : MonoBehaviour
     public Image[] PatternsbarCancelMarkersImg;
     public TMP_Text[] PatternsbarMultipliersTexts;
 
+    private bool isPaternShaking;
+
     [Header("Funkbar elements")]
     public Image FunkbarFillImg;
     public RectTransform FunkbarFillRect;
@@ -43,7 +45,6 @@ public class Ma_UiManager : MonoBehaviour
     public GameObject EndGameScreen;
     public RectTransform EndGameScreen_winRect;
     public RectTransform EndGameScreen_looseRect;
-
 
     [Header("UiCharacter")]
     public Image[] AllCharacterUi;
@@ -266,7 +267,15 @@ public class Ma_UiManager : MonoBehaviour
         moveLeftText.text = movesReturning + " / " + moveForTheTurn;
     }
 
-    
+    public void ShakePattern(int indexToShake)
+    {
+        print("PATTERN IS GOING TO BE ACCOMPLISHED");
+
+        PatternsbarElements[indexToShake].DOScale(1.4f,0.3f).OnComplete(()=>
+        {
+            PatternsbarElements[indexToShake].DOScale(1f, 0.3f);
+        });
+    }
 
     // ---------------------
     // ENDGAME SCREEN UI FUNCTIONS

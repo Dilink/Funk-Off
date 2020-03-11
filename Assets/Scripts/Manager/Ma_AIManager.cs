@@ -9,7 +9,6 @@ public class Ma_AIManager : MonoBehaviour
     
     public void ChoosePattern()
     {
-        print(oldPatternUsed);
         TileModifier tileModifierExeption = (TileModifier.WalledDown | TileModifier.WalledLeft | TileModifier.WalledRight | TileModifier.WalledUp);
         List<Vector2> posOfEachPlayer = new List<Vector2>();
 
