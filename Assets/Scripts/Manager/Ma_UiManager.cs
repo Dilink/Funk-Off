@@ -107,10 +107,10 @@ public class Ma_UiManager : MonoBehaviour
         //Animation
         Sequence moveSeq = DOTween.Sequence();
         moveSeq.Append(TurnsbarText.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.1f));
-        moveSeq.Append(TurnsbarText.transform.DORotate(new Vector3(0, 0, 20), 0.1f));
+        moveSeq.Append(TurnsbarText.transform.DOLocalRotate(new Vector3(0, 0, 20), 0.1f));
         moveSeq.PrependInterval(0.1f);
         moveSeq.Append(TurnsbarText.transform.DOScale(new Vector3(1, 1, 1), 0.1f));
-        moveSeq.Append(TurnsbarText.transform.DORotate(new Vector3(0, 0, 0), 0.1f));
+        moveSeq.Append(TurnsbarText.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.1f));
 
         TurnsbarText.text = (maxTurn - currentTurn).ToString();
     }
@@ -280,10 +280,10 @@ public class Ma_UiManager : MonoBehaviour
         //Animation
         Sequence moveSeq = DOTween.Sequence();
         moveSeq.Append(moveLeftText.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.1f));
-        moveSeq.Append(moveLeftText.transform.DORotate(new Vector3(0,0, 20), 0.1f));
+        moveSeq.Append(moveLeftText.transform.DOLocalRotate(new Vector3(0,0, 20), 0.1f));
         moveSeq.PrependInterval(0.1f);
         moveSeq.Append(moveLeftText.transform.DOScale(new Vector3(1, 1, 1), 0.1f));
-        moveSeq.Append(moveLeftText.transform.DORotate(new Vector3(0, 0, 0), 0.1f));
+        moveSeq.Append(moveLeftText.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.1f));
 
         // Change the text
         moveLeftText.text = movesReturning + " / " + moveForTheTurn;
@@ -334,7 +334,7 @@ public class Ma_UiManager : MonoBehaviour
     public void OpenSettingsMenu()
     {
         PauseSettingsRect.rotation = Quaternion.Euler(0, 90, 0);
-        PauseSettingsRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseSettingsRect.DOLocalRotate(new Vector3(0, 0, 0), 0.5f);
         PauseSettingsRect.gameObject.SetActive(true);
         PauseMainRect.gameObject.SetActive(false);
     }
@@ -343,7 +343,7 @@ public class Ma_UiManager : MonoBehaviour
     public void CloseSettingsMenu()
     {
         PauseMainRect.rotation = Quaternion.Euler(0, 90, 0);
-        PauseMainRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseMainRect.DOLocalRotate(new Vector3(0, 0, 0), 0.5f);
         PauseSettingsRect.gameObject.SetActive(false);
         PauseMainRect.gameObject.SetActive(true);
     }
@@ -352,7 +352,7 @@ public class Ma_UiManager : MonoBehaviour
     public void OpenConfirm()
     {
         PauseQuitConfirmRect.rotation = Quaternion.Euler(0, 90, 0);
-        PauseQuitConfirmRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseQuitConfirmRect.DOLocalRotate(new Vector3(0, 0, 0), 0.5f);
         PauseQuitConfirmRect.gameObject.SetActive(true);
         PauseMainRect.gameObject.SetActive(false);
     }
@@ -361,7 +361,7 @@ public class Ma_UiManager : MonoBehaviour
     public void CloseConfirm()
     {
         PauseMainRect.rotation = Quaternion.Euler(0, 90, 0);
-        PauseMainRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseMainRect.DOLocalRotate(new Vector3(0, 0, 0), 0.5f);
         PauseQuitConfirmRect.gameObject.SetActive(false);
         PauseMainRect.gameObject.SetActive(true);
     }
