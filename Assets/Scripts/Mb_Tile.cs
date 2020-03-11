@@ -179,8 +179,8 @@ public class Mb_Tile : MonoBehaviour
 
     public void OnPatternCompleteFeedback()
     {
-        onCompleteFeedBack.SetActive(true);
-        StartCoroutine("DelayBeforeDesaparence");
+        //onCompleteFeedBack.SetActive(true);
+     //   StartCoroutine("DelayBeforeDesaparence");
     }
 
     public void DeasaparenceOfFeedback()
