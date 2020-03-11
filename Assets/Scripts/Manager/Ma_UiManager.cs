@@ -215,7 +215,7 @@ public class Ma_UiManager : MonoBehaviour
     // Remove the multiplier visual
     public void RemoveMultiplierIcon(int emplacement)
     {
-        UpdateMultiplierIcon(emplacement, Color.clear, Color.red , "x1");
+        UpdateMultiplierIcon(emplacement, Color.clear, GameManager.Instance.comboManager.colorNone , "x1");
         PatternsbarMultipliersTexts[emplacement].color = Color.clear;
     }
 
@@ -223,7 +223,7 @@ public class Ma_UiManager : MonoBehaviour
     {
        for(int i =0; i<PatternsbarMultipliersImg.Length; i++)
         {
-            UpdateMultiplierIcon(i, Color.clear, Color.red, "x1");
+            UpdateMultiplierIcon(i, Color.clear, GameManager.Instance.comboManager.colorNone, "x1");
             PatternsbarMultipliersTexts[i].color = Color.clear;
         }
     }
