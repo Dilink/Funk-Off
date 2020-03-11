@@ -29,7 +29,10 @@ public class GameManager : Singleton<GameManager>
     public Ma_TurnManager turnManager;
     public Ma_AIManager aiManager;
     public Ma_SoundManager soundManager;
-    
+
+    [Header("BrunoPart")]
+    [SerializeField] Animator animBruno;
+
     [Header("FunkRule")]
     private float _funkAmount = 0.5f;
 
@@ -62,6 +65,7 @@ public class GameManager : Singleton<GameManager>
         ResetMove();
 
     }
+
     //ACTING
     #region
 
@@ -167,6 +171,7 @@ public class GameManager : Singleton<GameManager>
 
         uiManager.UpdateMovesUi(moveLeft, maxMovesPerTurn);
     }
+
     //PREVIEW
     /*
     public void SetPreviewLine(List<Mb_Tile> allTilesToMove, Mb_PlayerController currentPlayer)
@@ -208,6 +213,7 @@ public class GameManager : Singleton<GameManager>
         foreach (Mb_PlayerController player in allPlayers)
         {
             player.anim.SetTrigger("Dance" + danceToTrigger);
+            player.particleFeedback.Play();
             player.currentTile.OnPatternCompleteFeedback();
         }
 
@@ -229,6 +235,11 @@ public class GameManager : Singleton<GameManager>
     //FUNK adding
     public void FunkVariation(float funkToAdd)
     {
+        if (funkToAdd > 0)
+            FunkAddingAnim();
+        else
+            DealDamageAnim();
+
         funkAmount = Mathf.Clamp(funkAmount + funkToAdd, 0, 1);
     }
 
@@ -303,5 +314,20 @@ public class GameManager : Singleton<GameManager>
         {
             GameObject.Find("MainUICanvas").GetComponent<Canvas>().worldCamera = cameraGo.GetComponent<Camera>();
         }
+    }
+
+    void FunkAddingAnim()
+    {
+        animBruno.SetTrigger("Damaged");
+    }
+
+    void DealDamageAnim()
+    {
+        animBruno.SetTrigger("Attack");
+    }
+
+    void ActingAnim()
+    {
+        animBruno.SetTrigger("Acting");
     }
 }

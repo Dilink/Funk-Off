@@ -20,6 +20,7 @@ public class Mb_PlayerController : MonoBehaviour
     int velX=0, velZ=0;
     Material meshMaterial;
     [Header("feedBacks")]
+    public ParticleSystem particleFeedback;
     private bool isSelected=false;
     [SerializeField] Mb_PlayerCard UiAssociated;
 
@@ -46,6 +47,7 @@ public class Mb_PlayerController : MonoBehaviour
     private void Move(Mb_Tile tileToMoveTo)
     {
         GameManager.Instance.DisableActing();
+        currentTile.DeasaparenceOfFeedback();
         //reset de la vieille tuile
         currentTile.avaible = true;
         currentTile.ResetOccupent();
@@ -348,6 +350,7 @@ public class Mb_PlayerController : MonoBehaviour
     {
         meshMaterial.SetFloat("_OUTLINE", 0.05f);
     }
+
     void ResetOutline()
     {
         meshMaterial.SetFloat("_OUTLINE", 0);
