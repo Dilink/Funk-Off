@@ -29,10 +29,11 @@ public class GameManager : Singleton<GameManager>
     public Ma_TurnManager turnManager;
     public Ma_AIManager aiManager;
     public Ma_SoundManager soundManager;
+    public Ma_MusicManager musicManager;
 
     [Header("BrunoPart")]
     [SerializeField] Animator animBruno;
-
+    
     [Header("FunkRule")]
     private float _funkAmount = 0.5f;
 
