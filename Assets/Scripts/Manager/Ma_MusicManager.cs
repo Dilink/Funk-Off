@@ -194,8 +194,8 @@ public class Ma_MusicManager : MonoBehaviour
                 throw new IndexOutOfRangeException("Invalid layer index!");
         }
     }
-#if UNITY_EDITOR
 
+#if UNITY_EDITOR
     [Button(ButtonSizes.Medium), GUIColor(0.89f, 0.14f, 0.14f)]
     private void Populate()
     {
