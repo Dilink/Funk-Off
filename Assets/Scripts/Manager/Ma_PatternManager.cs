@@ -27,10 +27,6 @@ public class Ma_PatternManager : MonoBehaviour
 
     private void Awake()
     {
-
-#if UNITY_EDITOR
-        LoadAvailablePatterns();
-#endif
         GenerateStartPattern();
         OnTurnStart();
     }
@@ -75,7 +71,9 @@ public class Ma_PatternManager : MonoBehaviour
             OnTurnStart();
         }
     }
+
 #if UNITY_EDITOR
+    [Button(ButtonSizes.Medium), GUIColor(0.89f, 0.14f, 0.14f)]
     private void LoadAvailablePatterns()
     {
         availablePatternList.Clear();
@@ -96,6 +94,7 @@ public class Ma_PatternManager : MonoBehaviour
         RandomizeList(ref availablePatternList);
     }
 #endif
+
     private void RandomizeList(ref List<Sc_Pattern> list)
     {
         list = list.OrderBy(x => rand.Next()).ToList();

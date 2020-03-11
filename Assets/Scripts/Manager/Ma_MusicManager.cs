@@ -11,6 +11,7 @@ using UnityEditor;
 public class MusicLayer
 {
     public List<AudioSource> audioSources;
+    public List<Coroutine> runningCoroutines;
 
     [ReadOnly]
     public bool keepFadingIn;
@@ -19,6 +20,7 @@ public class MusicLayer
     public MusicLayer(List<AudioSource> audioSources)
     {
         this.audioSources = audioSources;
+        this.runningCoroutines = new List<Coroutine>();
     }
 
     public void Play()
@@ -192,8 +194,8 @@ public class Ma_MusicManager : MonoBehaviour
                 throw new IndexOutOfRangeException("Invalid layer index!");
         }
     }
-#if UNITY_EDITOR
 
+#if UNITY_EDITOR
     [Button(ButtonSizes.Medium), GUIColor(0.89f, 0.14f, 0.14f)]
     private void Populate()
     {
@@ -289,30 +291,40 @@ public class Ma_MusicManager : MonoBehaviour
    
 
     #region ROUTINES
-    public void PlayLayerProcess(MusicLayer layer)
+    public Coroutine PlayLayerProcess(MusicLayer layer)
     {
-        StartCoroutine(PlayLayerProcessRoutine(layer));
+        //Debug.LogError("size: " + layer.runningCoroutines.Count);
+        foreach (Coroutine coroutine in layer.runningCoroutines)
+        {
+            //Debug.LogError("will stop coroutine: " + coroutine);
+            StopCoroutine(coroutine);
+        }
+        layer.runningCoroutines.Clear();
+
+        Coroutine co = StartCoroutine(PlayLayerProcessRoutine(layer));
+        layer.runningCoroutines.Add(co);
+        return co;
     }
 
-    public void FadeIn(AudioSource audioSource, MusicLayer layer)
+    public Coroutine FadeIn(AudioSource audioSource, MusicLayer layer)
     {
-        StartCoroutine(FadeInRoutine(audioSource, layer));
+        return StartCoroutine(FadeInRoutine(audioSource, layer));
     }
 
-    public void FadeOut(AudioSource audioSource, MusicLayer layer)
+    public Coroutine FadeOut(AudioSource audioSource, MusicLayer layer)
     {
-        StartCoroutine(FadeOutRoutine(audioSource, layer));
+        return StartCoroutine(FadeOutRoutine(audioSource, layer));
     }
 
     private IEnumerator PlayLayerProcessRoutine(MusicLayer layer)
     {
         foreach (var e in layer.audioSources)
-            FadeIn(e, layer);
+            layer.runningCoroutines.Add(FadeIn(e, layer));
 
         yield return new WaitForSeconds(layersDuration);
 
         foreach (var e in layer.audioSources)
-            FadeOut(e, layer);
+            layer.runningCoroutines.Add(FadeOut(e, layer));
     }
 
     private IEnumerator FadeInRoutine(AudioSource audioSource, MusicLayer layer)
