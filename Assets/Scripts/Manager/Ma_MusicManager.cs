@@ -192,8 +192,8 @@ public class Ma_MusicManager : MonoBehaviour
                 throw new IndexOutOfRangeException("Invalid layer index!");
         }
     }
+#if UNITY_EDITOR
 
-    #region TOOLING
     [Button(ButtonSizes.Medium), GUIColor(0.89f, 0.14f, 0.14f)]
     private void Populate()
     {
@@ -245,7 +245,7 @@ public class Ma_MusicManager : MonoBehaviour
             }
         }
     }
-
+#endif
     private AudioSource InitAudioSource(string name, AudioClip clip)
     {
         GameObject go = new GameObject(name);
@@ -286,7 +286,7 @@ public class Ma_MusicManager : MonoBehaviour
     {
         return BaseClips[0].length;
     }
-    #endregion
+   
 
     #region ROUTINES
     public void PlayLayerProcess(MusicLayer layer)

@@ -70,16 +70,16 @@ public class ObjExporterScript
         return sb.ToString();
     }
 }
-
+#if UNITY_EDITOR
 public class ObjExporter : ScriptableObject
 {
-    [MenuItem("File/Export/Wavefront OBJ")]
+   // [MenuItem("File/Export/Wavefront OBJ")]
     static void DoExportWSubmeshes()
     {
         DoExport(true);
     }
 
-    [MenuItem("File/Export/Wavefront OBJ (No Submeshes)")]
+    //  [MenuItem("File/Export/Wavefront OBJ (No Submeshes)")]
     static void DoExportWOSubmeshes()
     {
         DoExport(false);
@@ -160,4 +160,6 @@ public class ObjExporter : ScriptableObject
             sw.Write(s);
         }
     }
+
 }
+#endif
