@@ -279,6 +279,8 @@ public class Ma_UiManager : MonoBehaviour
 
     public void ShakePattern(int indexToShake)
     {
+
+
         PatternsbarElements[indexToShake].DOScale(1.4f,0.3f).OnComplete(()=>
         {
             PatternsbarElements[indexToShake].DOScale(1f, 0.3f);
@@ -389,16 +391,14 @@ public class Ma_UiManager : MonoBehaviour
 
     public void DeployUi(Mb_PlayerCard uiToDeploy)
     {
-        uiToDeploy.transform.DOLocalMoveX(uiToDeploy.cardTransform.localPosition.x+ 70, 0.2f);
+        uiToDeploy.transform.DOLocalMoveX(uiToDeploy.cardTransform.localPosition.x+ 70, 0.2f).SetEase(Ease.OutQuint);
         uiToDeploy.DeployName();
-        uiToDeploy.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.2f);
     }
 
     public void CleanUi(Mb_PlayerCard uiToClean)
     {
-        uiToClean.transform.DOLocalMoveX(uiToClean.cardTransform.localPosition.x - 70, 0.2f);
+        uiToClean.transform.DOLocalMoveX(uiToClean.cardTransform.localPosition.x - 70, 0.2f).SetEase(Ease.OutQuint);
         uiToClean.CleanName();
-        uiToClean.transform.DOScale(new Vector3(1, 1, 1), 0.2f);
     }
 
 }

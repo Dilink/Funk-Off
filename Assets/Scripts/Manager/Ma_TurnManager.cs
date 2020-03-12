@@ -70,7 +70,6 @@ public class Ma_TurnManager : MonoBehaviour
     public void OnNextRound() {
         CurrentTurn = 1;
         MaxTurn = GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].turnLimit;
-        GameManager.Instance.UpdateFeedBackAutourGrid(0);
 
         GameManager.Instance.patternManager.OnTurnEnd(true, true);
         GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
@@ -80,6 +79,7 @@ public class Ma_TurnManager : MonoBehaviour
 
     public bool IsLastRoundFinished()
     {
+        Debug.LogError("IsLastRoundFinished() " + CurrentTurn + ">" + MaxTurn);
         return CurrentTurn > MaxTurn;
     }
 }
