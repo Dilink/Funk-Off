@@ -102,7 +102,7 @@ public class Mb_MusicLayer : MonoBehaviour
 
         float startVolume = 1f;
 
-        const float fadeInDuration = 0.5f;
+        float fadeInDuration = GameManager.Instance.musicManager.fadeInDuration;
 
         foreach (var item in audioSources)
         {
@@ -123,7 +123,7 @@ public class Mb_MusicLayer : MonoBehaviour
             return;
         }
 
-        const float fadeOutDuration = 0.5f;
+        float fadeOutDuration = GameManager.Instance.musicManager.fadeOutDuration;
 
         foreach (var item in audioSources)
         {
