@@ -251,8 +251,8 @@ public class Ma_UiManager : MonoBehaviour
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        funkBarShader.SetFloat("_STEP", funkPercentage);
-        funkBarShader.SetColor("_COLO", funkBarGradient.Evaluate(funkPercentage));
+        funkBarShader.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed);
+        funkBarShader.DOColor( funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
     }
 
     // ---------------------
