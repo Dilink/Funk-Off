@@ -19,9 +19,9 @@ public class Mb_Tile : MonoBehaviour
     [Header("Feedback")]
     [SerializeField] GameObject feedBackWallUp;
     [SerializeField] GameObject feedBackWallRight;
-    [SerializeField] GameObject onCompleteFeedBack;
+    public ParticleSystem onCompleteFeedBack;
     [SerializeField] float timeBeforeDeasaparence = 1;
-   
+    [SerializeField] GameObject feedBackTilePrecompletion;
 
     private MeshRenderer meshRenderer;
     private Material tileMaterial;
@@ -127,16 +127,21 @@ public class Mb_Tile : MonoBehaviour
         
     }
 
-    void SetTileMaterial(Material newMaterial)
+    public void SetTileMaterial(Material newMaterial)
     {
         meshRenderer.material = newMaterial;
+    }
+
+    public void ResetBaseMaterial()
+    {
+        meshRenderer.material = baseMaterial;
     }
 
     public void ResetBaseTile()
     {
         tileProperties.type = 0;
         tileProperties.cost = 1;
-        SetTileMaterial(baseMaterial);
+        ResetBaseMaterial();
     }
 
     public void RestBaseTileButWalls()
@@ -179,20 +184,12 @@ public class Mb_Tile : MonoBehaviour
 
     public void OnPatternCompleteFeedback()
     {
-        onCompleteFeedBack.SetActive(true);
-        StartCoroutine("DelayBeforeDesaparence");
+        onCompleteFeedBack.Play();
     }
 
-    public void DeasaparenceOfFeedback()
+    public void PrecompletionFeedback(bool isActivated)
     {
-        onCompleteFeedBack.SetActive(false);
-
-    }
-
-    IEnumerator DelayBeforeDesaparence()
-    {
-        yield return new WaitForSeconds(timeBeforeDeasaparence);
-        DeasaparenceOfFeedback();
+        feedBackTilePrecompletion.SetActive(isActivated);
     }
 }
 

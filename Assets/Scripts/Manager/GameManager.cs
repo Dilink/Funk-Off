@@ -9,7 +9,6 @@ public class GameManager : Singleton<GameManager>
 {
     [Header("PLAYER PARAMETERS")]
     private int movePerTurn;
-    [SerializeField] bool canStore;
     [SerializeField] int maxMovesPerTurn;
     private int moveLeft;
     int totalMoveReseted = 0;
@@ -21,6 +20,8 @@ public class GameManager : Singleton<GameManager>
     [Header("GRID PARAMETERS")]
     public Mb_Tile[] allTiles;
     public Sc_GridFeedBackRule gridFeedbackRules;
+    [SerializeField] MeshRenderer feedbackAutourGrid;
+    
 
     [Header("MANAGERS")]
     public Ma_UiManager uiManager;
@@ -36,6 +37,7 @@ public class GameManager : Singleton<GameManager>
     
     [Header("FunkRule")]
     private float _funkAmount = 0.5f;
+    private Mb_Tile lastTileMousedOver;
 
     private float funkAmount
     {
@@ -64,7 +66,7 @@ public class GameManager : Singleton<GameManager>
         SetupMovementLimit();
         EnableActing();
         ResetMove();
-
+        UpdateFeedBackAutourGrid(0);
     }
 
     //ACTING
@@ -97,6 +99,9 @@ public class GameManager : Singleton<GameManager>
                 CastRayTile();
             }
         }
+
+        if (currentPlayerSelectionned != null)
+            CheckingPatternPreview();
     }
 
     //SELECTION
@@ -126,7 +131,7 @@ public class GameManager : Singleton<GameManager>
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 8))
         {
-            currentPlayerSelectionned.CheckCostingMovement(hit.collider.GetComponent<Mb_Tile>());
+            currentPlayerSelectionned.CheckCostingMovement( hit.collider.GetComponent<Mb_Tile>());
             
         }
     }
@@ -165,10 +170,8 @@ public class GameManager : Singleton<GameManager>
     {
         isTheFirstMove = true;
         int reservedMoves = moveLeft;
-        if (canStore)
-            moveLeft = Mathf.Clamp(totalMoveReseted + reservedMoves, 0, maxMovesPerTurn);
-        else
-            moveLeft = totalMoveReseted;
+
+        moveLeft = totalMoveReseted;
 
         uiManager.UpdateMovesUi(moveLeft, maxMovesPerTurn);
     }
@@ -317,6 +320,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    //FEEDBACK BRUNO
     void FunkAddingAnim()
     {
         animBruno.SetTrigger("Damaged");
@@ -330,5 +334,88 @@ public class GameManager : Singleton<GameManager>
     void ActingAnim()
     {
         animBruno.SetTrigger("Acting");
+    }
+
+    //PATTERN COMPLETION PREVIEW
+    void CheckingPatternPreview()
+    {
+        RaycastHit hit;
+        Ray ray;
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+   
+
+        // SI LA SOURIS EST AU DESSUS D UNE TILE
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 8))
+        {
+            List<Mb_Tile> tilesToCheck = new List<Mb_Tile>();
+
+            foreach(Mb_PlayerController players in allPlayers)
+            {
+                tilesToCheck.Add(players.currentTile);
+            }
+            tilesToCheck.Remove(currentPlayerSelectionned.currentTile);
+
+            Mb_Tile tileOverlaped = hit.collider.GetComponent<Mb_Tile>();
+
+            tilesToCheck.Add(tileOverlaped);
+
+            var patternToBeAccomplished = patternManager.JustCheckGridForPattern(tilesToCheck.ToArray(), true);
+            
+            //A CORRIGER
+
+            if (patternToBeAccomplished.HasValue)
+            {
+                print(lastTileMousedOver);
+                tileOverlaped.PrecompletionFeedback(true);
+
+                if (lastTileMousedOver == null)
+                {
+                    lastTileMousedOver = tileOverlaped;
+                }
+
+                uiManager.ShakePattern(patternToBeAccomplished.Value.Item1);
+            }
+
+            if (lastTileMousedOver != tileOverlaped)
+            {
+                if(lastTileMousedOver != null)
+                    lastTileMousedOver.PrecompletionFeedback(false);
+                lastTileMousedOver = tileOverlaped;
+            }
+        }
+        else
+            lastTileMousedOver.PrecompletionFeedback(false);
+
+
+    }
+
+    //feeddabck autourGrid
+    public void UpdateFeedBackAutourGrid(int comboLevel)
+    {
+        comboLevel = Mathf.Clamp(comboLevel, 0, 4);
+        switch(comboLevel)
+        {
+            case 0:
+                feedbackAutourGrid.material = gridFeedbackRules.calmGrid;
+                break;
+            case 1:
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 0.1f,0,0));
+                feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
+                break;
+            case 2:
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 0.3f, 0, 0));
+                feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
+                break;
+            case 3:
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, .5f, 0, 0));
+                break;
+            case 4:
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, .7f, 0, 0));
+                break;
+            case 5:
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 1f, 0, 0));
+                break;
+
+        }
     }
 }

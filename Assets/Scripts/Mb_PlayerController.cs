@@ -47,7 +47,6 @@ public class Mb_PlayerController : MonoBehaviour
     private void Move(Mb_Tile tileToMoveTo)
     {
         GameManager.Instance.DisableActing();
-        currentTile.DeasaparenceOfFeedback();
         //reset de la vieille tuile
         currentTile.avaible = true;
         currentTile.ResetOccupent();
@@ -127,9 +126,6 @@ public class Mb_PlayerController : MonoBehaviour
                 distanceBetweenTilesX == 1 &&
                 distanceBetweenTilesZ == 1)
             {
-                print(distanceBetweenTilesX);
-                print(distanceBetweenTilesZ);
-
                 if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
                 tileToMoveTo.avaible == true &&
                 GameManager.Instance.canAct == true &&

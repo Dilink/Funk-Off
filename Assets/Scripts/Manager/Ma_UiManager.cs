@@ -10,6 +10,7 @@ public class Ma_UiManager : MonoBehaviour
     //   [SerializeField] Mb_PlayerCard[] allPlayerUi;
     [Header("PARAMETERS")]
     public float FunkBarFillSpeed = 0.5f;
+    public Gradient funkBarGradient;
 
     [Space]
     [Header("Turnsbar elements")]
@@ -25,9 +26,13 @@ public class Ma_UiManager : MonoBehaviour
     public Image[] PatternsbarCancelMarkersImg;
     public TMP_Text[] PatternsbarMultipliersTexts;
 
+    private bool isPaternShaking;
+
     [Header("Funkbar elements")]
     public Image FunkbarFillImg;
+    public List<Image> FunkbarMasksImg;
     public RectTransform FunkbarFillRect;
+    public GameObject funkbarMasks;
 
     //[Header("PlayersStateBar elements")]
 
@@ -43,7 +48,6 @@ public class Ma_UiManager : MonoBehaviour
     public GameObject EndGameScreen;
     public RectTransform EndGameScreen_winRect;
     public RectTransform EndGameScreen_looseRect;
-
 
     [Header("UiCharacter")]
     public Image[] AllCharacterUi;
@@ -103,10 +107,10 @@ public class Ma_UiManager : MonoBehaviour
         //Animation
         Sequence moveSeq = DOTween.Sequence();
         moveSeq.Append(TurnsbarText.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.1f));
-        moveSeq.Append(TurnsbarText.transform.DORotate(new Vector3(0, 0, 20), 0.1f));
+        moveSeq.Append(TurnsbarText.transform.DOLocalRotate(new Vector3(0, 0, 20), 0.1f));
         moveSeq.PrependInterval(0.1f);
         moveSeq.Append(TurnsbarText.transform.DOScale(new Vector3(1, 1, 1), 0.1f));
-        moveSeq.Append(TurnsbarText.transform.DORotate(new Vector3(0, 0, 0), 0.1f));
+        moveSeq.Append(TurnsbarText.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.1f));
 
         TurnsbarText.text = (maxTurn - currentTurn).ToString();
     }
@@ -221,7 +225,9 @@ public class Ma_UiManager : MonoBehaviour
 
     public void RemoveAllMultiplierIcon()
     {
-       for(int i =0; i<PatternsbarMultipliersImg.Length; i++)
+        GameManager.Instance.UpdateFeedBackAutourGrid(0);
+
+        for (int i =0; i<PatternsbarMultipliersImg.Length; i++)
         {
             UpdateMultiplierIcon(i, Color.clear, GameManager.Instance.comboManager.colorNone, "x1");
             PatternsbarMultipliersTexts[i].color = Color.clear;
@@ -238,10 +244,29 @@ public class Ma_UiManager : MonoBehaviour
     // FUNKBAR FUNCTIONS
     // ---------------------
 
+    public void GetAllMasksImages()
+    {
+        Transform[] masks = funkbarMasks.GetComponentsInChildren<Transform>();
+
+        for(int i = 0; i < masks.Length;i++)
+        {
+            for (int j = 0; j < masks[i].childCount; j++)
+            {
+                FunkbarMasksImg.Add(masks[i].GetChild(j).GetComponent<Image>());
+            }
+
+        }
+    }
+
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        FunkbarFillImg.DOFillAmount(funkPercentage, FunkBarFillSpeed);
+        float filledMasksIndex = funkPercentage  * FunkbarMasksImg.Count;
+
+        for (int i = 0; i < filledMasksIndex; i++)
+        {
+            FunkbarMasksImg[i].color = funkBarGradient.Evaluate(funkPercentage);
+        }
     }
 
     // ---------------------
@@ -257,16 +282,24 @@ public class Ma_UiManager : MonoBehaviour
         //Animation
         Sequence moveSeq = DOTween.Sequence();
         moveSeq.Append(moveLeftText.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.1f));
-        moveSeq.Append(moveLeftText.transform.DORotate(new Vector3(0,0, 20), 0.1f));
+        moveSeq.Append(moveLeftText.transform.DOLocalRotate(new Vector3(0,0, 20), 0.1f));
         moveSeq.PrependInterval(0.1f);
         moveSeq.Append(moveLeftText.transform.DOScale(new Vector3(1, 1, 1), 0.1f));
-        moveSeq.Append(moveLeftText.transform.DORotate(new Vector3(0, 0, 0), 0.1f));
+        moveSeq.Append(moveLeftText.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.1f));
 
         // Change the text
         moveLeftText.text = movesReturning + " / " + moveForTheTurn;
     }
 
-    
+    public void ShakePattern(int indexToShake)
+    {
+
+
+        PatternsbarElements[indexToShake].DOScale(1.4f,0.3f).OnComplete(()=>
+        {
+            PatternsbarElements[indexToShake].DOScale(1f, 0.3f);
+        });
+    }
 
     // ---------------------
     // ENDGAME SCREEN UI FUNCTIONS
@@ -303,7 +336,7 @@ public class Ma_UiManager : MonoBehaviour
     public void OpenSettingsMenu()
     {
         PauseSettingsRect.rotation = Quaternion.Euler(0, 90, 0);
-        PauseSettingsRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseSettingsRect.DOLocalRotate(new Vector3(0, 0, 0), 0.5f);
         PauseSettingsRect.gameObject.SetActive(true);
         PauseMainRect.gameObject.SetActive(false);
     }
@@ -312,7 +345,7 @@ public class Ma_UiManager : MonoBehaviour
     public void CloseSettingsMenu()
     {
         PauseMainRect.rotation = Quaternion.Euler(0, 90, 0);
-        PauseMainRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseMainRect.DOLocalRotate(new Vector3(0, 0, 0), 0.5f);
         PauseSettingsRect.gameObject.SetActive(false);
         PauseMainRect.gameObject.SetActive(true);
     }
@@ -321,7 +354,7 @@ public class Ma_UiManager : MonoBehaviour
     public void OpenConfirm()
     {
         PauseQuitConfirmRect.rotation = Quaternion.Euler(0, 90, 0);
-        PauseQuitConfirmRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseQuitConfirmRect.DOLocalRotate(new Vector3(0, 0, 0), 0.5f);
         PauseQuitConfirmRect.gameObject.SetActive(true);
         PauseMainRect.gameObject.SetActive(false);
     }
@@ -330,7 +363,7 @@ public class Ma_UiManager : MonoBehaviour
     public void CloseConfirm()
     {
         PauseMainRect.rotation = Quaternion.Euler(0, 90, 0);
-        PauseMainRect.DORotate(new Vector3(0, 0, 0), 0.5f);
+        PauseMainRect.DOLocalRotate(new Vector3(0, 0, 0), 0.5f);
         PauseQuitConfirmRect.gameObject.SetActive(false);
         PauseMainRect.gameObject.SetActive(true);
     }
