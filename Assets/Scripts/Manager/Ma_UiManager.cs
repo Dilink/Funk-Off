@@ -47,7 +47,11 @@ public class Ma_UiManager : MonoBehaviour
     private static System.Random rand = new System.Random();
 
     [Header("Funkbar elements")]
-    public Material funkBarShader;
+    public Renderer funkbarRend;
+    private Material funkbarMatBase;
+    private Material funkbarMatInstance;
+    public MeshRenderer[] allSquare;
+
 
     [Header("Endturn Button elements")]
     public Button endturnButton;
@@ -87,14 +91,19 @@ public class Ma_UiManager : MonoBehaviour
         EndGameScreen = GameObject.Find("EndGameScreen");
         EndGameScreen_winRect = GameObject.Find("EndGameScreen_Win").GetComponent<RectTransform>();
         EndGameScreen_looseRect = GameObject.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
-}
+    }
 
     private void Awake()
     {
-        //OLD MOVEMENT SYSTEM
-      /*  for (int i = 0; i < allPlayerUi.Length; i++)
-            allPlayerUi[i].playerAssigned = GameManager.Instance.allPlayers[i];*/
+        funkbarMatBase = funkbarRend.material;
+        funkbarMatInstance = new Material(funkbarMatBase);
+
+        for(int i=0; i < allSquare.Length; i++)
+        {
+            allSquare[i].material = funkbarMatInstance;
+        }
     }
+
     // ---------------------
     // TURNSBAR FUNCTIONS
     // ---------------------
@@ -280,10 +289,10 @@ public class Ma_UiManager : MonoBehaviour
 
     private IEnumerator UpdateFunkBarCoroutine(float funkPercentage)
     {
-        if (funkPercentage >= funkBarShader.GetFloat("_STEP"))
-        { 
-            funkBarShader.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
-            funkBarShader.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
+        if (funkPercentage >= funkbarMatInstance.GetFloat("_STEP"))
+        {
+            funkbarMatInstance.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
+            funkbarMatInstance.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
 
             yield return new WaitForSeconds(FunkBarFillSpeed);
 
@@ -293,7 +302,7 @@ public class Ma_UiManager : MonoBehaviour
                 funkBarKey[i].SetTrigger("isGoingUp");
             }
         }
-        else if (funkPercentage < funkBarShader.GetFloat("_STEP"))
+        else if (funkPercentage < funkbarMatInstance.GetFloat("_STEP"))
         {
             Animator[] funkBarKeyClone = new Animator[funkBarKey.Length];
             funkBarKey.CopyTo(funkBarKeyClone, 0);
