@@ -127,11 +127,15 @@ public class Ma_ComboManager : MonoBehaviour
                     GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX6, colorX6, "Funkulouss");
                     break;
             }
+
         }
         else
         {
             GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Color.red, "error");
         }
+        
+        GameManager.Instance.UpdateFeedBackAutourGrid(multiplierIndex+1);
+
     }
 
     public void OnPatternAccomplished(int indexOfPatern)

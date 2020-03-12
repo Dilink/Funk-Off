@@ -225,7 +225,9 @@ public class Ma_UiManager : MonoBehaviour
 
     public void RemoveAllMultiplierIcon()
     {
-       for(int i =0; i<PatternsbarMultipliersImg.Length; i++)
+        GameManager.Instance.UpdateFeedBackAutourGrid(0);
+
+        for (int i =0; i<PatternsbarMultipliersImg.Length; i++)
         {
             UpdateMultiplierIcon(i, Color.clear, GameManager.Instance.comboManager.colorNone, "x1");
             PatternsbarMultipliersTexts[i].color = Color.clear;
