@@ -33,6 +33,8 @@ public class Ma_TurnManager : MonoBehaviour
 
     public void EndTurn()
     {
+        GameManager.Instance.UpdateFeedBackAutourGrid(0);
+
         GameManager.Instance.comboManager.ClearAllMultiplierUi();
         GameManager.Instance.uiManager.EnableDisableEndturnButton(false);
         // Pass to the next turn
@@ -68,6 +70,7 @@ public class Ma_TurnManager : MonoBehaviour
     public void OnNextRound() {
         CurrentTurn = 1;
         MaxTurn = GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].turnLimit;
+        GameManager.Instance.UpdateFeedBackAutourGrid(0);
 
         GameManager.Instance.patternManager.OnTurnEnd(true, true);
         GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
