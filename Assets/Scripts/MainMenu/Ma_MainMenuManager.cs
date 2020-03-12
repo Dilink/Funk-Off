@@ -13,6 +13,7 @@ public class Ma_MainMenuManager : MonoBehaviour
     public Transform[] selectedCharactersEmplacements;
     public GameObject[] selectedEmplacementsGameobjects = new GameObject[3];
     public bool[] selectedEmplacementsStatus = new bool[3];
+    public string levelToLoadName;
 
     [Header("Navigation elements")]
 
@@ -38,12 +39,11 @@ public class Ma_MainMenuManager : MonoBehaviour
     public int levelDone;
     public int gradeLevelDone;
 
-
-
     [Header("Items elements")]
 
     [Header("Team Builder elements")]
     public GridLayoutGroup cardsGrid;
+    public Sc_TeamBuilderPlayerCards[] allCards;
     public RectTransform characterEmplacementOne;
     public RectTransform characterEmplacementTwo;
     public RectTransform characterEmplacementThree;
@@ -62,6 +62,7 @@ public class Ma_MainMenuManager : MonoBehaviour
     private void Start()
     {
         currentScreen = MainMenuRect;
+        allCards = FindObjectsOfType<Sc_TeamBuilderPlayerCards>();
 
         if (!PlayerPrefs.HasKey("00_JoeDinner"))
         {
@@ -328,6 +329,18 @@ public class Ma_MainMenuManager : MonoBehaviour
     // TEAM BUILDER
     // -------------
     #region teambuilder
+
+
+    public void GetSceneName(string sceneName)
+    {
+        levelToLoadName = sceneName;
+    }
+
+    public void StartButton()
+    {
+        Sc_LoadScreen.Instance.LoadThisScene(levelToLoadName);
+    }
+
     // Add the card to the selected characters zone
     public void AddCardToSelectedEmplacements(GameObject card, int emplacement)
     {
@@ -347,8 +360,6 @@ public class Ma_MainMenuManager : MonoBehaviour
                 selectedEmplacementsGameobjects[i] = null;
             }
         }
-
-
     }
 
     public void UpdateMovementText( int move, bool sign)
@@ -393,6 +404,18 @@ public class Ma_MainMenuManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void HighlightCard(int index)
+    {
+        allCards[index].transform.SetAsLastSibling();
+        allCards[index].transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 1f);
+    }
+
+    public void UnhighlightCard(int index)
+    {
+        allCards[index].transform.SetAsLastSibling();
+        allCards[index].transform.DOScale(new Vector3(1, 1, 1), 1f);
     }
 
     public void BrowsePlayerCardsLeft()
