@@ -355,7 +355,8 @@ public class Mb_PlayerController : MonoBehaviour
 
     void SetOutline()
     {
-        meshMaterial.SetFloat("_OUTLINE", 0.05f);
+        print(meshMaterial.GetFloat("_OUTLINE"));
+        meshMaterial.SetFloat("_OUTLINE", .0002f);
     }
 
     void ResetOutline()
@@ -380,7 +381,7 @@ public class Mb_PlayerController : MonoBehaviour
         List<Mb_Tile> temporaryList = new List<Mb_Tile>();
         foreach(Mb_Tile tile in GameManager.Instance.allTiles)
         {
-            if (tile.avaible == true)
+            if (tile.avaible == true && tile.tileProperties.cost <= GameManager.Instance.moveLeftForTurn())
             {
                 if (DistanceInX(tile) + DistanceInZ(tile) <= 1 && 
                     IsNotWalled(tile, DirectionX(tile), DirectionZ(tile)))
