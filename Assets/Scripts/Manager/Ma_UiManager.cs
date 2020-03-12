@@ -21,18 +21,15 @@ public class Ma_UiManager : MonoBehaviour
 
     [Header("Patternsbar elements")]
     public List <RectTransform> PatternsbarElements;
-    public Image[] PatternsbarIconsImg;
-    public Image[] PatternsbarMultipliersImg;
-    public Image[] PatternsbarCancelMarkersImg;
-    public TMP_Text[] PatternsbarMultipliersTexts;
+    [SerializeField] Image[] PatternsbarIconsImg;
+    [SerializeField] Image[] PatternsbarMultipliersImg;
+    [SerializeField] Image[] PatternsbarCancelMarkersImg;
+    [SerializeField] TMP_Text[] PatternsbarMultipliersTexts;
 
     private bool isPaternShaking;
 
     [Header("Funkbar elements")]
-    public Image FunkbarFillImg;
-    public RectTransform FunkbarFillRect;
-    public GameObject funkbarMasks;
-    public List<Image> FunkbarMasksImg;
+    public Material funkBarShader;
 
     [Header("Endturn Button elements")]
     public Button endturnButton;
@@ -68,8 +65,6 @@ public class Ma_UiManager : MonoBehaviour
         //PatternsbarMultipliersTexts = GameObject.Find("PatternsBar_MultipliersTexts").GetComponentsInChildren<TMP_Text>();
 
         // Funkbar elements
-        FunkbarFillImg = GameObject.Find("Funkbar_Fill").GetComponent<Image>();
-        FunkbarFillRect = GameObject.Find("Funkbar_Fill").GetComponent<RectTransform>();
 
         // PlayerStateBar elements
 
@@ -95,6 +90,15 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
     // TURNSBAR FUNCTIONS
     // ---------------------
+
+    public void ClearAllMultiplierUi()
+    {
+        for (int i = 0; i < PatternsbarMultipliersImg.Length; i++)
+        {
+           
+            UpdateMultiplierIcon(i, Color.clear, GameManager.Instance.comboManager.colorNone, "");
+        }
+    }
 
     public void TESTUpdateTurns()
     {
@@ -244,29 +248,11 @@ public class Ma_UiManager : MonoBehaviour
     // FUNKBAR FUNCTIONS
     // ---------------------
 
-    public void GetAllMasksImages()
-    {
-        Transform[] masks = funkbarMasks.GetComponentsInChildren<Transform>();
-
-        for(int i = 0; i < masks.Length;i++)
-        {
-            for (int j = 0; j < masks[i].childCount; j++)
-            {
-                FunkbarMasksImg.Add(masks[i].GetChild(j).GetComponent<Image>());
-            }
-
-        }
-    }
-
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        float filledMasksIndex = funkPercentage  * FunkbarMasksImg.Count;
-
-        for (int i = 0; i < filledMasksIndex; i++)
-        {
-            FunkbarMasksImg[i].color = funkBarGradient.Evaluate(funkPercentage);
-        }
+        funkBarShader.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed);
+        funkBarShader.DOColor( funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
     }
 
     // ---------------------
