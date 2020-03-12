@@ -15,6 +15,7 @@ public class Mb_Tile : MonoBehaviour
     public bool avaible = true;
     [SerializeField] public Mb_PlayerController playerOnTile;
     public Modifier tileProperties;
+    public bool canWalkOn=false;
 
     [Header("Feedback")]
     [SerializeField] GameObject feedBackWallUp;
@@ -22,6 +23,7 @@ public class Mb_Tile : MonoBehaviour
     public ParticleSystem onCompleteFeedBack;
     [SerializeField] float timeBeforeDeasaparence = 1;
     [SerializeField] GameObject feedBackTilePrecompletion;
+    [SerializeField] GameObject tileAvaibleFeedBack;
 
     private MeshRenderer meshRenderer;
     private Material tileMaterial;
@@ -190,6 +192,26 @@ public class Mb_Tile : MonoBehaviour
     public void PrecompletionFeedback(bool isActivated)
     {
         feedBackTilePrecompletion.SetActive(isActivated);
+    }
+
+    public void ActivateAvaibleFeedback()
+    {
+        tileAvaibleFeedBack.SetActive(true);
+    }
+
+    public void DesactivateAvaibleFeedback()
+    {
+        tileAvaibleFeedBack.SetActive(false);
+    }
+
+    public void ActivateCanWalkFeedBack()
+    {
+        tileAvaibleFeedBack.SetActive(true);
+    }
+
+    public void DesctivateCanWalkFeedBack()
+    {
+        tileAvaibleFeedBack.SetActive(false);
     }
 }
 
