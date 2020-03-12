@@ -23,7 +23,6 @@ public class Ma_UiManager : MonoBehaviour
     public List <RectTransform> PatternsbarElements;
     [SerializeField] Image[] PatternsbarIconsImg;
     [SerializeField] Image[] PatternsbarMultipliersImg;
-    [SerializeField] Image[] PatternsbarCancelMarkersImg;
     [SerializeField] TMP_Text[] PatternsbarMultipliersTexts;
 
     private bool isPaternShaking;
@@ -241,7 +240,7 @@ public class Ma_UiManager : MonoBehaviour
     // Update the cancel marker visuals
     public void UpdateCancelMarkerIcon(int emplacement, bool active)
     {
-        PatternsbarElements[emplacement].GetChild(3).GetComponent<Image>().color = active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
+       // PatternsbarElements[emplacement].GetChild(3).GetComponent<Image>().color = active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
     }
 
     // ---------------------
