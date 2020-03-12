@@ -45,7 +45,10 @@ public class Ma_UiManager : MonoBehaviour
     private bool isPaternShaking;
 
     [Header("Funkbar elements")]
-    public Material funkBarShader;
+    public Renderer funkbarRend;
+    private Material funkbarMatBase;
+    private Material funkbarMatInstance;
+
 
     [Header("Endturn Button elements")]
     public Button endturnButton;
@@ -85,14 +88,14 @@ public class Ma_UiManager : MonoBehaviour
         EndGameScreen = GameObject.Find("EndGameScreen");
         EndGameScreen_winRect = GameObject.Find("EndGameScreen_Win").GetComponent<RectTransform>();
         EndGameScreen_looseRect = GameObject.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
-}
+    }
 
     private void Awake()
     {
-        //OLD MOVEMENT SYSTEM
-      /*  for (int i = 0; i < allPlayerUi.Length; i++)
-            allPlayerUi[i].playerAssigned = GameManager.Instance.allPlayers[i];*/
+        funkbarMatBase = funkbarRend.material;
+        funkbarMatInstance = new Material(funkbarMatBase);
     }
+
     // ---------------------
     // TURNSBAR FUNCTIONS
     // ---------------------
@@ -273,8 +276,8 @@ public class Ma_UiManager : MonoBehaviour
 
     private IEnumerator UpdateFunkBarCoroutine(float funkPercentage)
     {
-        funkBarShader.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed);
-        funkBarShader.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
+        funkbarMatInstance.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed);
+        funkbarMatInstance.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
 
         yield return new WaitForSeconds(FunkBarFillSpeed);
 
