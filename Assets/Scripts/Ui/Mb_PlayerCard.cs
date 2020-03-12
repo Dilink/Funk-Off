@@ -48,12 +48,12 @@ public class Mb_PlayerCard : MonoBehaviour
 
     public void DeployName()
     {
-        nameSprite.DOLocalMove(nameLocalBasePos + nameMovementDeployment, .2f);
+        nameSprite.DOLocalMove(nameLocalBasePos + nameMovementDeployment, .2f).SetEase(Ease.OutQuint);
     }
 
     public void CleanName()
     {
-        nameSprite.DOLocalMove(nameLocalBasePos - nameMovementDeployment, .2f);
+        nameSprite.DOLocalMove(nameLocalBasePos - nameMovementDeployment, .2f).SetEase(Ease.OutQuint);
     }
 
     private void DisplayInfoBubble(string title, string desc)
