@@ -58,8 +58,9 @@ public class GameManager : Singleton<GameManager>
     public bool isGameFinished = false;
 
     private void Start()
-    {     
+    {
         uiManager.UpdateFunkBar(funkAmount);
+        uiManager.EnableDisableEndturnButton(false);
         SetupMovementLimit();
         EnableActing();
         ResetMove();
@@ -154,13 +155,16 @@ public class GameManager : Singleton<GameManager>
     public void DecreaseMovesLeft(int toDecrease)
     {
         moveLeft -= toDecrease;
-        uiManager.UpdateMovesUi(moveLeft, movePerTurn);
+        uiManager.UpdateMovesUi(moveLeft, totalMoveReseted);
+
+        if (moveLeft < totalMoveReseted)
+            uiManager.EnableDisableEndturnButton(true);
     }
 
     public void IncreaseMovesLeft(int toDecrease)
     {
         moveLeft += toDecrease;
-        uiManager.UpdateMovesUi(moveLeft, movePerTurn);
+        uiManager.UpdateMovesUi(moveLeft, totalMoveReseted);
     }
 
     public void ResetMove()
@@ -170,7 +174,7 @@ public class GameManager : Singleton<GameManager>
 
         moveLeft = totalMoveReseted;
 
-        uiManager.UpdateMovesUi(moveLeft, maxMovesPerTurn);
+        uiManager.UpdateMovesUi(moveLeft, totalMoveReseted);
     }
 
     //PREVIEW

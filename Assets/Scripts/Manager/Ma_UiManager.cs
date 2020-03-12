@@ -30,12 +30,12 @@ public class Ma_UiManager : MonoBehaviour
 
     [Header("Funkbar elements")]
     public Image FunkbarFillImg;
-    public List<Image> FunkbarMasksImg;
     public RectTransform FunkbarFillRect;
     public GameObject funkbarMasks;
+    public List<Image> FunkbarMasksImg;
 
-    //[Header("PlayersStateBar elements")]
-
+    [Header("Endturn Button elements")]
+    public Button endturnButton;
 
     [Header("PauseMenus elements")]
     public GameObject PauseMenu;
@@ -317,7 +317,16 @@ public class Ma_UiManager : MonoBehaviour
         }
     }
 
-    
+    // ---------------------
+    // ENDTURN BUTTON UI FUNCTIONS
+    // ---------------------
+
+    public void EnableDisableEndturnButton(bool status)
+    {
+        Debug.Log("Endturn button = " + status);
+        endturnButton.interactable = status;
+    }
+
     // ---------------------
     // PAUSE MENUS UI FUNCTIONS
     // ---------------------

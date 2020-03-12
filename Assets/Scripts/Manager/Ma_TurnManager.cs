@@ -34,6 +34,7 @@ public class Ma_TurnManager : MonoBehaviour
     public void EndTurn()
     {
         GameManager.Instance.comboManager.ClearAllMultiplierUi();
+        GameManager.Instance.uiManager.EnableDisableEndturnButton(false);
         // Pass to the next turn
         if (CurrentTurn <= MaxTurn)
         {
