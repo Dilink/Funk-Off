@@ -64,7 +64,20 @@ public class Ma_TurnManager : MonoBehaviour
             {
                 GameManager.Instance.patternManager.OnTurnEnd(true);
             }
+
+            StartCoroutine(PreventPlayerFromActing());
         }
+    }
+
+    private IEnumerator PreventPlayerFromActing()
+    {
+        Debug.LogError("PreventPlayerFromActing()");
+        GameManager game = GameManager.Instance;
+        game.canActForced = true;
+        game.DisableActing();
+        yield return new WaitForSeconds(game.timeBetweenTurns);
+        game.canActForced = false;
+        game.EnableActing();
     }
 
     public void OnNextRound() {
@@ -79,6 +92,7 @@ public class Ma_TurnManager : MonoBehaviour
 
     public bool IsLastRoundFinished()
     {
+        Debug.LogError("IsLastRoundFinished() " + CurrentTurn + ">" + MaxTurn);
         return CurrentTurn > MaxTurn;
     }
 }
