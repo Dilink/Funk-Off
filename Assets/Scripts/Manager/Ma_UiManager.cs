@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
+using System.Linq;
 
 [System.Serializable]
 public struct PatternItem
@@ -37,14 +38,13 @@ public class Ma_UiManager : MonoBehaviour
 
     [Header("Movebar elements")]
     [SerializeField] TextMeshProUGUI moveLeftText;
-    [SerializeField] TextMeshProUGUI maxMoveText;
-
 
     [Header("Patternsbar elements")]
     [ReadOnly] [ShowInInspector] [SerializeField] private List<PatternItem> patternItems = new List<PatternItem>();
     [ReadOnly] [ShowInInspector] [SerializeField] private List<PatternMultiplier> patternMultipliers = new List<PatternMultiplier>();
 
     private bool isPaternShaking;
+    private static System.Random rand = new System.Random();
 
     [Header("Funkbar elements")]
     public Material funkBarShader;
@@ -89,10 +89,15 @@ public class Ma_UiManager : MonoBehaviour
         EndGameScreen_looseRect = GameObject.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
 }
 
-    private void Start()
+    private void Awake()
     {
-        maxMoveText.text = GameManager.Instance.maxMovesPerTurn.ToString();
+        //OLD MOVEMENT SYSTEM
+      /*  for (int i = 0; i < allPlayerUi.Length; i++)
+            allPlayerUi[i].playerAssigned = GameManager.Instance.allPlayers[i];*/
     }
+    // ---------------------
+    // TURNSBAR FUNCTIONS
+    // ---------------------
 
     public void ClearAllMultiplierUi()
     {
@@ -268,25 +273,51 @@ public class Ma_UiManager : MonoBehaviour
         StartCoroutine(UpdateFunkBarCoroutine(funkPercentage));
     }
 
+    private void RandomizeArray(ref Animator[] Array)
+    {
+        Array = Array.OrderBy(x => rand.Next()).ToArray();
+    }
+
     private IEnumerator UpdateFunkBarCoroutine(float funkPercentage)
     {
-        funkBarShader.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed);
-        funkBarShader.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
+        if (funkPercentage >= funkBarShader.GetFloat("_STEP"))
+        { 
+            funkBarShader.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
+            funkBarShader.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
 
-        yield return new WaitForSeconds(FunkBarFillSpeed);
+            yield return new WaitForSeconds(FunkBarFillSpeed);
 
-        for (int i = 0; i < funkBarKey.Length; i++)
+            for (int i = 0; i < funkBarKey.Length; i++)
+            {
+                yield return new WaitForSeconds(0.008f);
+                funkBarKey[i].SetTrigger("isGoingUp");
+            }
+        }
+        else if (funkPercentage < funkBarShader.GetFloat("_STEP"))
         {
-            yield return new WaitForSeconds(0.008f);
-            funkBarKey[i].SetTrigger("isGoingUp");
+            Animator[] funkBarKeyClone = new Animator[funkBarKey.Length];
+            funkBarKey.CopyTo(funkBarKeyClone, 0);
+
+            RandomizeArray(ref funkBarKeyClone);
+
+            for (int i = 0; i < funkBarKeyClone.Length; i+=2)
+            {
+                yield return new WaitForSeconds(0.005f);
+                funkBarKeyClone[i].SetTrigger("isGoingDown");
+                funkBarKeyClone[i+1].SetTrigger("isGoingDown");
+            }
         }
     }
 
     // ---------------------
     // CHARACTERS UI FUNCTIONS
     // ---------------------
+    public void TESTUpdateMoves()
+    {
+        UpdateMovesUi(1, 1);
+    }
 
-    public void UpdateMovesUi( int moveForTheTurn)
+    public void UpdateMovesUi(int movesReturning, int moveForTheTurn)
     {
         //Animation
         Sequence moveSeq = DOTween.Sequence();
@@ -297,7 +328,7 @@ public class Ma_UiManager : MonoBehaviour
         moveSeq.Append(moveLeftText.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.1f));
 
         // Change the text
-        moveLeftText.text = moveForTheTurn.ToString();
+        moveLeftText.text = movesReturning + " / " + moveForTheTurn;
     }
 
     public void ShakePattern(int indexToShake)
