@@ -10,7 +10,7 @@ public class GameManager : Singleton<GameManager>
 {
     [Header("PLAYER PARAMETERS")]
     private int movePerTurn;
-    [SerializeField] int maxMovesPerTurn;
+    [HideInInspector] public int maxMovesPerTurn;
     private int moveLeft;
     int totalMoveReseted = 0;
     [HideInInspector] public bool isTheFirstMove = true;
@@ -37,7 +37,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] Animator animBruno;
     
     [Header("FunkRule")]
-    private float _funkAmount = 0.5f;
+    private float _funkAmount = 0f;
     private Mb_Tile lastTileMousedOver;
 
     private float funkAmount
@@ -108,7 +108,10 @@ public class GameManager : Singleton<GameManager>
                 CastRayTile();
             }
         }
+    }
 
+    private void FixedUpdate()
+    {
         if (currentPlayerSelectionned != null)
             CheckingPatternPreview();
     }
@@ -151,12 +154,10 @@ public class GameManager : Singleton<GameManager>
     //definir la limte de début
     private void SetupMovementLimit()
     {
-       
         foreach (Mb_PlayerController player in allPlayers)
         {
             totalMoveReseted += player.characterBaseCharacteristics.movementGiven;
-        }
-        totalMoveReseted = Mathf.Clamp(totalMoveReseted, totalMoveReseted, maxMovesPerTurn);              
+        }            
     }
 
     public int moveLeftForTurn()
@@ -167,7 +168,7 @@ public class GameManager : Singleton<GameManager>
     public void DecreaseMovesLeft(int toDecrease)
     {
         moveLeft -= toDecrease;
-        uiManager.UpdateMovesUi(moveLeft, totalMoveReseted);
+        uiManager.UpdateMovesUi(moveLeft);
 
         if (moveLeft < totalMoveReseted)
             uiManager.EnableDisableEndturnButton(true);
@@ -176,7 +177,7 @@ public class GameManager : Singleton<GameManager>
     public void IncreaseMovesLeft(int toDecrease)
     {
         moveLeft += toDecrease;
-        uiManager.UpdateMovesUi(moveLeft, totalMoveReseted);
+        uiManager.UpdateMovesUi(moveLeft);
     }
 
     public void ResetMove()
@@ -186,7 +187,7 @@ public class GameManager : Singleton<GameManager>
 
         moveLeft = totalMoveReseted;
 
-        uiManager.UpdateMovesUi(moveLeft, totalMoveReseted);
+        uiManager.UpdateMovesUi(moveLeft);
     }
 
     //PREVIEW

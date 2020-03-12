@@ -97,6 +97,15 @@ public class Mb_PlayerController : MonoBehaviour
                 GameManager.Instance.isTheFirstMove = false;
 
         }
+        if(GameManager.Instance.currentPlayerSelectionned == this)
+        {
+            foreach (Mb_Tile tile in allTilesAvaibleToWalkOn())
+            {
+                tile.canWalkOn = true;
+
+                tile.ActivateAvaibleFeedback();
+            }
+        }
 
     }
 
