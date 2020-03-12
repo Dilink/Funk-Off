@@ -20,7 +20,6 @@ public class Ma_MusicManager : MonoBehaviour
     public float fadeInDuration = 0.5f;
     public float fadeOutDuration = 0.5f;
 
-#if UNITY_EDITOR
     [ReadOnly] [SerializeField] [ShowInInspector] private AudioClip SampleClip;
 
     [Header("[Debug] Audio Clips")]
@@ -32,7 +31,6 @@ public class Ma_MusicManager : MonoBehaviour
 
     [Header("[Debug] Other")]
     [ReadOnly] [SerializeField] [ShowInInspector] [InlineEditor] private List<Mb_MusicLayer> MusicLayers;
-#endif
 
     void Awake()
     {
