@@ -33,7 +33,7 @@ Shader "S_CUBE"
 
 		void surf( Input i , inout SurfaceOutput o )
 		{
-			float4 color25 = IsGammaSpace() ? float4(0.259434,1,0.917182,0) : float4(0.05473496,1,0.821842,0);
+			float4 color25 = IsGammaSpace() ? float4(0.259434,1,0.917182,0) : float4(0.05473498,1,0.8218421,0);
 			float4 temp_cast_0 = (0.0).xxxx;
 			float4 temp_cast_1 = (( i.uv_tex4coord.z + 0.28 )).xxxx;
 			float4 smoothstepResult18 = smoothstep( temp_cast_0 , temp_cast_1 , tex2D( _TextureSample0, i.uv_tex4coord.xy ));
@@ -121,7 +121,7 @@ Version=16100
 0;0;1920;1019;-2223.279;1178.823;1;True;True
 Node;AmplifyShaderEditor.TextureCoordinatesNode;13;1760.369,-780.5189;Float;False;0;-1;4;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;20;2152.231,-593.7986;Float;False;Constant;_Float2;Float 2;2;0;Create;True;0;0;False;0;0.28;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode;1;2186.275,-1006.819;Float;True;Property;_TextureSample0;Texture Sample 0;1;0;Create;True;0;0;False;0;57a91d6229ac0564292b815de818b34c;57a91d6229ac0564292b815de818b34c;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SamplerNode;1;2186.275,-1006.819;Float;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;False;0;57a91d6229ac0564292b815de818b34c;57a91d6229ac0564292b815de818b34c;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;19;2365.974,-735.0458;Float;False;Constant;_Float1;Float 1;2;0;Create;True;0;0;False;0;0;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;21;2354.819,-639.828;Float;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;23;2816.042,-937.0997;Float;False;Constant;_Float0;Float 0;2;0;Create;True;0;0;False;0;1.71;0;0;0;0;1;FLOAT;0
@@ -147,4 +147,4 @@ WireConnection;27;1;28;0
 WireConnection;22;2;26;0
 WireConnection;22;9;27;0
 ASEEND*/
-//CHKSM=943954B992340A730A1A7171D726519C022D8EE6
+//CHKSM=7868885FB9529477620B7255245809025D8360D2
