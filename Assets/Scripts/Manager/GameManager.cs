@@ -364,31 +364,53 @@ public class GameManager : Singleton<GameManager>
             tilesToCheck.Add(tileOverlaped);
 
             var patternToBeAccomplished = patternManager.JustCheckGridForPattern(tilesToCheck.ToArray(), true);
+
+            if(tileOverlaped !=lastTileMousedOver)
+            {
+                for (int i = 0; i < tilesToCheck.Count(); i++)
+                {
+                    tilesToCheck[i].PrecompletionFeedback(false);
+                }
+            }
             
             //A CORRIGER
 
             if (patternToBeAccomplished.HasValue)
             {
-                print(lastTileMousedOver);
-                tileOverlaped.PrecompletionFeedback(true);
-
                 if (lastTileMousedOver == null)
                 {
                     lastTileMousedOver = tileOverlaped;
                 }
 
+                for (int i = 0; i < tilesToCheck.Count(); i++)
+                {
+                    tilesToCheck[i].PrecompletionFeedback(true);
+                }
                 uiManager.ShakePattern(patternToBeAccomplished.Value.Item1);
             }
-
+            else
+            {
+                for (int i = 0; i < tilesToCheck.Count(); i++)
+                {
+                    tilesToCheck[i].PrecompletionFeedback(false);
+                }
+            }
+            /*
             if (lastTileMousedOver != tileOverlaped)
             {
                 if(lastTileMousedOver != null)
                     lastTileMousedOver.PrecompletionFeedback(false);
+
                 lastTileMousedOver = tileOverlaped;
-            }
+            }*/
         }
         else
-            lastTileMousedOver.PrecompletionFeedback(false);
+        {
+            foreach(Mb_Tile tiles in allTiles)
+            {
+                tiles.PrecompletionFeedback(false);
+            }
+        }
 
 
     }
@@ -396,28 +418,35 @@ public class GameManager : Singleton<GameManager>
     //feeddabck autourGrid
     public void UpdateFeedBackAutourGrid(int comboLevel)
     {
-        comboLevel = Mathf.Clamp(comboLevel, 0, 4);
+        comboLevel = Mathf.Clamp(comboLevel, 0, 5);
+        print(comboLevel);
         switch(comboLevel)
         {
             case 0:
                 feedbackAutourGrid.material = gridFeedbackRules.calmGrid;
                 break;
             case 1:
-                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 0.1f,0,0));
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 0.05f,0,0));
                 feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
                 break;
             case 2:
-                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 0.3f, 0, 0));
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 0.1f, 0, 0));
                 feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
                 break;
             case 3:
-                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, .5f, 0, 0));
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, .2f, 0, 0));
+                feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
+
                 break;
             case 4:
-                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, .7f, 0, 0));
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, .35f, 0, 0));
+                feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
+
                 break;
             case 5:
-                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 1f, 0, 0));
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 5f, 0, 0));
+                feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
+
                 break;
 
         }
