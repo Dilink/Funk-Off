@@ -48,6 +48,7 @@ public class Ma_UiManager : MonoBehaviour
     public Renderer funkbarRend;
     private Material funkbarMatBase;
     private Material funkbarMatInstance;
+    public MeshRenderer[] allSquare;
 
 
     [Header("Endturn Button elements")]
@@ -94,6 +95,11 @@ public class Ma_UiManager : MonoBehaviour
     {
         funkbarMatBase = funkbarRend.material;
         funkbarMatInstance = new Material(funkbarMatBase);
+
+        for(int i=0; i < allSquare.Length; i++)
+        {
+            allSquare[i].material = funkbarMatInstance;
+        }
     }
 
     // ---------------------
