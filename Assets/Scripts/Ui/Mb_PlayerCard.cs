@@ -55,26 +55,11 @@ public class Mb_PlayerCard : MonoBehaviour
     {
         nameSprite.DOLocalMove(nameLocalBasePos - nameMovementDeployment, .2f);
     }
-    /*
-    public void UpdateCardPassive(Sprite img)
-    {
-        CardPassive.sprite = img;
-    }
-    public void DisplayItemBubble()
-    {
-        DisplayInfoBubble(item.itemName, item.itemDesc);
-    }
-
-    public void DisplayPowerBubble()
-    {
-        DisplayInfoBubble(powerName, powerDesc);
-    }*/
-
 
     private void DisplayInfoBubble(string title, string desc)
     {
         // Move the bubble & scale
-        toolTip.DOMoveX(400, 0.2f, false);
+        toolTip.DOLocalMoveX(400, 0.2f, false);
         toolTip.DOScale(new Vector3(1, 1, 1), 0.2f);
 
         // Update the texts
@@ -84,7 +69,7 @@ public class Mb_PlayerCard : MonoBehaviour
 
     public void HideInfoBubble()
     {
-        toolTip.DOMoveX(0, 0.2f, false);
+        toolTip.DOLocalMoveX(0, 0.2f, false);
         toolTip.DOScale(new Vector3(0.6f, 0.6f, 1), 0.2f);
     }
 }
