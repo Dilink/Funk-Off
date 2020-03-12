@@ -2,12 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Sirenix.OdinInspector;
+using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
 
+[System.Serializable]
+public struct PatternItem
+{
+    public RectTransform transform;
+    public Image color;
+    public Image background;
+    public Image icon;
+    public Mb_PatternBarElement element;
+}
+
+[System.Serializable]
+public struct PatternMultiplier
+{
+    public Image multiplierImg;
+    public TMP_Text multiplierText;
+}
+
 public class Ma_UiManager : MonoBehaviour
 {
-    //   [SerializeField] Mb_PlayerCard[] allPlayerUi;
     [Header("PARAMETERS")]
     public float FunkBarFillSpeed = 0.5f;
     public Gradient funkBarGradient;
@@ -20,10 +38,8 @@ public class Ma_UiManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI moveLeftText;
 
     [Header("Patternsbar elements")]
-    public List <RectTransform> PatternsbarElements;
-    [SerializeField] Image[] PatternsbarIconsImg;
-    [SerializeField] Image[] PatternsbarMultipliersImg;
-    [SerializeField] TMP_Text[] PatternsbarMultipliersTexts;
+    [ReadOnly] [ShowInInspector] [SerializeField] private List<PatternItem> patternItems = new List<PatternItem>();
+    [ReadOnly] [ShowInInspector] [SerializeField] private List<PatternMultiplier> patternMultipliers = new List<PatternMultiplier>();
 
     private bool isPaternShaking;
 
@@ -50,18 +66,8 @@ public class Ma_UiManager : MonoBehaviour
 
     private void Reset()
     {
-        // PlayerCards elements
-        //allPlayerUi = FindObjectsOfType<Mb_PlayerCard>();
-
         // Turnsbar elements
         TurnsbarText = GameObject.Find("TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
-
-        // Patternsbar elements
-        //PatternsbarElements = GameObject.Find("PatternsBar_elements").GetComponentsInChildren<GameObject>();
-        //PatternsbarIconsImg = GameObject.Find("").GetComponentsInChildren<Image>();
-        //PatternsbarMultipliersImg = GameObject.Find("PatternsBar_Multipliers").GetComponentsInChildren<Image>();
-        //PatternsbarCancelMarkersImg = GameObject.Find("PatternsBar_CancelMarkers").GetComponentsInChildren<Image>();
-        //PatternsbarMultipliersTexts = GameObject.Find("PatternsBar_MultipliersTexts").GetComponentsInChildren<TMP_Text>();
 
         // Funkbar elements
 
@@ -92,9 +98,8 @@ public class Ma_UiManager : MonoBehaviour
 
     public void ClearAllMultiplierUi()
     {
-        for (int i = 0; i < PatternsbarMultipliersImg.Length; i++)
+        for (int i = 0; i < patternItems.Count; i++)
         {
-           
             UpdateMultiplierIcon(i, Color.clear, GameManager.Instance.comboManager.colorNone, "");
         }
     }
@@ -131,29 +136,33 @@ public class Ma_UiManager : MonoBehaviour
     {
         if (!isPatternDestroyed)
         {
-            PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
-            PatternsbarMultipliersImg[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
-            PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
-            PatternsbarMultipliersTexts[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
+            PatternItem pattern = patternItems[emplacement];
+            Image multiplierImg = patternMultipliers[emplacement].multiplierImg;
+            TMP_Text multiplierText = patternMultipliers[emplacement].multiplierText;
 
-            PatternsbarElements[emplacement].transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
-            PatternsbarElements[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y + 75, 0.2f, false).SetEase(Ease.OutCirc);
+            multiplierImg.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
+            multiplierImg.transform.DOLocalMoveY(pattern.transform.anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
+            multiplierText.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
+            multiplierText.transform.DOLocalMoveY(pattern.transform.anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
+
+            pattern.transform.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
+            pattern.transform.transform.DOLocalMoveY(pattern.transform.anchoredPosition.y + 75, 0.2f, false).SetEase(Ease.OutCirc);
 
             yield return new WaitForSeconds(0.2f);
 
-            //PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
-            //PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
+            //multiplierImg.transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
+            //multiplierText.transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
 
-            PatternsbarElements[emplacement].transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
+            pattern.transform.transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
 
             yield return new WaitForSeconds(0.3f);
 
-            PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
-            PatternsbarMultipliersImg[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
-            PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
-            PatternsbarMultipliersTexts[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
+            multiplierImg.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
+            multiplierImg.transform.DOLocalMoveY(pattern.transform.anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
+            multiplierText.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
+            multiplierText.transform.DOLocalMoveY(pattern.transform.anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
 
-            PatternsbarElements[emplacement].transform.DOLocalMoveY(PatternsbarElements[emplacement].anchoredPosition.y - 275, 0.25f, false).SetEase(Ease.InCubic);
+            pattern.transform.transform.DOLocalMoveY(pattern.transform.anchoredPosition.y - 275, 0.25f, false).SetEase(Ease.InCubic);
         }
         else
         {
@@ -163,15 +172,17 @@ public class Ma_UiManager : MonoBehaviour
 
     public void MovePatterns(int emplacement)
     {
+        PatternItem pattern = patternItems[emplacement];
+
         // Déplace le pattern concerné d'une case vers la gauche
-        if(PatternsbarElements[emplacement].anchoredPosition.x >= -350)
+        if (pattern.transform.anchoredPosition.x >= -350)
         {
             // Déplacement du pattern
-            PatternsbarElements[emplacement].transform.DOLocalMoveX(PatternsbarElements[emplacement].anchoredPosition.x - 200, 0.4f, false).SetEase(Ease.InOutQuart);
+            pattern.transform.transform.DOLocalMoveX(pattern.transform.anchoredPosition.x - 200, 0.4f, false).SetEase(Ease.InOutQuart);
 
             // Couleur du background et scale, pour qu'il se reset après avoir été sur la case grise
-            PatternsbarElements[emplacement].localScale = new Vector3(1, 1, 1);
-            PatternsbarElements[emplacement].GetChild(1).GetComponent<Image>().color = Color.white;
+            pattern.transform.localScale = new Vector3(1, 1, 1);
+            pattern.background.color = Color.white;
         }
         else // Si le pattern concerné est le plus à gauche, le renvoit sur la case grise
         {
@@ -181,24 +192,27 @@ public class Ma_UiManager : MonoBehaviour
 
     public void RespawnPattern(int emplacement)
     {
+        PatternItem pattern = patternItems[emplacement];
+
         // Remet le pattern sur la case grise
-        PatternsbarElements[emplacement].anchoredPosition = new Vector2(600, 0);
+        pattern.transform.anchoredPosition = new Vector2(600, 0);
 
         // Change le background et le scale pour qu'il s'adapte à la case grise 
-        PatternsbarElements[emplacement].localScale = new Vector3(0, 0, 0);
-        PatternsbarElements[emplacement].transform.DOScale(new Vector3(0.8f, 0.8f, 0.8f), 0.4f).SetEase(Ease.OutBack);
-        PatternsbarElements[emplacement].GetChild(1).GetComponent<Image>().color = Color.grey;
+        pattern.transform.localScale = new Vector3(0, 0, 0);
+        pattern.transform.transform.DOScale(new Vector3(0.8f, 0.8f, 0.8f), 0.4f).SetEase(Ease.OutBack);
+        pattern.background.color = Color.grey;
 
         // Réarrange la liste pour qu'elle match le nouvel ordre visuel
-        RectTransform temp = PatternsbarElements[emplacement];
-        PatternsbarElements.RemoveAt(emplacement);
-        PatternsbarElements.Add(temp);
+        patternItems.RemoveAt(emplacement);
+        patternItems.Add(pattern);
     }
 
     // Update the Icon of the patternsbar
     public void UpdatePatternsBarIcon(int emplacement,Sc_Pattern pattern)
     {
-        PatternsbarElements[emplacement].GetChild(2).GetComponent<Image>().sprite = pattern.sprite;
+        PatternItem item = patternItems[emplacement];
+
+        item.icon.sprite = pattern.sprite;
     }
 
     // MULTIPLIERS
@@ -206,34 +220,37 @@ public class Ma_UiManager : MonoBehaviour
     // Update the multipliers visuals
     public void UpdateMultiplierIcon(int emplacement, Color color, Color colorbkg, string text)
     {
+        PatternItem item = patternItems[emplacement];
+        Image img = patternMultipliers[emplacement].multiplierImg;
+        TMP_Text tex = patternMultipliers[emplacement].multiplierText;
         // Animation
-        PatternsbarMultipliersImg[emplacement].transform.localScale = new Vector3(0, 0, 0);
-        PatternsbarMultipliersTexts[emplacement].transform.localScale = new Vector3(0, 0, 0);
-        PatternsbarMultipliersImg[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
-        PatternsbarMultipliersTexts[emplacement].transform.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
+        img.transform.localScale = new Vector3(0, 0, 0);
+        tex.transform.localScale = new Vector3(0, 0, 0);
+        img.transform.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
+        tex.transform.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
 
         // Color and text
-        PatternsbarMultipliersImg[emplacement].color = color;
-        PatternsbarElements[emplacement].GetChild(0).GetComponent<Image>().color = colorbkg;
-        PatternsbarMultipliersTexts[emplacement].text = text;
-        PatternsbarMultipliersTexts[emplacement].color = Color.black;
+        img.color = color;
+        item.color.color = colorbkg;
+        tex.text = text;
+        tex.color = Color.black;
     }
 
     // Remove the multiplier visual
     public void RemoveMultiplierIcon(int emplacement)
     {
         UpdateMultiplierIcon(emplacement, Color.clear, GameManager.Instance.comboManager.colorNone , "x1");
-        PatternsbarMultipliersTexts[emplacement].color = Color.clear;
+        patternMultipliers[emplacement].multiplierText.color = Color.clear;
     }
 
     public void RemoveAllMultiplierIcon()
     {
         GameManager.Instance.UpdateFeedBackAutourGrid(0);
 
-        for (int i =0; i<PatternsbarMultipliersImg.Length; i++)
+        for (int i = 0; i < patternItems.Count; i++)
         {
             UpdateMultiplierIcon(i, Color.clear, GameManager.Instance.comboManager.colorNone, "x1");
-            PatternsbarMultipliersTexts[i].color = Color.clear;
+            patternMultipliers[i].multiplierText.color = Color.clear;
         }
     }
 
@@ -278,11 +295,11 @@ public class Ma_UiManager : MonoBehaviour
 
     public void ShakePattern(int indexToShake)
     {
+        PatternItem item = patternItems[indexToShake];
 
-
-        PatternsbarElements[indexToShake].DOScale(1.4f,0.3f).OnComplete(()=>
+        item.transform.DOScale(1.4f,0.3f).OnComplete(()=>
         {
-            PatternsbarElements[indexToShake].DOScale(1f, 0.3f);
+            item.transform.DOScale(1f, 0.3f);
         });
     }
 
@@ -370,6 +387,11 @@ public class Ma_UiManager : MonoBehaviour
         Invoke("EnableOrDisablePauseMenu", 0.6f);
     }
 
+    public void RestartLevel()
+    {
+        Sc_LoadScreen.Instance.LoadThisScene(SceneManager.GetActiveScene().name);
+    }
+
     // System, enable or disable the pause menu
     private void EnableOrDisablePauseMenu()
     {
@@ -385,7 +407,8 @@ public class Ma_UiManager : MonoBehaviour
 
     public void DisplayFX(int emplacement, int fxIndex)
     {
-        PatternsbarElements[emplacement].GetComponent<Mb_PatternBarElement>().PlayFX(fxIndex);
+        PatternItem item = patternItems[emplacement];
+        item.element.PlayFX(fxIndex);
     }
 
     public void DeployUi(Mb_PlayerCard uiToDeploy)
@@ -400,4 +423,36 @@ public class Ma_UiManager : MonoBehaviour
         uiToClean.CleanName();
     }
 
+#if UNITY_EDITOR
+    [Button(ButtonSizes.Medium), GUIColor(0.89f, 0.14f, 0.14f)]
+    private void Populate()
+    {
+        Transform container = transform.Find("Canvas/PatternsBar");
+
+        patternItems.Clear();
+        patternMultipliers.Clear();
+
+        Transform elements = container.Find("PatternsBar_elements");
+        Transform multipliers = container.Find("PatternsBar_Multipliers");
+
+        for (int i = 0; i < 6; i++)
+        {
+            RectTransform elmtTransform = elements.GetChild(i).GetComponent<RectTransform>();
+            RectTransform multTransform = multipliers.GetChild(i).GetComponent<RectTransform>();
+
+            PatternItem item = new PatternItem();
+            item.transform = elmtTransform;
+            item.color = elmtTransform.GetChild(0).GetComponent<Image>();
+            item.background = elmtTransform.GetChild(1).GetComponent<Image>();
+            item.icon = elmtTransform.GetChild(2).GetComponent<Image>();
+            item.element = elmtTransform.GetComponent<Mb_PatternBarElement>();
+            patternItems.Add(item);
+
+            PatternMultiplier mult = new PatternMultiplier();
+            mult.multiplierImg = multTransform.GetChild(0).GetComponent<Image>();
+            mult.multiplierText = multTransform.GetChild(1).GetComponent<TMP_Text>();
+            patternMultipliers.Add(mult);
+        }
+    }
+#endif
 }
