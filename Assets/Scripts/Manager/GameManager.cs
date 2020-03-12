@@ -20,6 +20,8 @@ public class GameManager : Singleton<GameManager>
     [Header("GRID PARAMETERS")]
     public Mb_Tile[] allTiles;
     public Sc_GridFeedBackRule gridFeedbackRules;
+    [SerializeField] MeshRenderer feedbackAutourGrid;
+    
 
     [Header("MANAGERS")]
     public Ma_UiManager uiManager;
@@ -35,6 +37,7 @@ public class GameManager : Singleton<GameManager>
     
     [Header("FunkRule")]
     private float _funkAmount = 0.5f;
+    private Mb_Tile lastTileMousedOver;
 
     private float funkAmount
     {
@@ -58,12 +61,13 @@ public class GameManager : Singleton<GameManager>
     public bool isGameFinished = false;
 
     private void Start()
-    {     
+    {
         uiManager.UpdateFunkBar(funkAmount);
+        uiManager.EnableDisableEndturnButton(false);
         SetupMovementLimit();
         EnableActing();
         ResetMove();
-
+        UpdateFeedBackAutourGrid(0);
     }
 
     //ACTING
@@ -154,13 +158,16 @@ public class GameManager : Singleton<GameManager>
     public void DecreaseMovesLeft(int toDecrease)
     {
         moveLeft -= toDecrease;
-        uiManager.UpdateMovesUi(moveLeft, movePerTurn);
+        uiManager.UpdateMovesUi(moveLeft, totalMoveReseted);
+
+        if (moveLeft < totalMoveReseted)
+            uiManager.EnableDisableEndturnButton(true);
     }
 
     public void IncreaseMovesLeft(int toDecrease)
     {
         moveLeft += toDecrease;
-        uiManager.UpdateMovesUi(moveLeft, movePerTurn);
+        uiManager.UpdateMovesUi(moveLeft, totalMoveReseted);
     }
 
     public void ResetMove()
@@ -170,7 +177,7 @@ public class GameManager : Singleton<GameManager>
 
         moveLeft = totalMoveReseted;
 
-        uiManager.UpdateMovesUi(moveLeft, maxMovesPerTurn);
+        uiManager.UpdateMovesUi(moveLeft, totalMoveReseted);
     }
 
     //PREVIEW
@@ -351,14 +358,68 @@ public class GameManager : Singleton<GameManager>
                 tilesToCheck.Add(players.currentTile);
             }
             tilesToCheck.Remove(currentPlayerSelectionned.currentTile);
-            tilesToCheck.Add(hit.collider.GetComponent<Mb_Tile>());
+
+            Mb_Tile tileOverlaped = hit.collider.GetComponent<Mb_Tile>();
+
+            tilesToCheck.Add(tileOverlaped);
 
             var patternToBeAccomplished = patternManager.JustCheckGridForPattern(tilesToCheck.ToArray(), true);
             
+            //A CORRIGER
+
             if (patternToBeAccomplished.HasValue)
             {
+                print(lastTileMousedOver);
+                tileOverlaped.PrecompletionFeedback(true);
+
+                if (lastTileMousedOver == null)
+                {
+                    lastTileMousedOver = tileOverlaped;
+                }
+
                 uiManager.ShakePattern(patternToBeAccomplished.Value.Item1);
             }
+
+            if (lastTileMousedOver != tileOverlaped)
+            {
+                if(lastTileMousedOver != null)
+                    lastTileMousedOver.PrecompletionFeedback(false);
+                lastTileMousedOver = tileOverlaped;
+            }
+        }
+        else
+            lastTileMousedOver.PrecompletionFeedback(false);
+
+
+    }
+
+    //feeddabck autourGrid
+    public void UpdateFeedBackAutourGrid(int comboLevel)
+    {
+        comboLevel = Mathf.Clamp(comboLevel, 0, 4);
+        switch(comboLevel)
+        {
+            case 0:
+                feedbackAutourGrid.material = gridFeedbackRules.calmGrid;
+                break;
+            case 1:
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 0.1f,0,0));
+                feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
+                break;
+            case 2:
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 0.3f, 0, 0));
+                feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
+                break;
+            case 3:
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, .5f, 0, 0));
+                break;
+            case 4:
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, .7f, 0, 0));
+                break;
+            case 5:
+                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 1f, 0, 0));
+                break;
+
         }
     }
 }
