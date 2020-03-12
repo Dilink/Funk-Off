@@ -22,6 +22,7 @@ public class GameManager : Singleton<GameManager>
     public Mb_Tile[] allTiles;
     public Sc_GridFeedBackRule gridFeedbackRules;
     [SerializeField] MeshRenderer feedbackAutourGrid;
+    private Material instanceOfFeedbackMaterial;
     
 
     [Header("MANAGERS")]
@@ -68,6 +69,7 @@ public class GameManager : Singleton<GameManager>
         SetupMovementLimit();
         EnableActing();
         ResetMove();
+        instanceOfFeedbackMaterial = new Material(gridFeedbackRules.excitedGrid);
         UpdateFeedBackAutourGrid(0);
     }
 
@@ -420,36 +422,44 @@ public class GameManager : Singleton<GameManager>
     public void UpdateFeedBackAutourGrid(int comboLevel)
     {
         comboLevel = Mathf.Clamp(comboLevel, 0, 5);
-        print(comboLevel);
         switch(comboLevel)
         {
             case 0:
                 feedbackAutourGrid.material = gridFeedbackRules.calmGrid;
+                instanceOfFeedbackMaterial.SetVector("_Speed", new Vector4(0, 0, 0, 0));
                 break;
 
             case 1:
-                gridFeedbackRules.excitedGrid.DOVector(new Vector4(0, 0.05f, 0, 0),"_Speed", 1f);
-                feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
+                print("1");
+
+                feedbackAutourGrid.material = instanceOfFeedbackMaterial;
+                instanceOfFeedbackMaterial.DOVector(new Vector4(0, 0.05f, 0, 0),"_Speed", 1f);
                 break;
 
             case 2:
-                gridFeedbackRules.excitedGrid.DOVector(new Vector4(0, 0.15f, 0, 0), "_Speed", 1f);
+                print("2");
+
                 feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
+                instanceOfFeedbackMaterial.DOVector(new Vector4(0, 0.15f, 0, 0), "_Speed", 1f);
                 break;
 
             case 3:
-                gridFeedbackRules.excitedGrid.DOVector(new Vector4(0, 0.35f, 0, 0), "_Speed", 1f);
+                print("3");
+
                 feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
+                instanceOfFeedbackMaterial.DOVector(new Vector4(0, 0.35f, 0, 0), "_Speed", 1f);
                 break;
 
             case 4:
-                gridFeedbackRules.excitedGrid.DOVector(new Vector4(0, 0.55f, 0, 0), "_Speed", 1f);
+                print("4");
+
                 feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
+                instanceOfFeedbackMaterial.DOVector(new Vector4(0, 0.55f, 0, 0), "_Speed", 1f);
                 break;
 
             case 5:
-                gridFeedbackRules.excitedGrid.DOVector(new Vector4(0, 0.85f, 0, 0), "_Speed", 1f);
                 feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
+                instanceOfFeedbackMaterial.DOVector(new Vector4(0, 0.85f, 0, 0), "_Speed", 1f);
                 break;
 
         }
