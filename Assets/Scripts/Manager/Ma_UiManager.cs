@@ -36,8 +36,6 @@ public class Ma_UiManager : MonoBehaviour
 
     [Header("Movebar elements")]
     [SerializeField] TextMeshProUGUI moveLeftText;
-    [SerializeField] TextMeshProUGUI maxMoveText;
-
 
     [Header("Patternsbar elements")]
     [ReadOnly] [ShowInInspector] [SerializeField] private List<PatternItem> patternItems = new List<PatternItem>();
@@ -88,10 +86,15 @@ public class Ma_UiManager : MonoBehaviour
         EndGameScreen_looseRect = GameObject.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
 }
 
-    private void Start()
+    private void Awake()
     {
-        maxMoveText.text = GameManager.Instance.maxMovesPerTurn.ToString();
+        //OLD MOVEMENT SYSTEM
+      /*  for (int i = 0; i < allPlayerUi.Length; i++)
+            allPlayerUi[i].playerAssigned = GameManager.Instance.allPlayers[i];*/
     }
+    // ---------------------
+    // TURNSBAR FUNCTIONS
+    // ---------------------
 
     public void ClearAllMultiplierUi()
     {
@@ -271,8 +274,12 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
     // CHARACTERS UI FUNCTIONS
     // ---------------------
+    public void TESTUpdateMoves()
+    {
+        UpdateMovesUi(1, 1);
+    }
 
-    public void UpdateMovesUi( int moveForTheTurn)
+    public void UpdateMovesUi(int movesReturning, int moveForTheTurn)
     {
         //Animation
         Sequence moveSeq = DOTween.Sequence();
@@ -283,7 +290,7 @@ public class Ma_UiManager : MonoBehaviour
         moveSeq.Append(moveLeftText.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.1f));
 
         // Change the text
-        moveLeftText.text = moveForTheTurn.ToString();
+        moveLeftText.text = movesReturning + " / " + moveForTheTurn;
     }
 
     public void ShakePattern(int indexToShake)
