@@ -6,6 +6,7 @@ Shader "S_boula"
 	{
 		_boule_facette("boule_facette", 2D) = "white" {}
 		_boule_facette2("boule_facette2", 2D) = "white" {}
+		_Color0("Color 0", Color) = (1,1,1,0)
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 		[HideInInspector] __dirty( "", Int ) = 1
 	}
@@ -23,15 +24,15 @@ Shader "S_boula"
 			float2 uv_texcoord;
 		};
 
+		uniform float4 _Color0;
 		uniform sampler2D _boule_facette;
 		uniform sampler2D _boule_facette2;
 
 		void surf( Input i , inout SurfaceOutputStandard o )
 		{
-			float4 color6 = IsGammaSpace() ? float4(0.9433962,0.6750214,0.2803489,0) : float4(0.8760344,0.4132373,0.06388319,0);
 			float2 panner4 = ( 1.0 * _Time.y * float2( 0.42,0 ) + float2( 0,0 ));
 			float2 uv_TexCoord3 = i.uv_texcoord * float2( 4,4 ) + panner4;
-			float4 lerpResult9 = lerp( float4( 0,0,0,0 ) , ( ( color6 * tex2D( _boule_facette, uv_TexCoord3 ) ) * 1.52 ) , tex2D( _boule_facette2, uv_TexCoord3 ));
+			float4 lerpResult9 = lerp( float4( 0,0,0,0 ) , ( ( _Color0 * tex2D( _boule_facette, uv_TexCoord3 ) ) * 1.52 ) , tex2D( _boule_facette2, uv_TexCoord3 ));
 			o.Emission = lerpResult9.rgb;
 			o.Alpha = 1;
 		}
@@ -43,11 +44,11 @@ Shader "S_boula"
 }
 /*ASEBEGIN
 Version=16100
-0;0;1920;1019;1144.386;554.3536;1;True;True
+1920;0;1920;1019;1182.307;621.6064;1;True;True
 Node;AmplifyShaderEditor.PannerNode;4;-1065.394,-9.953421;Float;False;3;0;FLOAT2;0,0;False;2;FLOAT2;0.42,0;False;1;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;3;-806.7537,0.3273926;Float;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;4,4;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode;1;-608.1614,-175.2524;Float;True;Property;_boule_facette;boule_facette;0;0;Create;True;0;0;False;0;0791a805f40cfcf4aa7c57275bbba2a7;0791a805f40cfcf4aa7c57275bbba2a7;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.ColorNode;6;-515.6804,-341.1047;Float;False;Constant;_Color0;Color 0;2;0;Create;True;0;0;False;0;0.9433962,0.6750214,0.2803489,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ColorNode;6;-537.6804,-383.1047;Float;False;Property;_Color0;Color 0;2;0;Create;True;0;0;False;0;1,1,1,0;1,1,1,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;5;-230.6804,-244.1047;Float;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.RangedFloatNode;8;-250.052,-119.0173;Float;False;Constant;_Float0;Float 0;2;0;Create;True;0;0;False;0;1.52;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;7;-63.052,-174.0173;Float;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
@@ -65,4 +66,4 @@ WireConnection;9;1;7;0
 WireConnection;9;2;2;0
 WireConnection;0;2;9;0
 ASEEND*/
-//CHKSM=F7DC4B83060CC9295C50E83069ABEA10C9324204
+//CHKSM=10A269608C34E209C27FA463D63A6BF852B7616B
