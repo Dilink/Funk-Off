@@ -289,10 +289,10 @@ public class Ma_UiManager : MonoBehaviour
 
     private IEnumerator UpdateFunkBarCoroutine(float funkPercentage)
     {
-        if (funkPercentage >= funkBarShader.GetFloat("_STEP"))
-        { 
-            funkBarShader.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
-            funkBarShader.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
+        if (funkPercentage >= funkbarMatInstance.GetFloat("_STEP"))
+        {
+            funkbarMatInstance.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
+            funkbarMatInstance.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
 
             yield return new WaitForSeconds(FunkBarFillSpeed);
 
@@ -302,7 +302,7 @@ public class Ma_UiManager : MonoBehaviour
                 funkBarKey[i].SetTrigger("isGoingUp");
             }
         }
-        else if (funkPercentage < funkBarShader.GetFloat("_STEP"))
+        else if (funkPercentage < funkbarMatInstance.GetFloat("_STEP"))
         {
             Animator[] funkBarKeyClone = new Animator[funkBarKey.Length];
             funkBarKey.CopyTo(funkBarKeyClone, 0);
