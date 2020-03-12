@@ -97,6 +97,8 @@ public class Ma_ComboManager : MonoBehaviour
                 funkBonus = Multipliers[multiplierIndex];
             }
 
+            GameManager.Instance.musicManager.PlayerLayer(multiplierIndex + 1);
+
             GameManager.Instance.uiManager.DisplayFX(indexOfPatern, multiplierIndex);
             switch(multiplierIndex)
             {
