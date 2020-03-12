@@ -29,17 +29,10 @@ public class Ma_ComboManager : MonoBehaviour
     private void Awake()
     {
         funkBonus = 0;
-        ClearAllMultiplierUi();
+        GameManager.Instance.uiManager.ClearAllMultiplierUi();
     }
 
-    public void ClearAllMultiplierUi()
-    {
-        for (int i = 0; i < GameManager.Instance.uiManager.PatternsbarMultipliersImg.Length; i++)
-        {
-            //RemoveMultiplier(i);
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(i, Color.clear, GameManager.Instance.comboManager.colorNone, "");
-        }
-    }
+
 
     //FUNK MULTIPLIER SET
     public void SetFunkMultiplier(float newModifier)
@@ -103,6 +96,8 @@ public class Ma_ComboManager : MonoBehaviour
             {
                 funkBonus = Multipliers[multiplierIndex];
             }
+
+            GameManager.Instance.musicManager.PlayerLayer(multiplierIndex + 1);
 
             GameManager.Instance.uiManager.DisplayFX(indexOfPatern, multiplierIndex);
             switch(multiplierIndex)

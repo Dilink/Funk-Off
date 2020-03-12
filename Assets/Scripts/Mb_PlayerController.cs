@@ -18,24 +18,26 @@ public class Mb_PlayerController : MonoBehaviour
     //[SerializeField] int basicMoves = 3;
     // private int moveLeft;
     int velX=0, velZ=0;
-    Material meshMaterial;
+    [SerializeField] SkinnedMeshRenderer characterRenderer;
+    private Material meshMaterial;
     [Header("feedBacks")]
+
+    public Animator anim;
+
+
     public ParticleSystem particleFeedback;
     private bool isSelected=false;
     [SerializeField] Mb_PlayerCard UiAssociated;
 
 //ANIM ET FEEDBACKS
-[HideInInspector] public Animator anim;
-
 
     private void Awake()
     {
         // ResetMove();
         oldTile = currentTile;
-        anim = GetComponent<Animator>();
-        Material materialInstance = transform.GetChild(0).GetComponent<MeshRenderer>().material;
+        meshMaterial = characterRenderer.material;
+        Material materialInstance = new Material(meshMaterial);
         meshMaterial = materialInstance;
-        transform.GetChild(0).GetComponent<MeshRenderer>().material = materialInstance;
         ResetOutline();
         if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Foresight) == CharacterSkills.Foresight)
         {

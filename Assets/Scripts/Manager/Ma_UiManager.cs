@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
 
@@ -21,18 +22,14 @@ public class Ma_UiManager : MonoBehaviour
 
     [Header("Patternsbar elements")]
     public List <RectTransform> PatternsbarElements;
-    public Image[] PatternsbarIconsImg;
-    public Image[] PatternsbarMultipliersImg;
-    public Image[] PatternsbarCancelMarkersImg;
-    public TMP_Text[] PatternsbarMultipliersTexts;
+    [SerializeField] Image[] PatternsbarIconsImg;
+    [SerializeField] Image[] PatternsbarMultipliersImg;
+    [SerializeField] TMP_Text[] PatternsbarMultipliersTexts;
 
     private bool isPaternShaking;
 
     [Header("Funkbar elements")]
-    public Image FunkbarFillImg;
-    public RectTransform FunkbarFillRect;
-    public GameObject funkbarMasks;
-    public List<Image> FunkbarMasksImg;
+    public Material funkBarShader;
 
     [Header("Endturn Button elements")]
     public Button endturnButton;
@@ -68,8 +65,6 @@ public class Ma_UiManager : MonoBehaviour
         //PatternsbarMultipliersTexts = GameObject.Find("PatternsBar_MultipliersTexts").GetComponentsInChildren<TMP_Text>();
 
         // Funkbar elements
-        FunkbarFillImg = GameObject.Find("Funkbar_Fill").GetComponent<Image>();
-        FunkbarFillRect = GameObject.Find("Funkbar_Fill").GetComponent<RectTransform>();
 
         // PlayerStateBar elements
 
@@ -95,6 +90,15 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
     // TURNSBAR FUNCTIONS
     // ---------------------
+
+    public void ClearAllMultiplierUi()
+    {
+        for (int i = 0; i < PatternsbarMultipliersImg.Length; i++)
+        {
+           
+            UpdateMultiplierIcon(i, Color.clear, GameManager.Instance.comboManager.colorNone, "");
+        }
+    }
 
     public void TESTUpdateTurns()
     {
@@ -237,36 +241,18 @@ public class Ma_UiManager : MonoBehaviour
     // Update the cancel marker visuals
     public void UpdateCancelMarkerIcon(int emplacement, bool active)
     {
-        PatternsbarElements[emplacement].GetChild(3).GetComponent<Image>().color = active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
+       // PatternsbarElements[emplacement].GetChild(3).GetComponent<Image>().color = active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
     }
 
     // ---------------------
     // FUNKBAR FUNCTIONS
     // ---------------------
 
-    public void GetAllMasksImages()
-    {
-        Transform[] masks = funkbarMasks.GetComponentsInChildren<Transform>();
-
-        for(int i = 0; i < masks.Length;i++)
-        {
-            for (int j = 0; j < masks[i].childCount; j++)
-            {
-                FunkbarMasksImg.Add(masks[i].GetChild(j).GetComponent<Image>());
-            }
-
-        }
-    }
-
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        float filledMasksIndex = funkPercentage  * FunkbarMasksImg.Count;
-
-        for (int i = 0; i < filledMasksIndex; i++)
-        {
-            FunkbarMasksImg[i].color = funkBarGradient.Evaluate(funkPercentage);
-        }
+        funkBarShader.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed);
+        funkBarShader.DOColor( funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
     }
 
     // ---------------------
@@ -385,6 +371,11 @@ public class Ma_UiManager : MonoBehaviour
         Invoke("EnableOrDisablePauseMenu", 0.6f);
     }
 
+    public void RestartLevel()
+    {
+        Sc_LoadScreen.Instance.LoadThisScene(SceneManager.GetActiveScene().name);
+    }
+
     // System, enable or disable the pause menu
     private void EnableOrDisablePauseMenu()
     {
@@ -405,16 +396,14 @@ public class Ma_UiManager : MonoBehaviour
 
     public void DeployUi(Mb_PlayerCard uiToDeploy)
     {
-        uiToDeploy.transform.DOLocalMoveX(uiToDeploy.cardTransform.localPosition.x+ 70, 0.2f);
+        uiToDeploy.transform.DOLocalMoveX(uiToDeploy.cardTransform.localPosition.x+ 70, 0.2f).SetEase(Ease.OutQuint);
         uiToDeploy.DeployName();
-        uiToDeploy.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.2f);
     }
 
     public void CleanUi(Mb_PlayerCard uiToClean)
     {
-        uiToClean.transform.DOLocalMoveX(uiToClean.cardTransform.localPosition.x - 70, 0.2f);
+        uiToClean.transform.DOLocalMoveX(uiToClean.cardTransform.localPosition.x - 70, 0.2f).SetEase(Ease.OutQuint);
         uiToClean.CleanName();
-        uiToClean.transform.DOScale(new Vector3(1, 1, 1), 0.2f);
     }
 
 }
