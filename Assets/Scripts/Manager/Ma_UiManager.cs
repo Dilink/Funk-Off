@@ -29,13 +29,10 @@ public class Ma_UiManager : MonoBehaviour
     private bool isPaternShaking;
 
     [Header("Funkbar elements")]
-    public Image FunkbarFillImg;
-    public List<Image> FunkbarMasksImg;
-    public RectTransform FunkbarFillRect;
-    public GameObject funkbarMasks;
+    public Material funkBarShader;
 
-    //[Header("PlayersStateBar elements")]
-
+    [Header("Endturn Button elements")]
+    public Button endturnButton;
 
     [Header("PauseMenus elements")]
     public GameObject PauseMenu;
@@ -68,8 +65,6 @@ public class Ma_UiManager : MonoBehaviour
         //PatternsbarMultipliersTexts = GameObject.Find("PatternsBar_MultipliersTexts").GetComponentsInChildren<TMP_Text>();
 
         // Funkbar elements
-        FunkbarFillImg = GameObject.Find("Funkbar_Fill").GetComponent<Image>();
-        FunkbarFillRect = GameObject.Find("Funkbar_Fill").GetComponent<RectTransform>();
 
         // PlayerStateBar elements
 
@@ -244,29 +239,11 @@ public class Ma_UiManager : MonoBehaviour
     // FUNKBAR FUNCTIONS
     // ---------------------
 
-    public void GetAllMasksImages()
-    {
-        Transform[] masks = funkbarMasks.GetComponentsInChildren<Transform>();
-
-        for(int i = 0; i < masks.Length;i++)
-        {
-            for (int j = 0; j < masks[i].childCount; j++)
-            {
-                FunkbarMasksImg.Add(masks[i].GetChild(j).GetComponent<Image>());
-            }
-
-        }
-    }
-
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        float filledMasksIndex = funkPercentage  * FunkbarMasksImg.Count;
-
-        for (int i = 0; i < filledMasksIndex; i++)
-        {
-            FunkbarMasksImg[i].color = funkBarGradient.Evaluate(funkPercentage);
-        }
+        funkBarShader.SetFloat("_STEP", funkPercentage);
+        funkBarShader.SetColor("_COLO", funkBarGradient.Evaluate(funkPercentage));
     }
 
     // ---------------------
@@ -319,7 +296,16 @@ public class Ma_UiManager : MonoBehaviour
         }
     }
 
-    
+    // ---------------------
+    // ENDTURN BUTTON UI FUNCTIONS
+    // ---------------------
+
+    public void EnableDisableEndturnButton(bool status)
+    {
+        Debug.Log("Endturn button = " + status);
+        endturnButton.interactable = status;
+    }
+
     // ---------------------
     // PAUSE MENUS UI FUNCTIONS
     // ---------------------
