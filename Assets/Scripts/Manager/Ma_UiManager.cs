@@ -277,8 +277,6 @@ public class Ma_UiManager : MonoBehaviour
 
     public void ShakePattern(int indexToShake)
     {
-
-
         PatternsbarElements[indexToShake].DOScale(1.4f,0.3f).OnComplete(()=>
         {
             PatternsbarElements[indexToShake].DOScale(1f, 0.3f);
