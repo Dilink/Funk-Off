@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using DG.Tweening;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -425,28 +426,30 @@ public class GameManager : Singleton<GameManager>
             case 0:
                 feedbackAutourGrid.material = gridFeedbackRules.calmGrid;
                 break;
+
             case 1:
-                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 0.05f,0,0));
+                gridFeedbackRules.excitedGrid.DOVector(new Vector4(0, 0.05f, 0, 0),"_Speed", 1f);
                 feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
                 break;
+
             case 2:
-                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 0.1f, 0, 0));
+                gridFeedbackRules.excitedGrid.DOVector(new Vector4(0, 0.15f, 0, 0), "_Speed", 1f);
                 feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
                 break;
+
             case 3:
-                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, .2f, 0, 0));
+                gridFeedbackRules.excitedGrid.DOVector(new Vector4(0, 0.35f, 0, 0), "_Speed", 1f);
                 feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
-
                 break;
+
             case 4:
-                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, .35f, 0, 0));
+                gridFeedbackRules.excitedGrid.DOVector(new Vector4(0, 0.55f, 0, 0), "_Speed", 1f);
                 feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
-
                 break;
-            case 5:
-                gridFeedbackRules.excitedGrid.SetVector("_Speed", new Vector4(0, 5f, 0, 0));
-                feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
 
+            case 5:
+                gridFeedbackRules.excitedGrid.DOVector(new Vector4(0, 0.85f, 0, 0), "_Speed", 1f);
+                feedbackAutourGrid.material = gridFeedbackRules.excitedGrid;
                 break;
 
         }
