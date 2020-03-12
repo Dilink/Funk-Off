@@ -21,10 +21,10 @@ public class Ma_UiManager : MonoBehaviour
 
     [Header("Patternsbar elements")]
     public List <RectTransform> PatternsbarElements;
-    public Image[] PatternsbarIconsImg;
-    public Image[] PatternsbarMultipliersImg;
-    public Image[] PatternsbarCancelMarkersImg;
-    public TMP_Text[] PatternsbarMultipliersTexts;
+    [SerializeField] Image[] PatternsbarIconsImg;
+    [SerializeField] Image[] PatternsbarMultipliersImg;
+    [SerializeField] Image[] PatternsbarCancelMarkersImg;
+    [SerializeField] TMP_Text[] PatternsbarMultipliersTexts;
 
     private bool isPaternShaking;
 
@@ -90,6 +90,15 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
     // TURNSBAR FUNCTIONS
     // ---------------------
+
+    public void ClearAllMultiplierUi()
+    {
+        for (int i = 0; i < PatternsbarMultipliersImg.Length; i++)
+        {
+           
+            UpdateMultiplierIcon(i, Color.clear, GameManager.Instance.comboManager.colorNone, "");
+        }
+    }
 
     public void TESTUpdateTurns()
     {
