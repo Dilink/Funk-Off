@@ -29,6 +29,7 @@ public class Ma_UiManager : MonoBehaviour
     [Header("PARAMETERS")]
     public float FunkBarFillSpeed = 0.5f;
     public Gradient funkBarGradient;
+    public Animator[] funkBarKey;
 
     [Space]
     [Header("Turnsbar elements")]
@@ -267,8 +268,21 @@ public class Ma_UiManager : MonoBehaviour
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
+        StartCoroutine(UpdateFunkBarCoroutine(funkPercentage));
+    }
+
+    private IEnumerator UpdateFunkBarCoroutine(float funkPercentage)
+    {
         funkBarShader.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed);
-        funkBarShader.DOColor( funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
+        funkBarShader.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
+
+        yield return new WaitForSeconds(FunkBarFillSpeed);
+
+        for (int i = 0; i < funkBarKey.Length; i++)
+        {
+            yield return new WaitForSeconds(0.008f);
+            funkBarKey[i].SetTrigger("isGoingUp");
+        }
     }
 
     // ---------------------
