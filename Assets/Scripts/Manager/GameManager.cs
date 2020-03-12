@@ -45,6 +45,7 @@ public class GameManager : Singleton<GameManager>
         get => _funkAmount;
         set
         {
+            Debug.LogError("funkAmount=" + value);
             _funkAmount = value;
             uiManager.UpdateFunkBar(funkAmount);
             CheckGameEnd();
@@ -61,6 +62,8 @@ public class GameManager : Singleton<GameManager>
     [ReadOnly]
     public bool isGameFinished = false;
 
+    public float timeBetweenTurns = 1.0f;
+
     private void Start()
     {
         uiManager.UpdateFunkBar(funkAmount);
@@ -75,10 +78,14 @@ public class GameManager : Singleton<GameManager>
     #region
 
     public bool canAct=true;
+    public bool canActForced=false;
 
     public void EnableActing()
     {
-        canAct = true;
+        if (!canActForced)
+        {
+            canAct = true;
+        }
     }
 
     public void DisableActing()
