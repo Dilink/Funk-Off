@@ -9,4 +9,7 @@ public class Sc_GridFeedBackRule : ScriptableObject
     public Material slowMaterial;
     public Material damagingMaterial;
 
+    public Material excitedGrid;
+    public Material calmGrid;
+
 }

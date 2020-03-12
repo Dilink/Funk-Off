@@ -9,7 +9,6 @@ public class GameManager : Singleton<GameManager>
 {
     [Header("PLAYER PARAMETERS")]
     private int movePerTurn;
-    [SerializeField] bool canStore;
     [SerializeField] int maxMovesPerTurn;
     private int moveLeft;
     int totalMoveReseted = 0;
@@ -168,10 +167,8 @@ public class GameManager : Singleton<GameManager>
     {
         isTheFirstMove = true;
         int reservedMoves = moveLeft;
-        if (canStore)
-            moveLeft = Mathf.Clamp(totalMoveReseted + reservedMoves, 0, maxMovesPerTurn);
-        else
-            moveLeft = totalMoveReseted;
+
+        moveLeft = totalMoveReseted;
 
         uiManager.UpdateMovesUi(moveLeft, maxMovesPerTurn);
     }
