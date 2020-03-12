@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
+using System.Linq;
 
 [System.Serializable]
 public struct PatternItem
@@ -29,6 +30,7 @@ public class Ma_UiManager : MonoBehaviour
     [Header("PARAMETERS")]
     public float FunkBarFillSpeed = 0.5f;
     public Gradient funkBarGradient;
+    public Animator[] funkBarKey;
 
     [Space]
     [Header("Turnsbar elements")]
@@ -36,17 +38,20 @@ public class Ma_UiManager : MonoBehaviour
 
     [Header("Movebar elements")]
     [SerializeField] TextMeshProUGUI moveLeftText;
-    [SerializeField] TextMeshProUGUI maxMoveText;
-
 
     [Header("Patternsbar elements")]
     [ReadOnly] [ShowInInspector] [SerializeField] private List<PatternItem> patternItems = new List<PatternItem>();
     [ReadOnly] [ShowInInspector] [SerializeField] private List<PatternMultiplier> patternMultipliers = new List<PatternMultiplier>();
 
     private bool isPaternShaking;
+    private static System.Random rand = new System.Random();
 
     [Header("Funkbar elements")]
-    public Material funkBarShader;
+    public Renderer funkbarRend;
+    private Material funkbarMatBase;
+    private Material funkbarMatInstance;
+    public MeshRenderer[] allSquare;
+
 
     [Header("Endturn Button elements")]
     public Button endturnButton;
@@ -86,12 +91,22 @@ public class Ma_UiManager : MonoBehaviour
         EndGameScreen = GameObject.Find("EndGameScreen");
         EndGameScreen_winRect = GameObject.Find("EndGameScreen_Win").GetComponent<RectTransform>();
         EndGameScreen_looseRect = GameObject.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
-}
-
-    private void Start()
-    {
-        maxMoveText.text = GameManager.Instance.maxMovesPerTurn.ToString();
     }
+
+    private void Awake()
+    {
+        funkbarMatBase = funkbarRend.material;
+        funkbarMatInstance = new Material(funkbarMatBase);
+
+        for(int i=0; i < allSquare.Length; i++)
+        {
+            allSquare[i].material = funkbarMatInstance;
+        }
+    }
+
+    // ---------------------
+    // TURNSBAR FUNCTIONS
+    // ---------------------
 
     public void ClearAllMultiplierUi()
     {
@@ -264,15 +279,54 @@ public class Ma_UiManager : MonoBehaviour
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        funkBarShader.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed);
-        funkBarShader.DOColor( funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
+        StartCoroutine(UpdateFunkBarCoroutine(funkPercentage));
+    }
+
+    private void RandomizeArray(ref Animator[] Array)
+    {
+        Array = Array.OrderBy(x => rand.Next()).ToArray();
+    }
+
+    private IEnumerator UpdateFunkBarCoroutine(float funkPercentage)
+    {
+        if (funkPercentage >= funkbarMatInstance.GetFloat("_STEP"))
+        {
+            funkbarMatInstance.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
+            funkbarMatInstance.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
+
+            yield return new WaitForSeconds(FunkBarFillSpeed);
+
+            for (int i = 0; i < funkBarKey.Length; i++)
+            {
+                yield return new WaitForSeconds(0.008f);
+                funkBarKey[i].SetTrigger("isGoingUp");
+            }
+        }
+        else if (funkPercentage < funkbarMatInstance.GetFloat("_STEP"))
+        {
+            Animator[] funkBarKeyClone = new Animator[funkBarKey.Length];
+            funkBarKey.CopyTo(funkBarKeyClone, 0);
+
+            RandomizeArray(ref funkBarKeyClone);
+
+            for (int i = 0; i < funkBarKeyClone.Length; i+=2)
+            {
+                yield return new WaitForSeconds(0.005f);
+                funkBarKeyClone[i].SetTrigger("isGoingDown");
+                funkBarKeyClone[i+1].SetTrigger("isGoingDown");
+            }
+        }
     }
 
     // ---------------------
     // CHARACTERS UI FUNCTIONS
     // ---------------------
+    public void TESTUpdateMoves()
+    {
+        UpdateMovesUi(1, 1);
+    }
 
-    public void UpdateMovesUi( int moveForTheTurn)
+    public void UpdateMovesUi(int movesReturning, int moveForTheTurn)
     {
         //Animation
         Sequence moveSeq = DOTween.Sequence();
@@ -283,7 +337,7 @@ public class Ma_UiManager : MonoBehaviour
         moveSeq.Append(moveLeftText.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.1f));
 
         // Change the text
-        moveLeftText.text = moveForTheTurn.ToString();
+        moveLeftText.text = movesReturning + " / " + moveForTheTurn;
     }
 
     public void ShakePattern(int indexToShake)
