@@ -229,6 +229,8 @@ public class Ma_UiManager : MonoBehaviour
 
     public void RemoveAllMultiplierIcon()
     {
+        GameManager.Instance.UpdateFeedBackAutourGrid(0);
+
         for (int i =0; i<PatternsbarMultipliersImg.Length; i++)
         {
             UpdateMultiplierIcon(i, Color.clear, GameManager.Instance.comboManager.colorNone, "x1");
@@ -308,7 +310,8 @@ public class Ma_UiManager : MonoBehaviour
     // ---------------------
 
     public void EnableDisableEndturnButton(bool status)
-    { 
+    {
+        Debug.Log("Endturn button = " + status);
         endturnButton.interactable = status;
     }
 
