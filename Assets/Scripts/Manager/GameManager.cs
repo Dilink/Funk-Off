@@ -360,31 +360,53 @@ public class GameManager : Singleton<GameManager>
             tilesToCheck.Add(tileOverlaped);
 
             var patternToBeAccomplished = patternManager.JustCheckGridForPattern(tilesToCheck.ToArray(), true);
+
+            if(tileOverlaped !=lastTileMousedOver)
+            {
+                for (int i = 0; i < tilesToCheck.Count(); i++)
+                {
+                    tilesToCheck[i].PrecompletionFeedback(false);
+                }
+            }
             
             //A CORRIGER
 
             if (patternToBeAccomplished.HasValue)
             {
-                print(lastTileMousedOver);
-                tileOverlaped.PrecompletionFeedback(true);
-
                 if (lastTileMousedOver == null)
                 {
                     lastTileMousedOver = tileOverlaped;
                 }
 
+                for (int i = 0; i < tilesToCheck.Count(); i++)
+                {
+                    tilesToCheck[i].PrecompletionFeedback(true);
+                }
                 uiManager.ShakePattern(patternToBeAccomplished.Value.Item1);
             }
-
+            else
+            {
+                for (int i = 0; i < tilesToCheck.Count(); i++)
+                {
+                    tilesToCheck[i].PrecompletionFeedback(false);
+                }
+            }
+            /*
             if (lastTileMousedOver != tileOverlaped)
             {
                 if(lastTileMousedOver != null)
                     lastTileMousedOver.PrecompletionFeedback(false);
+
                 lastTileMousedOver = tileOverlaped;
-            }
+            }*/
         }
         else
-            lastTileMousedOver.PrecompletionFeedback(false);
+        {
+            foreach(Mb_Tile tiles in allTiles)
+            {
+                tiles.PrecompletionFeedback(false);
+            }
+        }
 
 
     }
