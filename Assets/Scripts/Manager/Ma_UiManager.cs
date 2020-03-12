@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
 
@@ -23,7 +24,6 @@ public class Ma_UiManager : MonoBehaviour
     public List <RectTransform> PatternsbarElements;
     [SerializeField] Image[] PatternsbarIconsImg;
     [SerializeField] Image[] PatternsbarMultipliersImg;
-    [SerializeField] Image[] PatternsbarCancelMarkersImg;
     [SerializeField] TMP_Text[] PatternsbarMultipliersTexts;
 
     private bool isPaternShaking;
@@ -241,7 +241,7 @@ public class Ma_UiManager : MonoBehaviour
     // Update the cancel marker visuals
     public void UpdateCancelMarkerIcon(int emplacement, bool active)
     {
-        PatternsbarElements[emplacement].GetChild(3).GetComponent<Image>().color = active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
+       // PatternsbarElements[emplacement].GetChild(3).GetComponent<Image>().color = active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
     }
 
     // ---------------------
@@ -369,6 +369,11 @@ public class Ma_UiManager : MonoBehaviour
         PauseMenubackgroundImg.DOColor(new Color(0, 0, 0, 0), 0.6f);
         PauseMainRect.DOAnchorPosY(1200, 0.6f, false);
         Invoke("EnableOrDisablePauseMenu", 0.6f);
+    }
+
+    public void RestartLevel()
+    {
+        Sc_LoadScreen.Instance.LoadThisScene(SceneManager.GetActiveScene().name);
     }
 
     // System, enable or disable the pause menu

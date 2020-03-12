@@ -64,12 +64,26 @@ public class Ma_TurnManager : MonoBehaviour
             {
                 GameManager.Instance.patternManager.OnTurnEnd(true);
             }
+
+            StartCoroutine(PreventPlayerFromActing());
         }
+    }
+
+    private IEnumerator PreventPlayerFromActing()
+    {
+        Debug.LogError("PreventPlayerFromActing()");
+        GameManager game = GameManager.Instance;
+        game.canActForced = true;
+        game.DisableActing();
+        yield return new WaitForSeconds(game.timeBetweenTurns);
+        game.canActForced = false;
+        game.EnableActing();
     }
 
     public void OnNextRound() {
         CurrentTurn = 1;
         MaxTurn = GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].turnLimit;
+        GameManager.Instance.UpdateFeedBackAutourGrid(0);
 
         GameManager.Instance.patternManager.OnTurnEnd(true, true);
         GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
