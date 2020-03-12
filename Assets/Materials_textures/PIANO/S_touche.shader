@@ -95,7 +95,7 @@ Shader "S_touche"
 }
 /*ASEBEGIN
 Version=16100
-0;0;1920;1019;1089.147;370.6969;1;True;True
+0;0;1920;1019;1017.469;298.6642;1;True;True
 Node;AmplifyShaderEditor.RangedFloatNode;3;-909,312;Float;False;Property;_STEP;STEP;1;0;Create;True;0;0;False;0;0.63;0.14;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;1;-1011,-38;Float;True;Property;_T_degra;T_degra;0;0;Create;True;0;0;False;0;140bda0babc22a84eb9fa4ffaf75c9c2;140bda0babc22a84eb9fa4ffaf75c9c2;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.OneMinusNode;14;-691.2664,218.137;Float;False;1;0;FLOAT;0;False;1;FLOAT;0
@@ -112,4 +112,4 @@ WireConnection;7;1;8;0
 WireConnection;7;2;2;0
 WireConnection;4;0;7;0
 ASEEND*/
-//CHKSM=ECA118471D20A188CB9307E39F0493986D857CCE
+//CHKSM=08DDF48455CA0A031C893572A293869166DCE3E4
