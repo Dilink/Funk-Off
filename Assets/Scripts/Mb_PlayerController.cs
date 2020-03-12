@@ -47,7 +47,6 @@ public class Mb_PlayerController : MonoBehaviour
     private void Move(Mb_Tile tileToMoveTo)
     {
         GameManager.Instance.DisableActing();
-        currentTile.DeasaparenceOfFeedback();
         //reset de la vieille tuile
         currentTile.avaible = true;
         currentTile.ResetOccupent();

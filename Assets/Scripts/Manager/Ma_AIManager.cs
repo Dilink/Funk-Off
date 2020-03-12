@@ -24,7 +24,6 @@ public class Ma_AIManager : MonoBehaviour
             if (temporaryList[i] == oldPatternUsed)
             {
                 temporaryList.Remove(temporaryList[i]);
-                print(temporaryList[i]);
             }
 
             foreach(Vector2 playerCoord in posOfEachPlayer)
