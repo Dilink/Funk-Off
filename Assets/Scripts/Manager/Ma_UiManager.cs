@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
+using System.Linq;
 
 [System.Serializable]
 public struct PatternItem
@@ -29,6 +30,7 @@ public class Ma_UiManager : MonoBehaviour
     [Header("PARAMETERS")]
     public float FunkBarFillSpeed = 0.5f;
     public Gradient funkBarGradient;
+    public Animator[] funkBarKey;
 
     [Space]
     [Header("Turnsbar elements")]
@@ -42,6 +44,7 @@ public class Ma_UiManager : MonoBehaviour
     [ReadOnly] [ShowInInspector] [SerializeField] private List<PatternMultiplier> patternMultipliers = new List<PatternMultiplier>();
 
     private bool isPaternShaking;
+    private static System.Random rand = new System.Random();
 
     [Header("Funkbar elements")]
     public Material funkBarShader;
@@ -267,8 +270,43 @@ public class Ma_UiManager : MonoBehaviour
     // Change the visual of the Funkbar to the indicated percentage
     public void UpdateFunkBar(float funkPercentage)
     {
-        funkBarShader.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed);
-        funkBarShader.DOColor( funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
+        StartCoroutine(UpdateFunkBarCoroutine(funkPercentage));
+    }
+
+    private void RandomizeArray(ref Animator[] Array)
+    {
+        Array = Array.OrderBy(x => rand.Next()).ToArray();
+    }
+
+    private IEnumerator UpdateFunkBarCoroutine(float funkPercentage)
+    {
+        if (funkPercentage >= funkBarShader.GetFloat("_STEP"))
+        { 
+            funkBarShader.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
+            funkBarShader.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
+
+            yield return new WaitForSeconds(FunkBarFillSpeed);
+
+            for (int i = 0; i < funkBarKey.Length; i++)
+            {
+                yield return new WaitForSeconds(0.008f);
+                funkBarKey[i].SetTrigger("isGoingUp");
+            }
+        }
+        else if (funkPercentage < funkBarShader.GetFloat("_STEP"))
+        {
+            Animator[] funkBarKeyClone = new Animator[funkBarKey.Length];
+            funkBarKey.CopyTo(funkBarKeyClone, 0);
+
+            RandomizeArray(ref funkBarKeyClone);
+
+            for (int i = 0; i < funkBarKeyClone.Length; i+=2)
+            {
+                yield return new WaitForSeconds(0.005f);
+                funkBarKeyClone[i].SetTrigger("isGoingDown");
+                funkBarKeyClone[i+1].SetTrigger("isGoingDown");
+            }
+        }
     }
 
     // ---------------------

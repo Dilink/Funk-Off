@@ -8,7 +8,6 @@ using DG.Tweening;
 public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragHandler
 {
     public Sc_CharacterParameters characterParameters;
-    private RectTransform RTransfom;
     public TMP_Text moveText;
     public Vector3 originalPosition;
     public int movement;
@@ -17,9 +16,6 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
     private void Start()
     {
         SetOriginalPosition();
-        //Debug.Log("og position set");
-
-        RTransfom = GetComponent<RectTransform>();
         moveText.text = movement.ToString();
     }
 
