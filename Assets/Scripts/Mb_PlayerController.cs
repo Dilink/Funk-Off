@@ -6,18 +6,18 @@ using UnityEngine.UI;
 
 public class Mb_PlayerController : MonoBehaviour
 {
-  //  private List<Mb_Tile> tileToGo = new List<Mb_Tile>();
-  [Header("GRID")]
+    //  private List<Mb_Tile> tileToGo = new List<Mb_Tile>();
+    [Header("GRID")]
     public Mb_Tile currentTile;
     public Mb_Tile oldTile;
     public Sc_CharacterParameters characterBaseCharacteristics;
 
-    private float customMultiplier =1;
+    private float customMultiplier = 1;
 
     // OLD MOVEMENT SYSTEM
     //[SerializeField] int basicMoves = 3;
     // private int moveLeft;
-    int velX=0, velZ=0;
+    int velX = 0, velZ = 0;
     [SerializeField] SkinnedMeshRenderer characterRenderer;
     private Material meshMaterial;
     [Header("feedBacks")]
@@ -26,10 +26,10 @@ public class Mb_PlayerController : MonoBehaviour
 
 
     public ParticleSystem particleFeedback;
-    private bool isSelected=false;
+    private bool isSelected = false;
     [SerializeField] Mb_PlayerCard UiAssociated;
 
-//ANIM ET FEEDBACKS
+    //ANIM ET FEEDBACKS
 
     private void Awake()
     {
@@ -48,13 +48,14 @@ public class Mb_PlayerController : MonoBehaviour
 
     private void Move(Mb_Tile tileToMoveTo)
     {
+        DesactivateAllTiles();
         GameManager.Instance.DisableActing();
         //reset de la vieille tuile
         currentTile.avaible = true;
         currentTile.ResetOccupent();
 
         oldTile = currentTile;
-      
+
         //set de la nouvelle tuile
         currentTile = tileToMoveTo;
         currentTile.setOccupent(this);
@@ -63,17 +64,17 @@ public class Mb_PlayerController : MonoBehaviour
         //bouger le joueur    
         //declenchement parametre de la tuile
         GameManager.Instance.patternManager.SetLastPlayerMove(this);
-        transform.DOMove(tileToMoveTo.transform.position + new Vector3(0,.5f,0), .33f,false).OnComplete(OnMoveCallBack);
-    } 
+        transform.DOMove(tileToMoveTo.transform.position + new Vector3(0, .5f, 0), .33f, false).OnComplete(OnMoveCallBack);
+    }
 
     void OnMoveCallBack()
     {
         TileModifier allTileModifierButWalls = (TileModifier.Destroyer | TileModifier.Ice | TileModifier.Slow | TileModifier.Tp);
 
         if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Absorber) == CharacterSkills.Absorber &&
-            (currentTile.tileProperties.type & allTileModifierButWalls)!=0)
+            (currentTile.tileProperties.type & allTileModifierButWalls) != 0)
         {
-            if( currentTile.tileProperties.cost>=2)
+            if (currentTile.tileProperties.cost >= 2)
             {
                 GameManager.Instance.IncreaseMovesLeft(currentTile.tileProperties.cost - 1);
             }
@@ -102,23 +103,23 @@ public class Mb_PlayerController : MonoBehaviour
     //MOUVEMENT PAYANT
     public void CheckCostingMovement(Mb_Tile tileToMoveTo)
     {
-        int directionX = Mathf.Clamp(tileToMoveTo.posX - currentTile.posX,-1,1);
-        int directionZ = Mathf.Clamp(tileToMoveTo.posZ - currentTile.posZ,-1,1);
+        int directionX = Mathf.Clamp(tileToMoveTo.posX - currentTile.posX, -1, 1);
+        int directionZ = Mathf.Clamp(tileToMoveTo.posZ - currentTile.posZ, -1, 1);
 
         int distanceBetweenTilesX = Mathf.Abs(currentTile.posX - tileToMoveTo.posX);
         int distanceBetweenTilesZ = Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
         int distanceBetweenTilesXZ = Mathf.Abs(currentTile.posX - tileToMoveTo.posX) + Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
 
-        if(tileToMoveTo.avaible == false && (characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff &&
-            distanceBetweenTilesXZ ==1)
+        if (tileToMoveTo.avaible == false && (characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff &&
+            distanceBetweenTilesXZ == 1)
         {
-       
 
-            if (GameManager.Instance.GetTile(Mathf.Clamp(currentTile.posX + directionX * 2, -1,1), Mathf.Clamp(currentTile.posZ + directionZ * 2,-1,1)).avaible == true &&
+
+            if (GameManager.Instance.GetTile(Mathf.Clamp(currentTile.posX + directionX * 2, -1, 1), Mathf.Clamp(currentTile.posZ + directionZ * 2, -1, 1)).avaible == true &&
                 GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost)
             {
-                    GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
-                    Move(GameManager.Instance.GetTile(currentTile.posX + directionX * 2, currentTile.posZ + directionZ * 2));  
+                GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
+                Move(GameManager.Instance.GetTile(currentTile.posX + directionX * 2, currentTile.posZ + directionZ * 2));
             }
         }
 
@@ -139,8 +140,8 @@ public class Mb_PlayerController : MonoBehaviour
             }
             else if (GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost &&
                 tileToMoveTo.avaible == true &&
-                distanceBetweenTilesXZ <= 1&&
-                GameManager.Instance.canAct == true && 
+                distanceBetweenTilesXZ <= 1 &&
+                GameManager.Instance.canAct == true &&
                 IsNotWalled(tileToMoveTo, directionX, directionZ))
             {
                 GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
@@ -148,7 +149,7 @@ public class Mb_PlayerController : MonoBehaviour
                 Move(tileToMoveTo);
             }
         }
-       
+
     }
 
     bool IsNotWalled(Mb_Tile tileToCheck, int directionX, int directionZ)
@@ -166,7 +167,7 @@ public class Mb_PlayerController : MonoBehaviour
             //GAUCHE EN X
             if (directionToCheckX <= -1)
             {
-                if ((GameManager.Instance.GetTile(currentTile.posX + directionToCheckX, currentTile.posZ).tileProperties.type & (TileModifier.WalledUp | TileModifier.WalledRight)) != 0)
+                if ((GameManager.Instance.GetTile(currentTile.posX + directionToCheckX, currentTile.posZ).tileProperties.type & (TileModifier.WalledLeft)) != 0)
                 {
 
                     if (directionToCheckZ <= -1)
@@ -193,7 +194,7 @@ public class Mb_PlayerController : MonoBehaviour
             //DROITE EN X
             else if (directionToCheckX >= 1)
             {
-                if ((GameManager.Instance.GetTile(currentTile.posX + directionToCheckX, currentTile.posZ).tileProperties.type & (TileModifier.WalledUp | TileModifier.WalledLeft)) != 0)
+                if ((GameManager.Instance.GetTile(currentTile.posX + directionToCheckX, currentTile.posZ).tileProperties.type & (TileModifier.WalledRight)) != 0)
                 {
                     if (directionToCheckZ <= -1)
                     {
@@ -218,7 +219,7 @@ public class Mb_PlayerController : MonoBehaviour
                 }
             }
         }
-        
+
         else if (Mathf.Abs(directionX) + Mathf.Abs(directionZ) == 1)
         {
             if (directionX == -1)
@@ -253,12 +254,12 @@ public class Mb_PlayerController : MonoBehaviour
 
 
         }
-        
-            return temporaryBool;
-    }
-        
 
-  
+        return temporaryBool;
+    }
+
+
+
     //MOUVEMENT GRATUIT
     public void CheckFreeMovement(Mb_Tile tileToMoveTo)
     {
@@ -282,18 +283,18 @@ public class Mb_PlayerController : MonoBehaviour
 
     public void Drift()
     {
-        int z = Mathf.Clamp(currentTile.posZ + velZ, -1,1);
-        int x = Mathf.Clamp(currentTile.posX + velX, - 1, 1); 
+        int z = Mathf.Clamp(currentTile.posZ + velZ, -1, 1);
+        int x = Mathf.Clamp(currentTile.posX + velX, -1, 1);
 
         if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) != 0)
         {
-            if (currentTile.posZ + velZ <=1 && currentTile.posZ + velZ>=-1 &&
-                currentTile.posX + velX <= 1 && currentTile.posX + velX>=-1)
-                  CheckFreeMovement(GameManager.Instance.GetTile(x, z));
+            if (currentTile.posZ + velZ <= 1 && currentTile.posZ + velZ >= -1 &&
+                currentTile.posX + velX <= 1 && currentTile.posX + velX >= -1)
+                CheckFreeMovement(GameManager.Instance.GetTile(x, z));
         }
-          
 
-        else 
+
+        else
             CheckFreeMovement(GameManager.Instance.GetTile(x, z));
     }
 
@@ -322,7 +323,7 @@ public class Mb_PlayerController : MonoBehaviour
 
     void CheckPatternCallBack()
     {
-       GameManager.Instance.patternManager.CheckGridForPatternAndReact();
+        GameManager.Instance.patternManager.CheckGridForPatternAndReact();
     }
 
     void UpdateVelocity()
@@ -338,8 +339,16 @@ public class Mb_PlayerController : MonoBehaviour
         {
             SetOutline();
             GameManager.Instance.uiManager.DeployUi(UiAssociated);
-            
+
         }
+
+        foreach(Mb_Tile tile  in allTilesAvaibleToWalkOn())
+        {
+            tile.canWalkOn = true;
+
+            tile.ActivateAvaibleFeedback();
+        }
+
         anim.SetTrigger("OnPick");
         isSelected = true;
     }
@@ -363,6 +372,64 @@ public class Mb_PlayerController : MonoBehaviour
         }
         isSelected = false;
 
+        DesactivateAllTiles();
+    }
+
+    public Mb_Tile[] allTilesAvaibleToWalkOn()
+    {
+        List<Mb_Tile> temporaryList = new List<Mb_Tile>();
+        foreach(Mb_Tile tile in GameManager.Instance.allTiles)
+        {
+            if (tile.avaible == true)
+            {
+                if (DistanceInX(tile) + DistanceInZ(tile) <= 1 && 
+                    IsNotWalled(tile, DirectionX(tile), DirectionZ(tile)))
+                {
+                    temporaryList.Add(tile);
+                }
+
+                if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift)== CharacterSkills.Swift)
+                {
+                    if (DistanceInX(tile) <= 1 &&
+                        DistanceInZ(tile) <= 1 &&
+                        IsNotWalled(tile, DirectionX(tile), DirectionZ(tile)))
+                    {
+                        temporaryList.Add(tile);
+                    }
+                }
+            }
+
+        }
+        return temporaryList.ToArray();
+    }
+
+    void DesactivateAllTiles()
+    {
+        foreach (Mb_Tile tile in GameManager.Instance.allTiles)
+        {
+            tile.canWalkOn = false;
+            tile.DesctivateCanWalkFeedBack();
+        }
+    }
+
+    int DistanceInX(Mb_Tile tileToCompareTo)
+    {
+        return Mathf.Abs(DirectionX(tileToCompareTo));
+    }
+
+    int DirectionX(Mb_Tile tileToCompareTo)
+    {
+        return tileToCompareTo.posX - currentTile.posX;
+    }
+
+    int DistanceInZ(Mb_Tile tileToCompareTo)
+    {
+        return Mathf.Abs(DirectionZ(tileToCompareTo));
+    }
+
+    int DirectionZ(Mb_Tile tileToCompareTo)
+    {
+        return tileToCompareTo.posZ - currentTile.posZ;
     }
 }
 

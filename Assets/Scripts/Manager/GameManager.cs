@@ -125,6 +125,7 @@ public class GameManager : Singleton<GameManager>
         {
             if (currentPlayerSelectionned != null && currentPlayerSelectionned != hit.collider.GetComponent<Mb_PlayerController>())
                 currentPlayerSelectionned.OnDeselection();
+
             currentPlayerSelectionned = hit.collider.GetComponent<Mb_PlayerController>();
             currentPlayerSelectionned.OnSelection();
 
@@ -369,38 +370,41 @@ public class GameManager : Singleton<GameManager>
 
             Mb_Tile tileOverlaped = hit.collider.GetComponent<Mb_Tile>();
 
-            tilesToCheck.Add(tileOverlaped);
-
-            var patternToBeAccomplished = patternManager.JustCheckGridForPattern(tilesToCheck.ToArray(), true);
-
-            if(tileOverlaped !=lastTileMousedOver)
+            if (tileOverlaped.canWalkOn == true)
             {
-                for (int i = 0; i < tilesToCheck.Count(); i++)
-                {
-                    tilesToCheck[i].PrecompletionFeedback(false);
-                }
-            }
-            
-            //A CORRIGER
+                tilesToCheck.Add(tileOverlaped);
 
-            if (patternToBeAccomplished.HasValue)
-            {
-                if (lastTileMousedOver == null)
+                var patternToBeAccomplished = patternManager.JustCheckGridForPattern(tilesToCheck.ToArray(), true);
+
+                if (tileOverlaped != lastTileMousedOver)
                 {
-                    lastTileMousedOver = tileOverlaped;
+                    for (int i = 0; i < tilesToCheck.Count(); i++)
+                    {
+                        tilesToCheck[i].PrecompletionFeedback(false);
+                    }
                 }
 
-                for (int i = 0; i < tilesToCheck.Count(); i++)
+                //A CORRIGER
+
+                if (patternToBeAccomplished.HasValue)
                 {
-                    tilesToCheck[i].PrecompletionFeedback(true);
+                    if (lastTileMousedOver == null)
+                    {
+                        lastTileMousedOver = tileOverlaped;
+                    }
+
+                    for (int i = 0; i < tilesToCheck.Count(); i++)
+                    {
+                         tilesToCheck[i].PrecompletionFeedback(true);
+                    }
+                    uiManager.ShakePattern(patternToBeAccomplished.Value.Item1);
                 }
-                uiManager.ShakePattern(patternToBeAccomplished.Value.Item1);
-            }
-            else
-            {
-                for (int i = 0; i < tilesToCheck.Count(); i++)
+                else
                 {
-                    tilesToCheck[i].PrecompletionFeedback(false);
+                    for (int i = 0; i < tilesToCheck.Count(); i++)
+                    {
+                        tilesToCheck[i].PrecompletionFeedback(false);
+                    }
                 }
             }
             /*

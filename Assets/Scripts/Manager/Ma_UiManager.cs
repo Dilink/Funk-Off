@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
+using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
 
@@ -384,6 +385,11 @@ public class Ma_UiManager : MonoBehaviour
         PauseMenubackgroundImg.DOColor(new Color(0, 0, 0, 0), 0.6f);
         PauseMainRect.DOAnchorPosY(1200, 0.6f, false);
         Invoke("EnableOrDisablePauseMenu", 0.6f);
+    }
+
+    public void RestartLevel()
+    {
+        Sc_LoadScreen.Instance.LoadThisScene(SceneManager.GetActiveScene().name);
     }
 
     // System, enable or disable the pause menu
