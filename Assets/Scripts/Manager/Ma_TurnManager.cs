@@ -80,6 +80,7 @@ public class Ma_TurnManager : MonoBehaviour
 
     public bool IsLastRoundFinished()
     {
+        Debug.LogError("IsLastRoundFinished() " + CurrentTurn + ">" + MaxTurn);
         return CurrentTurn > MaxTurn;
     }
 }

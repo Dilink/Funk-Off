@@ -45,6 +45,7 @@ public class GameManager : Singleton<GameManager>
         get => _funkAmount;
         set
         {
+            Debug.LogError("funkAmount=" + value);
             _funkAmount = value;
             uiManager.UpdateFunkBar(funkAmount);
             CheckGameEnd();
