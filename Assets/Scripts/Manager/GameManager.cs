@@ -45,7 +45,7 @@ public class GameManager : Singleton<GameManager>
         get => _funkAmount;
         set
         {
-            Debug.LogError("funkAmount=" + value);
+
             _funkAmount = value;
             uiManager.UpdateFunkBar(funkAmount);
             CheckGameEnd();
@@ -241,6 +241,11 @@ public class GameManager : Singleton<GameManager>
         {
             //DECOULEMENT DES PATTERNS
             patternManager.RotatePattern(indexInList);
+        }
+
+        foreach(Mb_Tile tile in allTiles)
+        {
+            tile.DesctivateCanWalkFeedBack();
         }
     }
 

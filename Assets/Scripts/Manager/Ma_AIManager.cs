@@ -34,7 +34,12 @@ public class Ma_AIManager : MonoBehaviour
                     break;
                 }
             }
-        }       
+        }    
+        
+        if(temporaryList.Count ==0)
+        {
+            temporaryList = GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].aiPatterns;
+        }
         int randomPattern = UnityEngine.Random.Range(0, temporaryList.Count - 1);
         ApplyPattern(temporaryList[randomPattern]);
     }
