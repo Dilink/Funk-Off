@@ -14,6 +14,7 @@ public class Ma_MainMenuManager : MonoBehaviour
     public GameObject[] selectedEmplacementsGameobjects = new GameObject[3];
     public bool[] selectedEmplacementsStatus = new bool[3];
     public string levelToLoadName;
+    public Image fadeScreen;
 
     [Header("Navigation elements")]
 
@@ -26,6 +27,10 @@ public class Ma_MainMenuManager : MonoBehaviour
     public RectTransform ItemsUpgradeRect;
 
     [Header("MainMenu elements")]
+    public RectTransform MainMenuTitle;
+    public RectTransform MainMenuButton1;
+    public RectTransform MainMenuButton2;
+    public RectTransform MainMenuButton3;
 
     [Header("Options elements")]
 
@@ -35,6 +40,9 @@ public class Ma_MainMenuManager : MonoBehaviour
     public GameObject[] level1GradesGameobjects = new GameObject[5]; // image du grade
     public GameObject[] level2GradesGameobjects = new GameObject[5];
     public GameObject[] level3GradesGameobjects = new GameObject[5];
+    public RectTransform MainMenuLevelSelect1;
+    public RectTransform MainMenuLevelSelect2;
+    public RectTransform MainMenuLevelSelect3;
     public int currentLevel = 1;
     public int levelDone;
     public int gradeLevelDone;
@@ -48,6 +56,7 @@ public class Ma_MainMenuManager : MonoBehaviour
     public RectTransform characterEmplacementTwo;
     public RectTransform characterEmplacementThree;
     public TMP_Text totalMovementText;
+    public Button TBstartButton;
 
     public int totalMovement;
 
@@ -63,6 +72,11 @@ public class Ma_MainMenuManager : MonoBehaviour
     {
         currentScreen = MainMenuRect;
         allCards = FindObjectsOfType<Sc_TeamBuilderPlayerCards>();
+        //DisplayMainMenuScreen(false);
+        ScreenFadeOut();
+
+        // ANIMATIONS
+        MainMenuTitleAnim();
 
         if (!PlayerPrefs.HasKey("00_JoeDinner"))
         {
@@ -444,5 +458,90 @@ public class Ma_MainMenuManager : MonoBehaviour
     // -------------
     #region animations
     
+    public void MainMenuTitleAnim()
+    {
+        Sequence mySequence = DOTween.Sequence();
+        mySequence.Insert(0, MainMenuTitle.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 1));
+        //mySequence.Insert(0 ,MainMenuTitle.DOLocalRotate(new Vector3(0, 0, 10), 0.5f));
+        mySequence.Insert(1 ,MainMenuTitle.DOScale(new Vector3(1f, 1f, 1f), 1));
+        //mySequence.Insert(0.5f ,MainMenuTitle.DOLocalRotate(new Vector3(0, 0, 0), 0.5f));
+        mySequence.SetLoops(-1);
+    }
+
+    public void MainMenuButton1AnimStart()
+    {
+        Sequence mySquence = DOTween.Sequence();
+        mySquence.Insert(0 ,MainMenuButton1.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f));
+    }
+    public void MainMenuButton1AnimClose()
+    {
+        Sequence mySquence = DOTween.Sequence();
+        mySquence.Insert(0, MainMenuButton1.DOScale(new Vector3(1, 1, 1), 0.2f));
+    }
+
+    public void MainMenuButton2AnimStart()
+    {
+        Sequence mySquence = DOTween.Sequence();
+        mySquence.Insert(0, MainMenuButton2.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f));
+    }
+    public void MainMenuButton2AnimClose()
+    {
+        Sequence mySquence = DOTween.Sequence();
+        mySquence.Insert(0, MainMenuButton2.DOScale(new Vector3(1, 1, 1), 0.2f));
+    }
+
+    public void MainMenuButton3AnimStart()
+    {
+        Sequence mySquence = DOTween.Sequence();
+        mySquence.Insert(0, MainMenuButton3.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f));
+    }
+    public void MainMenuButton3AnimClose()
+    {
+        Sequence mySquence = DOTween.Sequence();
+        mySquence.Insert(0, MainMenuButton3.DOScale(new Vector3(1, 1, 1), 0.2f));
+    }
+
+    public void LevelSelectAnimOpen1()
+    {
+        MainMenuLevelSelect1.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f);
+    }
+    public void LevelSelectAnimClose1()
+    {
+        MainMenuLevelSelect1.DOScale(new Vector3(1, 1, 1), 0.2f);
+    }
+    public void LevelSelectAnimOpen2()
+    {
+        MainMenuLevelSelect2.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f);
+    }
+    public void LevelSelectAnimClose2()
+    {
+        MainMenuLevelSelect2.DOScale(new Vector3(1, 1, 1), 0.2f);
+    }
+    public void LevelSelectAnimOpen3()
+    {
+        MainMenuLevelSelect3.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f);
+    }
+    public void LevelSelectAnimClose3()
+    {
+        MainMenuLevelSelect3.DOScale(new Vector3(1, 1, 1), 0.2f);
+    }
+    public void ScreenFadeOut()
+    {
+        fadeScreen.DOColor(Color.clear, 0.3f);
+        Invoke("DisableScreenFadeOut", 0.3f);
+    }
+
+    public void DisableScreenFadeOut()
+    {
+        fadeScreen.gameObject.SetActive(false);
+    }
+
     #endregion
+
+    // QUIT THE GAME
+
+    public void QuitTheGame()
+    {
+        Application.Quit();
+    }
 }

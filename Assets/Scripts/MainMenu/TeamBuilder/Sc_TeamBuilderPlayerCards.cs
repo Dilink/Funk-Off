@@ -55,6 +55,7 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
             Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
             Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject, 0);
             Ma_MainMenuManager.Instance.UpdateMovementText(movement, true);
+            StartButtonCheck();
             return;
         }
         // For emplacement Two
@@ -64,6 +65,7 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
             Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
             Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject, 1);
             Ma_MainMenuManager.Instance.UpdateMovementText(movement, true);
+            StartButtonCheck();
             return;
         }
         // For emplacement Three
@@ -73,6 +75,7 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
             Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
             Ma_MainMenuManager.Instance.AddCardToSelectedEmplacements(this.gameObject, 2);
             Ma_MainMenuManager.Instance.UpdateMovementText(movement, true);
+            StartButtonCheck();
             return;
         }
         else
@@ -80,6 +83,20 @@ public class Sc_TeamBuilderPlayerCards : MonoBehaviour, IDragHandler, IDropHandl
             Debug.Log("Card " + gameObject.name + " Unsnapping");
             transform.DOMove(originalPosition, 0.6f, false);
             Ma_MainMenuManager.Instance.RemoveCardFromSelectedEmplacement(this.gameObject);
+            StartButtonCheck(); 
         }
     }   
+
+    public void StartButtonCheck()
+    {
+        Debug.Log("start button check");
+        if (!Ma_MainMenuManager.Instance.IsCharacterSelectionFull())
+        {
+            Ma_MainMenuManager.Instance.TBstartButton.interactable = true;
+        }
+        else
+        {
+            Ma_MainMenuManager.Instance.TBstartButton.interactable = false;
+        }
+    }
 }
