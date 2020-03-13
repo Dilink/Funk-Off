@@ -66,7 +66,6 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        uiManager.UpdateFunkBar(funkAmount);
         uiManager.EnableDisableEndturnButton(false);
         SetupMovementLimit();
         EnableActing();
