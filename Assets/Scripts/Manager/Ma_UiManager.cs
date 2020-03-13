@@ -38,6 +38,7 @@ public class Ma_UiManager : MonoBehaviour
 
     [Header("Movebar elements")]
     [SerializeField] TextMeshProUGUI moveLeftText;
+    [SerializeField] TextMeshProUGUI maxMoveText;
 
     [Header("Patternsbar elements")]
     [ReadOnly] [ShowInInspector] [SerializeField] private List<PatternItem> patternItems = new List<PatternItem>();
@@ -92,8 +93,10 @@ public class Ma_UiManager : MonoBehaviour
         EndGameScreen_looseRect = GameObject.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
     }
 
-    private void Awake()
+    private void Start()
     {
+        maxMoveText.text = GameManager.Instance.maxMovesPerTurn.ToString();
+
         funkbarMatBase = funkbarRend.material;
         funkbarMatInstance = new Material(funkbarMatBase);
 
@@ -103,10 +106,7 @@ public class Ma_UiManager : MonoBehaviour
         }
 
         funkbarMatInstance.SetFloat("_STEP", 0);
-    }
 
-    private void Start()
-    {
         UpdateFunkBar(0);
     }
 
@@ -315,7 +315,7 @@ public class Ma_UiManager : MonoBehaviour
 
             RandomizeArray(ref funkBarKeyClone);
 
-            for (int i = 0; i < funkBarKeyClone.Length; i+=2)
+            for (int i = 0; i < funkBarKeyClone.Length - 1; i+=2)
             {
                 yield return new WaitForSeconds(0.005f);
                 funkBarKeyClone[i].SetTrigger("isGoingDown");
@@ -324,15 +324,7 @@ public class Ma_UiManager : MonoBehaviour
         }
     }
 
-    // ---------------------
-    // CHARACTERS UI FUNCTIONS
-    // ---------------------
-    public void TESTUpdateMoves()
-    {
-        UpdateMovesUi(1, 1);
-    }
-
-    public void UpdateMovesUi(int movesReturning, int moveForTheTurn)
+    public void UpdateMovesUi(int moveForTheTurn)
     {
         //Animation
         Sequence moveSeq = DOTween.Sequence();
@@ -343,7 +335,7 @@ public class Ma_UiManager : MonoBehaviour
         moveSeq.Append(moveLeftText.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.1f));
 
         // Change the text
-        moveLeftText.text = movesReturning + " / " + moveForTheTurn;
+        moveLeftText.text = moveForTheTurn.ToString();
     }
 
     public void ShakePattern(int indexToShake)
