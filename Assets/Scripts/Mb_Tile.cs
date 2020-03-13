@@ -18,11 +18,11 @@ public class Mb_Tile : MonoBehaviour
     public bool canWalkOn=false;
 
     [Header("Feedback")]
-    [SerializeField] Transform feedBackWallUp;
-    [SerializeField] Transform feedBackWallRight;
-    [SerializeField] Transform feedBackIce;
-    [SerializeField] Transform feedBackSlow;
-    [SerializeField] Transform feedBackDestruction;
+    [SerializeField] Animator feedBackWallUp;
+    [SerializeField] Animator feedBackWallRight;
+    [SerializeField] Animator feedBackIce;
+    [SerializeField] Animator feedBackSlow;
+    [SerializeField] Animator feedBackDestruction;
 
 
     public ParticleSystem onCompleteFeedBack;
@@ -61,18 +61,18 @@ public class Mb_Tile : MonoBehaviour
         if ((newTileType & TileModifier.Destroyer) == TileModifier.Destroyer)
         {
             tileProperties.type = TileModifier.Destroyer;
-            feedBackDestruction.DOScale(new Vector3(0.8f, 0.8f, 0.8f), .2f);
+            feedBackDestruction.SetTrigger("Appear");
         }
 
         else if ((newTileType & TileModifier.Ice) == TileModifier.Ice)
         {
-            feedBackIce.DOScale(new Vector3(0.8f, 0.8f, 0.8f), .2f);
+            feedBackIce.SetTrigger("Appear");
             tileProperties.type = TileModifier.Ice;
         }
 
         else if ((newTileType & TileModifier.Slow) == TileModifier.Slow)
         {
-            feedBackSlow.DOScale(new Vector3(0.8f, 0.8f, 0.8f), .2f);
+            feedBackSlow.SetTrigger("Appear");
             tileProperties.cost = 2;
             tileProperties.type = TileModifier.Slow;
         }
@@ -113,23 +113,23 @@ public class Mb_Tile : MonoBehaviour
 
         if ((tileProperties.type & TileModifier.WalledUp) == TileModifier.WalledUp)
             {
-                feedBackWallUp.DOScale(new Vector3(1,1,8), .8f);
-            }
+            feedBackWallUp.SetTrigger("WallUp");
+        }
         
         if ((tileProperties.type & TileModifier.WalledRight) == TileModifier.WalledRight ) 
             {
-                feedBackWallRight.DOScale(new Vector3(1, 1, 8), .8f);
-            }
+            feedBackWallRight.SetTrigger("WallUp");
+        }
         
     }
 
     public void ResetNoFeedBack()
     {
-        feedBackWallUp.DOScale(new Vector3(0, 0, 0), .2f);
-        feedBackWallRight.DOScale(new Vector3(0, 0, 0), .2f);
-        feedBackIce.DOScale(new Vector3(0, 0, 0), .2f);
-        feedBackSlow.DOScale(new Vector3(0, 0, 0), .2f);
-        feedBackDestruction.DOScale(new Vector3(0, 0, 0), .2f);
+        feedBackWallRight.SetTrigger("WallDown");
+        feedBackWallUp.SetTrigger("WallDown");
+        feedBackIce.SetTrigger("Disappear");
+        feedBackDestruction.SetTrigger("Disappear");
+        feedBackSlow.SetTrigger("Disappear");
     }
 
     public void ResetBaseTile()

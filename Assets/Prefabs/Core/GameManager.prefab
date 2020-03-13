@@ -1399,9 +1399,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volume: 1
-  layersDuration: 35.887844
-  fadeInDuration: 0.5
-  fadeOutDuration: 0.5
+  layersDuration: 20
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
   SampleClip: {fileID: 8300000, guid: 8c764a27c77709c49a383f272ca2aeb9, type: 3}
   AllAudioInstruments:
   - {fileID: 7371127199243011854}
@@ -1812,6 +1812,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc76663ea5b1e414f995781f8a1da610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _initialPoolSize: 10
+  _canGrowPool: 1
+  _loggingType: 1
+  _checkUnassignedSounds: 1
+  _soundList: []
 --- !u!1 &4607379872488028602
 GameObject:
   m_ObjectHideFlags: 0
