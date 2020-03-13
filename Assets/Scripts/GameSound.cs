@@ -24,4 +24,6 @@ public enum GameSound
     S_PatternImpactValidation, // DONE
     S_RichardBoost,
     S_RichardMove, // DONE
+    S_GrooveBarDown, // DONE
+    S_GrooveBarUp, // DONE
 }
