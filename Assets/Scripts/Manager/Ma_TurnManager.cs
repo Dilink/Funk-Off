@@ -73,9 +73,11 @@ public class Ma_TurnManager : MonoBehaviour
     {
         Debug.LogError("PreventPlayerFromActing()");
         GameManager game = GameManager.Instance;
+        GameManager.Instance.soundManager.PlaySound(GameSound.S_NewTurnIn);
         game.canActForced = true;
         game.DisableActing();
         yield return new WaitForSeconds(game.timeBetweenTurns);
+        GameManager.Instance.soundManager.PlaySound(GameSound.S_NewTurnOut);
         game.canActForced = false;
         game.EnableActing();
     }
