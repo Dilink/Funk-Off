@@ -390,25 +390,36 @@ public class Mb_PlayerController : MonoBehaviour
         List<Mb_Tile> temporaryList = new List<Mb_Tile>();
         foreach(Mb_Tile tile in GameManager.Instance.allTiles)
         {
-            if (tile.avaible == true && tile.tileProperties.cost <= GameManager.Instance.moveLeftForTurn())
+            if(tile.tileProperties.cost <= GameManager.Instance.moveLeftForTurn())
             {
-                if (DistanceInX(tile) + DistanceInZ(tile) <= 1 && 
-                    IsNotWalled(tile, DirectionX(tile), DirectionZ(tile)))
+                if (tile.avaible == true)
                 {
-                    temporaryList.Add(tile);
-                }
-
-                if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift)== CharacterSkills.Swift)
-                {
-                    if (DistanceInX(tile) <= 1 &&
-                        DistanceInZ(tile) <= 1 &&
+                    if (DistanceInX(tile) + DistanceInZ(tile) <= 1 &&
                         IsNotWalled(tile, DirectionX(tile), DirectionZ(tile)))
+                    {
+                        temporaryList.Add(tile);
+                    }
+
+                    if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) == CharacterSkills.Swift)
+                    {
+                        if (DistanceInX(tile) <= 1 &&
+                            DistanceInZ(tile) <= 1 &&
+                            IsNotWalled(tile, DirectionX(tile), DirectionZ(tile)))
+                        {
+                            temporaryList.Add(tile);
+                        }
+                    }
+                }
+                else if ((characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff)
+                {
+               
+                    if (GameManager.Instance.GetTile(Mathf.Clamp(tile.posX + DirectionX(tile), -1, 1), Mathf.Clamp(tile.posZ + DirectionZ(tile), -1, 1)).avaible == true)
                     {
                         temporaryList.Add(tile);
                     }
                 }
             }
-
+         
         }
         return temporaryList.ToArray();
     }
