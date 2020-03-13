@@ -7,21 +7,21 @@ public enum GameSound
     // It's advisable to keep 'None' as the first option, since it helps exposing this enum in the Inspector.
     // If the first option is already an actual value, then there is no "nothing selected" option.
     None,
-    S_ButtonPressed,
-    S_CaesarMove,
-    S_CharacterSelection,
-    S_DanceMoveValidation1,
-    S_DanceMoveValidation2,
-    S_DanceMoveValidation3,
-    S_DanceMoveValidation4,
-    S_DanceMoveValidation5,
-    S_DaveJump,
-    S_DaveMove,
-    S_GrooveUpLoop,
-    S_MultiplierAppear,
-    S_NewTurnIn,
-    S_NewTurnOut,
-    S_PatternImpactValidation,
+    S_ButtonPressed, // UI DONE
+    S_CaesarMove, // DONE
+    S_CharacterSelection, // Chara click DONE
+    S_DanceMoveValidation1, // NO
+    S_DanceMoveValidation2, // NO
+    S_DanceMoveValidation3, // NO
+    S_DanceMoveValidation4, // NO
+    S_DanceMoveValidation5, // NO
+    S_DaveJump, // double movement capacity
+    S_DaveMove, // DONE
+    // S_GrooveUpLoop,
+    S_MultiplierAppear, // on combo DONE
+    S_NewTurnIn, // DONE
+    S_NewTurnOut, // DONE
+    S_PatternImpactValidation, // DONE
     S_RichardBoost,
-    ThatSoundS_RichardMove,
+    S_RichardMove, // DONE
 }

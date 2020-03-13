@@ -168,6 +168,8 @@ public class Ma_UiManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.2f);
 
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_PatternImpactValidation);
+
             //multiplierImg.transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
             //multiplierText.transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.5f).SetEase(Ease.OutElastic);
 

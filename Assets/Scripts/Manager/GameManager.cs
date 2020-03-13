@@ -128,8 +128,9 @@ public class GameManager : Singleton<GameManager>
             currentPlayerSelectionned = hit.collider.GetComponent<Mb_PlayerController>();
             currentPlayerSelectionned.OnSelection();
 
+            soundManager.PlaySound(GameSound.S_CharacterSelection);
         }
-       
+
     }
 
     void CastRayTile()
@@ -229,10 +230,12 @@ public class GameManager : Singleton<GameManager>
             player.currentTile.OnPatternCompleteFeedback();
         }
 
+        GameManager.Instance.soundManager.PlaySound(GameSound.S_DanceMoveValidation1);
+
         // VARIATION DU FUUUUUUUUUUUUNK
 
         FunkVariation(funkAddingPlayer + comboManager.getFunkMultiplier());
-         
+        
         if ((allCharacterSkills & CharacterSkills.FinisherMove) == CharacterSkills.FinisherMove)
         {
             IncreaseMovesLeft(1);
