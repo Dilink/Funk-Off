@@ -101,8 +101,11 @@ public class Ma_UiManager : MonoBehaviour
         {
             allSquare[i].material = funkbarMatInstance;
         }
+    }
 
-        funkbarMatInstance.SetFloat("_STEP", 0);
+    private void Start()
+    {
+        UpdateFunkBar(0);
     }
 
     // ---------------------
