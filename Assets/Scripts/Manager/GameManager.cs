@@ -281,13 +281,8 @@ public class GameManager : Singleton<GameManager>
 
     public void CheckGameEnd()
     {
-        if (funkAmount <= 0.001f)
-        {
-            _funkAmount = 0.0f;
-            uiManager.DisplayEndgameScreen(false);
-            isGameFinished = true;
-        }
-        else if (funkAmount > 0.999f)
+
+        if (funkAmount > 0.999f)
         {
             currentRoundCountFinished += 1;
 
