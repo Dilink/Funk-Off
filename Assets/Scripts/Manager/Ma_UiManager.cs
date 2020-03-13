@@ -106,7 +106,7 @@ public class Ma_UiManager : MonoBehaviour
         }
 
         funkbarMatInstance.SetFloat("_STEP", 0);
-
+        print(funkbarMatInstance);
         UpdateFunkBar(0);
     }
 
@@ -295,6 +295,8 @@ public class Ma_UiManager : MonoBehaviour
 
     private IEnumerator UpdateFunkBarCoroutine(float funkPercentage)
     {
+        print("MATERIAL :" + funkbarMatInstance);
+
         if (funkPercentage >= funkbarMatInstance.GetFloat("_STEP"))
         {
             funkbarMatInstance.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
