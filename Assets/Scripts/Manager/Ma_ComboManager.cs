@@ -100,6 +100,9 @@ public class Ma_ComboManager : MonoBehaviour
             GameManager.Instance.musicManager.PlayLayer(multiplierIndex + 1);
 
             GameManager.Instance.uiManager.DisplayFX(indexOfPatern, multiplierIndex);
+
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_DanceMoveValidation1 + multiplierIndex);
+
             switch(multiplierIndex)
             {
                 case 0:
