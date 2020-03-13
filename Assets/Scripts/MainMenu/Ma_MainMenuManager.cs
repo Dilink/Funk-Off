@@ -439,4 +439,10 @@ public class Ma_MainMenuManager : MonoBehaviour
     }
 
     #endregion
+    // -------------
+    // ANIMATIONS
+    // -------------
+    #region animations
+    
+    #endregion
 }

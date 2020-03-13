@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 //#if UNITY_EDITOR
 using Sirenix;
 using Sirenix.OdinInspector;
@@ -18,16 +18,18 @@ public class Mb_Tile : MonoBehaviour
     public bool canWalkOn=false;
 
     [Header("Feedback")]
-    [SerializeField] GameObject feedBackWallUp;
-    [SerializeField] GameObject feedBackWallRight;
+    [SerializeField] Transform feedBackWallUp;
+    [SerializeField] Transform feedBackWallRight;
+    [SerializeField] Transform feedBackIce;
+    [SerializeField] Transform feedBackSlow;
+    [SerializeField] Transform feedBackDestruction;
+
+
     public ParticleSystem onCompleteFeedBack;
     [SerializeField] float timeBeforeDeasaparence = 1;
     [SerializeField] GameObject feedBackTilePrecompletion;
     [SerializeField] GameObject tileAvaibleFeedBack;
 
-    private MeshRenderer meshRenderer;
-    private Material tileMaterial;
-    private Material baseMaterial;
 
     private void Awake()
     {
@@ -37,10 +39,7 @@ public class Mb_Tile : MonoBehaviour
             playerOnTile.currentTile = this;
         }
 
-        //creer une instance du materiau pour pouvoir le set comme on veut pendant la game
-        meshRenderer = GetComponent<MeshRenderer>();
-        baseMaterial = meshRenderer.material;
-        tileMaterial = new Material(meshRenderer.material);
+        ResetNoFeedBack();
 
 
     }
@@ -61,29 +60,26 @@ public class Mb_Tile : MonoBehaviour
 
         if ((newTileType & TileModifier.Destroyer) == TileModifier.Destroyer)
         {
-            SetTileMaterial(tileMaterial);
             tileProperties.type = TileModifier.Destroyer;
-            SetTileMaterial(GameManager.Instance.gridFeedbackRules.damagingMaterial);
+            feedBackDestruction.DOScale(new Vector3(0.8f, 0.8f, 0.8f), .2f);
         }
 
         else if ((newTileType & TileModifier.Ice) == TileModifier.Ice)
         {
+            feedBackIce.DOScale(new Vector3(0.8f, 0.8f, 0.8f), .2f);
             tileProperties.type = TileModifier.Ice;
-            tileMaterial = GameManager.Instance.gridFeedbackRules.iceMaterial;
-            SetTileMaterial(tileMaterial);
         }
 
         else if ((newTileType & TileModifier.Slow) == TileModifier.Slow)
         {
+            feedBackSlow.DOScale(new Vector3(0.8f, 0.8f, 0.8f), .2f);
             tileProperties.cost = 2;
             tileProperties.type = TileModifier.Slow;
-            SetTileMaterial(GameManager.Instance.gridFeedbackRules.slowMaterial);
         }
 
         else if (newTileType == 0)
         {
             tileProperties.type = 0;
-            SetTileMaterial(baseMaterial);
         }
 
         if ((newTileType & TileModifier.WalledRight) == TileModifier.WalledRight)
@@ -113,44 +109,40 @@ public class Mb_Tile : MonoBehaviour
 
     void UpdateWallFeedBack()
     {
-        
-        feedBackWallUp.SetActive(false);
-        feedBackWallRight.SetActive(false);
+
 
         if ((tileProperties.type & TileModifier.WalledUp) == TileModifier.WalledUp)
             {
-                feedBackWallUp.SetActive(true);
+                feedBackWallUp.DOScale(new Vector3(1,1,8), .8f);
             }
         
         if ((tileProperties.type & TileModifier.WalledRight) == TileModifier.WalledRight ) 
             {
-                feedBackWallRight.SetActive(true);
+                feedBackWallRight.DOScale(new Vector3(1, 1, 8), .8f);
             }
         
     }
 
-    public void SetTileMaterial(Material newMaterial)
+    public void ResetNoFeedBack()
     {
-        meshRenderer.material = newMaterial;
-    }
-
-    public void ResetBaseMaterial()
-    {
-        meshRenderer.material = baseMaterial;
+        feedBackWallUp.DOScale(new Vector3(0, 0, 0), .2f);
+        feedBackWallRight.DOScale(new Vector3(0, 0, 0), .2f);
+        feedBackIce.DOScale(new Vector3(0, 0, 0), .2f);
+        feedBackSlow.DOScale(new Vector3(0, 0, 0), .2f);
+        feedBackDestruction.DOScale(new Vector3(0, 0, 0), .2f);
     }
 
     public void ResetBaseTile()
     {
         tileProperties.type = 0;
         tileProperties.cost = 1;
-        ResetBaseMaterial();
+        ResetNoFeedBack();
     }
 
     public void RestBaseTileButWalls()
     {
         tileProperties.type = (tileProperties.type & (TileModifier.WalledDown | TileModifier.WalledUp | TileModifier.WalledRight | TileModifier.WalledLeft));
         tileProperties.cost = 1;
-        SetTileMaterial(baseMaterial);
     }
 
     public void OnMove(bool fromTP)
