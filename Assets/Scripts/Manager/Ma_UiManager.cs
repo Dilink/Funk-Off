@@ -23,6 +23,7 @@ public struct PatternMultiplier
 {
     public Image multiplierImg;
     public TMP_Text multiplierText;
+    public Image fondMultiplier;
 }
 
 public class Ma_UiManager : MonoBehaviour
@@ -54,8 +55,6 @@ public class Ma_UiManager : MonoBehaviour
     private Material funkbarMatInstance;
 
 
-    [Header("Endturn Button elements")]
-    public Button endturnButton;
 
     [Header("PauseMenus elements")]
     public GameObject PauseMenu;
@@ -96,7 +95,7 @@ public class Ma_UiManager : MonoBehaviour
     private void Start()
     {
         maxMoveText.text = GameManager.Instance.maxMovesPerTurn.ToString();
-
+        RemoveAllMultiplierIcon();
         funkbarMatBase = funkbarRend.material;
         funkbarMatInstance = new Material(funkbarMatBase);
 
@@ -114,13 +113,6 @@ public class Ma_UiManager : MonoBehaviour
     // TURNSBAR FUNCTIONS
     // ---------------------
 
-    public void ClearAllMultiplierUi()
-    {
-        for (int i = 0; i < patternItems.Count; i++)
-        {
-            UpdateMultiplierIcon(i, Color.clear, GameManager.Instance.comboManager.colorNone, "");
-        }
-    }
 
     public void TESTUpdateTurns()
     {
@@ -155,11 +147,17 @@ public class Ma_UiManager : MonoBehaviour
         if (!isPatternDestroyed)
         {
             PatternItem pattern = patternItems[emplacement];
-            Image multiplierImg = patternMultipliers[emplacement].multiplierImg;
-            TMP_Text multiplierText = patternMultipliers[emplacement].multiplierText;
+            Image multiplierFnd = patternMultipliers[emplacement].fondMultiplier;
 
-            multiplierImg.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
-            multiplierImg.transform.DOLocalMoveY(pattern.transform.anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
+            TMP_Text multiplierText = patternMultipliers[emplacement].multiplierText;
+            //
+            // multiplierFnd.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
+            //multiplierFnd.transform.DOLocalMoveY(pattern.transform.anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
+
+            multiplierFnd.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
+            multiplierFnd.transform.DOLocalMoveY(pattern.transform.anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
+
+
             multiplierText.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
             multiplierText.transform.DOLocalMoveY(pattern.transform.anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
 
@@ -175,8 +173,9 @@ public class Ma_UiManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.3f);
 
-            multiplierImg.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
-            multiplierImg.transform.DOLocalMoveY(pattern.transform.anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
+
+            multiplierFnd.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
+            multiplierFnd.transform.DOLocalMoveY(pattern.transform.anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
             multiplierText.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
             multiplierText.transform.DOLocalMoveY(pattern.transform.anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
 
@@ -236,8 +235,10 @@ public class Ma_UiManager : MonoBehaviour
     // MULTIPLIERS
 
     // Update the multipliers visuals
-    public void UpdateMultiplierIcon(int emplacement, Color color, Color colorbkg, string text)
+    public void UpdateMultiplierIcon(int emplacement, Color color, Color colorbkg, string text, Color colorFond)
     {
+        RemoveAllMultiplierIcon();
+        patternMultipliers[emplacement].fondMultiplier.color = colorFond;
         PatternItem item = patternItems[emplacement];
         Image img = patternMultipliers[emplacement].multiplierImg;
         TMP_Text tex = patternMultipliers[emplacement].multiplierText;
@@ -251,24 +252,26 @@ public class Ma_UiManager : MonoBehaviour
         img.color = color;
         item.color.color = colorbkg;
         tex.text = text;
-        tex.color = Color.black;
+        tex.color = Color.white;
     }
 
     // Remove the multiplier visual
     public void RemoveMultiplierIcon(int emplacement)
     {
-        UpdateMultiplierIcon(emplacement, Color.clear, GameManager.Instance.comboManager.colorNone , "x1");
+        patternMultipliers[emplacement].fondMultiplier.color = Color.clear;
         patternMultipliers[emplacement].multiplierText.color = Color.clear;
     }
 
     public void RemoveAllMultiplierIcon()
     {
-        GameManager.Instance.UpdateFeedBackAutourGrid(0);
 
         for (int i = 0; i < patternItems.Count; i++)
         {
-            UpdateMultiplierIcon(i, Color.clear, GameManager.Instance.comboManager.colorNone, "x1");
-            patternMultipliers[i].multiplierText.color = Color.clear;
+             patternItems[i].color.color = GameManager.Instance.comboManager.colorNone;
+
+            patternMultipliers[i].fondMultiplier.color = Color.clear;
+            patternMultipliers[i].multiplierImg.color = Color.clear;
+            patternMultipliers[i].multiplierText.color = Color.clear;   
         }
     }
 
@@ -389,10 +392,6 @@ public class Ma_UiManager : MonoBehaviour
     // ENDTURN BUTTON UI FUNCTIONS
     // ---------------------
 
-    public void EnableDisableEndturnButton(bool status)
-    {
-        endturnButton.interactable = status;
-    }
 
     // ---------------------
     // PAUSE MENUS UI FUNCTIONS
@@ -512,7 +511,8 @@ public class Ma_UiManager : MonoBehaviour
             patternItems.Add(item);
 
             PatternMultiplier mult = new PatternMultiplier();
-            mult.multiplierImg = multTransform.GetChild(0).GetComponent<Image>();
+            mult.fondMultiplier = multTransform.GetChild(0).GetComponent<Image>();
+            mult.multiplierImg = multTransform.GetChild(0).GetChild(0).GetComponent<Image>();
             mult.multiplierText = multTransform.GetChild(1).GetComponent<TMP_Text>();
             patternMultipliers.Add(mult);
         }

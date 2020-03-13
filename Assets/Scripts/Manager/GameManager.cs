@@ -39,6 +39,7 @@ public class GameManager : Singleton<GameManager>
     [Header("FunkRule")]
     private float _funkAmount = 0f;
     private Mb_Tile lastTileMousedOver;
+    [SerializeField] Deploy endTurnDeployer;
 
     private float funkAmount
     {
@@ -66,7 +67,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        uiManager.EnableDisableEndturnButton(false);
+
         SetupMovementLimit();
         EnableActing();
         ResetMove();
@@ -164,8 +165,10 @@ public class GameManager : Singleton<GameManager>
         moveLeft -= toDecrease;
         uiManager.UpdateMovesUi(moveLeft);
 
-        if (moveLeft < totalMoveReseted)
-            uiManager.EnableDisableEndturnButton(true);
+        if(moveLeft<=0)
+        {
+            endTurnDeployer.Deploying();
+        }
     }
 
     public void IncreaseMovesLeft(int toDecrease)
@@ -336,12 +339,14 @@ public class GameManager : Singleton<GameManager>
 
     void DealDamageAnim()
     {
-        animBruno.SetTrigger("Attack");
+
+        animBruno.SetTrigger("Attack1");
     }
 
     void ActingAnim()
     {
-        animBruno.SetTrigger("Acting");
+
+        animBruno.SetTrigger("Attack2");
     }
 
     //PATTERN COMPLETION PREVIEW
