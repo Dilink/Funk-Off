@@ -68,8 +68,7 @@ public class Ma_UiManager : MonoBehaviour
     public RectTransform EndGameScreen_winRect;
     public RectTransform EndGameScreen_looseRect;
 
-    [Header("UiCharacter")]
-    public Image[] AllCharacterUi;
+    //[Header("UiCharacter")]
 
     private void Reset()
     {
@@ -102,6 +101,8 @@ public class Ma_UiManager : MonoBehaviour
         {
             allSquare[i].material = funkbarMatInstance;
         }
+
+        funkbarMatInstance.SetFloat("_STEP", 0);
     }
 
     // ---------------------
