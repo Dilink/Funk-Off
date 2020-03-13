@@ -62,12 +62,14 @@ public class Mb_Tile : MonoBehaviour
         {
             tileProperties.type = TileModifier.Destroyer;
             feedBackDestruction.SetBool("Appear", true);
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_LDTileAppear);
         }
 
         else if ((newTileType & TileModifier.Ice) == TileModifier.Ice)
         {
             feedBackIce.SetBool("Appear",true);
             tileProperties.type = TileModifier.Ice;
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_LDTileAppear);
         }
 
         else if ((newTileType & TileModifier.Slow) == TileModifier.Slow)
@@ -75,6 +77,7 @@ public class Mb_Tile : MonoBehaviour
             feedBackSlow.SetBool("Appear", true);
             tileProperties.cost = 2;
             tileProperties.type = TileModifier.Slow;
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_LDTileAppear);
         }
 
         else if (newTileType == 0)
@@ -110,14 +113,15 @@ public class Mb_Tile : MonoBehaviour
     void UpdateWallFeedBack()
     {
 
-
         if ((tileProperties.type & TileModifier.WalledUp) == TileModifier.WalledUp)
-            {
+        {
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_WallUp);
             feedBackWallUp.SetBool("Appear", true);
         }
         
-        if ((tileProperties.type & TileModifier.WalledRight) == TileModifier.WalledRight ) 
-            {
+        if ((tileProperties.type & TileModifier.WalledRight) == TileModifier.WalledRight )
+        {
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_WallUp);
             feedBackWallRight.SetBool("Appear", true);
         }
         
@@ -149,6 +153,7 @@ public class Mb_Tile : MonoBehaviour
     {
         if ((tileProperties.type & TileModifier.Destroyer) == TileModifier.Destroyer)
         {
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_AntiGrooveTileEffect);
             GameManager.Instance.patternManager.CutRandomPattern();
         }
 
@@ -159,6 +164,7 @@ public class Mb_Tile : MonoBehaviour
 
         if ((tileProperties.type & TileModifier.Ice) == TileModifier.Ice)
         {
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_IceTileEffect);
             playerOnTile.Drift();
 
         }

@@ -54,6 +54,20 @@ public class Mb_PlayerController : MonoBehaviour
         currentTile.avaible = true;
         currentTile.ResetOccupent();
 
+        switch (characterBaseCharacteristics.characterName.ToLower())
+        {
+            case "richard":
+                GameManager.Instance.soundManager.PlaySound(GameSound.S_RichardMove);
+                break;
+            case "caesar":
+            case "ceasar":
+                GameManager.Instance.soundManager.PlaySound(GameSound.S_CaesarMove);
+                break;
+            case "dave":
+                GameManager.Instance.soundManager.PlaySound(GameSound.S_DaveMove);
+                break;
+        }
+
         oldTile = currentTile;
 
         //set de la nouvelle tuile
