@@ -18,11 +18,11 @@ public class Mb_Tile : MonoBehaviour
     public bool canWalkOn=false;
 
     [Header("Feedback")]
-    [SerializeField] Transform feedBackWallUp;
-    [SerializeField] Transform feedBackWallRight;
-    [SerializeField] Transform feedBackIce;
-    [SerializeField] Transform feedBackSlow;
-    [SerializeField] Transform feedBackDestruction;
+    [SerializeField] Animator feedBackWallUp;
+    [SerializeField] Animator feedBackWallRight;
+    [SerializeField] Animator feedBackIce;
+    [SerializeField] Animator feedBackSlow;
+    [SerializeField] Animator feedBackDestruction;
 
 
     public ParticleSystem onCompleteFeedBack;
@@ -61,20 +61,23 @@ public class Mb_Tile : MonoBehaviour
         if ((newTileType & TileModifier.Destroyer) == TileModifier.Destroyer)
         {
             tileProperties.type = TileModifier.Destroyer;
-            feedBackDestruction.DOScale(new Vector3(0.8f, 0.8f, 0.8f), .2f);
+            feedBackDestruction.SetBool("Appear", true);
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_LDTileAppear);
         }
 
         else if ((newTileType & TileModifier.Ice) == TileModifier.Ice)
         {
-            feedBackIce.DOScale(new Vector3(0.8f, 0.8f, 0.8f), .2f);
+            feedBackIce.SetBool("Appear",true);
             tileProperties.type = TileModifier.Ice;
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_LDTileAppear);
         }
 
         else if ((newTileType & TileModifier.Slow) == TileModifier.Slow)
         {
-            feedBackSlow.DOScale(new Vector3(0.8f, 0.8f, 0.8f), .2f);
+            feedBackSlow.SetBool("Appear", true);
             tileProperties.cost = 2;
             tileProperties.type = TileModifier.Slow;
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_LDTileAppear);
         }
 
         else if (newTileType == 0)
@@ -94,7 +97,7 @@ public class Mb_Tile : MonoBehaviour
 
          if ((newTileType & TileModifier.WalledUp) == TileModifier.WalledUp)
         {
-            print("WalledUp");
+
             tileProperties.type  = (tileProperties.type | TileModifier.WalledUp);
         }
 
@@ -110,26 +113,27 @@ public class Mb_Tile : MonoBehaviour
     void UpdateWallFeedBack()
     {
 
-
         if ((tileProperties.type & TileModifier.WalledUp) == TileModifier.WalledUp)
-            {
-                feedBackWallUp.DOScale(new Vector3(1,1,8), .8f);
-            }
+        {
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_WallUp);
+            feedBackWallUp.SetBool("Appear", true);
+        }
         
-        if ((tileProperties.type & TileModifier.WalledRight) == TileModifier.WalledRight ) 
-            {
-                feedBackWallRight.DOScale(new Vector3(1, 1, 8), .8f);
-            }
+        if ((tileProperties.type & TileModifier.WalledRight) == TileModifier.WalledRight )
+        {
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_WallUp);
+            feedBackWallRight.SetBool("Appear", true);
+        }
         
     }
 
     public void ResetNoFeedBack()
     {
-        feedBackWallUp.DOScale(new Vector3(0, 0, 0), .2f);
-        feedBackWallRight.DOScale(new Vector3(0, 0, 0), .2f);
-        feedBackIce.DOScale(new Vector3(0, 0, 0), .2f);
-        feedBackSlow.DOScale(new Vector3(0, 0, 0), .2f);
-        feedBackDestruction.DOScale(new Vector3(0, 0, 0), .2f);
+        feedBackWallRight.SetBool("Appear", false);
+        feedBackWallUp.SetBool("Appear", false);
+        feedBackIce.SetBool("Appear", false);
+        feedBackDestruction.SetBool("Appear", false);
+        feedBackSlow.SetBool("Appear", false);
     }
 
     public void ResetBaseTile()
@@ -149,6 +153,7 @@ public class Mb_Tile : MonoBehaviour
     {
         if ((tileProperties.type & TileModifier.Destroyer) == TileModifier.Destroyer)
         {
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_AntiGrooveTileEffect);
             GameManager.Instance.patternManager.CutRandomPattern();
         }
 
@@ -159,6 +164,7 @@ public class Mb_Tile : MonoBehaviour
 
         if ((tileProperties.type & TileModifier.Ice) == TileModifier.Ice)
         {
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_IceTileEffect);
             playerOnTile.Drift();
 
         }

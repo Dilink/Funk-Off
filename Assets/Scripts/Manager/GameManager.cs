@@ -45,7 +45,14 @@ public class GameManager : Singleton<GameManager>
         get => _funkAmount;
         set
         {
-            Debug.LogError("funkAmount=" + value);
+            if (value < _funkAmount)
+            {
+                soundManager.PlaySound(GameSound.S_GrooveBarDown);
+            }
+            else if (value > _funkAmount)
+            {
+                soundManager.PlaySound(GameSound.S_GrooveBarUp);
+            }
             _funkAmount = value;
             uiManager.UpdateFunkBar(funkAmount);
             CheckGameEnd();
@@ -128,8 +135,9 @@ public class GameManager : Singleton<GameManager>
             currentPlayerSelectionned = hit.collider.GetComponent<Mb_PlayerController>();
             currentPlayerSelectionned.OnSelection();
 
+            soundManager.PlaySound(GameSound.S_CharacterSelection);
         }
-       
+
     }
 
     void CastRayTile()
@@ -229,10 +237,12 @@ public class GameManager : Singleton<GameManager>
             player.currentTile.OnPatternCompleteFeedback();
         }
 
+        soundManager.PlaySound(GameSound.S_DanceMoveValidation1);
+
         // VARIATION DU FUUUUUUUUUUUUNK
 
         FunkVariation(funkAddingPlayer + comboManager.getFunkMultiplier());
-         
+        
         if ((allCharacterSkills & CharacterSkills.FinisherMove) == CharacterSkills.FinisherMove)
         {
             IncreaseMovesLeft(1);
@@ -241,6 +251,11 @@ public class GameManager : Singleton<GameManager>
         {
             //DECOULEMENT DES PATTERNS
             patternManager.RotatePattern(indexInList);
+        }
+
+        foreach(Mb_Tile tile in allTiles)
+        {
+            tile.DesctivateCanWalkFeedBack();
         }
     }
 
@@ -421,7 +436,7 @@ public class GameManager : Singleton<GameManager>
     public void UpdateFeedBackAutourGrid(int comboLevel)
     {
         comboLevel = Mathf.Clamp(comboLevel, 0, 5);
-        print(comboLevel);
+
         switch(comboLevel)
         {
             case 0:

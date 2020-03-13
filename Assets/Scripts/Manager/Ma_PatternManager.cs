@@ -35,7 +35,7 @@ public class Ma_PatternManager : MonoBehaviour
     {
         patternsForCancellation.Clear();
 
-        for (int j = 0; j < currentPatternsList.Count; j++)
+        for (int j = 0; j < currentPatternsList.Count+1; j++)
         {
             UpdateCancelMarker(j, false);
         }
@@ -45,7 +45,7 @@ public class Ma_PatternManager : MonoBehaviour
         var copy = new List<Sc_Pattern>(currentPatternsList);
         RandomizeList(ref copy);
         var queue = new Queue<Sc_Pattern>(copy);
-
+        print(count);
         for (int i = 0; i < count; i++)
         {
             var pattern = queue.Dequeue();
@@ -61,7 +61,9 @@ public class Ma_PatternManager : MonoBehaviour
 
     public void OnTurnEnd(bool isLevelFinished = false, bool ignoreDamages = false)
     {
-        if (!ignoreDamages && patternsForCancellation.Count() != 0)
+        GameManager.Instance.uiManager.ClearAllMultiplierUi();
+
+        if (ignoreDamages == false && patternsForCancellation.Count() != 0)
         {
             GameManager.Instance.FunkVariation(GameManager.Instance.funkDamagesToDeal());
         }
