@@ -61,8 +61,6 @@ public class Mb_PlayerController : MonoBehaviour
                 break;
             case "caesar":
             case "ceasar":
-
-                Debug.LogError("test: " + characterBaseCharacteristics.characterName.ToLower());
                 GameManager.Instance.soundManager.PlaySound(GameSound.S_CaesarMove);
                 break;
             case "dave":
