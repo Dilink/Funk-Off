@@ -61,13 +61,11 @@ public class Ma_MusicManager : MonoBehaviour
 
         // Fade out those AudioSource that are not inside the new layer
         var before = oldSources.Where(p => newSources.All(p2 => p2 != p)).ToList();
-        Debug.LogError("AudioSoruces before: " + before.Count);
         foreach (var item in before)
             item.Stop();
 
         // Fade in those AudioSource that are inside the current layer and not inside the old one
         var current = newSources.Where(p => oldSources.All(p2 => p2 != p)).ToList();
-        Debug.LogError("AudioSoruces current: " + current.Count);
         foreach (var item in current)
             if (ignoreTimeLimit)
                 item.PlayWithoutManagingTime();
