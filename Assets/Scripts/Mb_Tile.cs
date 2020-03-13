@@ -61,18 +61,18 @@ public class Mb_Tile : MonoBehaviour
         if ((newTileType & TileModifier.Destroyer) == TileModifier.Destroyer)
         {
             tileProperties.type = TileModifier.Destroyer;
-            feedBackDestruction.SetTrigger("Appear");
+            feedBackDestruction.SetBool("Appear", true);
         }
 
         else if ((newTileType & TileModifier.Ice) == TileModifier.Ice)
         {
-            feedBackIce.SetTrigger("Appear");
+            feedBackIce.SetBool("Appear",true);
             tileProperties.type = TileModifier.Ice;
         }
 
         else if ((newTileType & TileModifier.Slow) == TileModifier.Slow)
         {
-            feedBackSlow.SetTrigger("Appear");
+            feedBackSlow.SetBool("Appear", true);
             tileProperties.cost = 2;
             tileProperties.type = TileModifier.Slow;
         }
@@ -113,23 +113,23 @@ public class Mb_Tile : MonoBehaviour
 
         if ((tileProperties.type & TileModifier.WalledUp) == TileModifier.WalledUp)
             {
-            feedBackWallUp.SetTrigger("WallUp");
+            feedBackWallUp.SetBool("Appear", true);
         }
         
         if ((tileProperties.type & TileModifier.WalledRight) == TileModifier.WalledRight ) 
             {
-            feedBackWallRight.SetTrigger("WallUp");
+            feedBackWallRight.SetBool("Appear", true);
         }
         
     }
 
     public void ResetNoFeedBack()
     {
-        feedBackWallRight.SetTrigger("WallDown");
-        feedBackWallUp.SetTrigger("WallDown");
-        feedBackIce.SetTrigger("Disappear");
-        feedBackDestruction.SetTrigger("Disappear");
-        feedBackSlow.SetTrigger("Disappear");
+        feedBackWallRight.SetBool("Appear", false);
+        feedBackWallUp.SetBool("Appear", false);
+        feedBackIce.SetBool("Appear", false);
+        feedBackDestruction.SetBool("Appear", false);
+        feedBackSlow.SetBool("Appear", false);
     }
 
     public void ResetBaseTile()
