@@ -1,28 +1,29 @@
-﻿using System.Collections.Generic;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class Mb_MusicLayer : MonoBehaviour
+public class Mb_MusicLayerInstrument : MonoBehaviour
 {
-    public List<AudioSource> audioSources = new List<AudioSource>();
-
     [ReadOnly] [SerializeField] [ShowInInspector] private bool keepFadingIn;
     [ReadOnly] [SerializeField] [ShowInInspector] private bool keepFadingOut;
     [ReadOnly] [SerializeField] [ShowInInspector] private float playbackTime;
     [ReadOnly] [SerializeField] [ShowInInspector] private bool ignoreTimeLimit;
 
+    public AudioSource audioSource;
+
     void Awake()
     {
         this.enabled = false;
-        UpdateAudioSourcesVolume(0.0f);
-        UpdateAudioSourcesMuteState(false);
+        audioSource.volume = 0.0f;
+        audioSource.mute = false;
+    }
+
+    public void Init(AudioSource audioSource)
+    {
+        this.audioSource = audioSource;
     }
 
     void Update()
     {
-        if (audioSources.Count == 0)
-            return;
-
         FadeInProcess();
         FadeOutProcess();
 
@@ -60,41 +61,18 @@ public class Mb_MusicLayer : MonoBehaviour
         keepFadingOut = true;
     }
 
-    public void StartPlay()
-    {
-        foreach (var item in audioSources)
-            item.Play();
-    }
-
-    public void AddAudioSource(AudioSource audioSource)
-    {
-        audioSources.Add(audioSource);
-    }
-
-    private void UpdateAudioSourcesVolume(float volume)
-    {
-        foreach (var item in audioSources)
-            item.volume = volume;
-    }
-
-    private void UpdateAudioSourcesMuteState(bool flag)
-    {
-        foreach (var item in audioSources)
-            item.mute = flag;
-    }
-
     private void FadeInProcess()
     {
-        if (audioSources[0].volume >= 1.0f || !keepFadingIn)
+        if (audioSource.volume >= 1.0f || !keepFadingIn)
             return;
 
-        if (audioSources[0].mute)
+        if (audioSource.mute)
         {
-            UpdateAudioSourcesMuteState(false);
+            audioSource.mute = false;
             return;
         }
 
-        if (audioSources[0].volume >= 1.0f)
+        if (audioSource.volume >= 1.0f)
         {
             keepFadingIn = false;
             return;
@@ -104,20 +82,17 @@ public class Mb_MusicLayer : MonoBehaviour
 
         float fadeInDuration = GameManager.Instance.musicManager.fadeInDuration;
 
-        foreach (var item in audioSources)
-        {
-            item.volume += startVolume * Time.deltaTime / fadeInDuration;
-        }
+        audioSource.volume += startVolume * Time.deltaTime / fadeInDuration;
     }
 
     private void FadeOutProcess()
     {
-        if (audioSources[0].mute || !keepFadingOut)
+        if (audioSource.mute || !keepFadingOut)
             return;
 
-        if (audioSources[0].volume <= 0.01f)
+        if (audioSource.volume <= 0.01f)
         {
-            UpdateAudioSourcesMuteState(true);
+            audioSource.mute = true;
             this.enabled = false;
             keepFadingOut = false;
             return;
@@ -125,11 +100,8 @@ public class Mb_MusicLayer : MonoBehaviour
 
         float fadeOutDuration = GameManager.Instance.musicManager.fadeOutDuration;
 
-        foreach (var item in audioSources)
-        {
-            float startVolume = item.volume;
+        float startVolume = audioSource.volume;
 
-            item.volume -= startVolume * Time.deltaTime / fadeOutDuration;
-        }
+        audioSource.volume -= startVolume * Time.deltaTime / fadeOutDuration;
     }
 }
