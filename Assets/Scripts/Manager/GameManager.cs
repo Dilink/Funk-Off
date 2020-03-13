@@ -426,7 +426,7 @@ public class GameManager : Singleton<GameManager>
     public void UpdateFeedBackAutourGrid(int comboLevel)
     {
         comboLevel = Mathf.Clamp(comboLevel, 0, 5);
-        print(comboLevel);
+
         switch(comboLevel)
         {
             case 0:

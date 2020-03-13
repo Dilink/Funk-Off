@@ -48,6 +48,7 @@ public class Ma_ComboManager : MonoBehaviour
     public void ResetMultiplier()
     {
         SetFunkMultiplier(0);
+        
     }
 
 

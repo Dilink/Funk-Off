@@ -30,6 +30,7 @@ public class Ma_UiManager : MonoBehaviour
     [Header("PARAMETERS")]
     public float FunkBarFillSpeed = 0.5f;
     public Gradient funkBarGradient;
+    public MeshRenderer[] allSquare;
     public Animator[] funkBarKey;
 
     [Space]
@@ -51,7 +52,6 @@ public class Ma_UiManager : MonoBehaviour
     public Renderer funkbarRend;
     private Material funkbarMatBase;
     private Material funkbarMatInstance;
-    public MeshRenderer[] allSquare;
 
 
     [Header("Endturn Button elements")]
@@ -106,7 +106,7 @@ public class Ma_UiManager : MonoBehaviour
         }
 
         funkbarMatInstance.SetFloat("_STEP", 0);
-        print(funkbarMatInstance);
+
         UpdateFunkBar(0);
     }
 
@@ -275,7 +275,24 @@ public class Ma_UiManager : MonoBehaviour
     // Update the cancel marker visuals
     public void UpdateCancelMarkerIcon(int emplacement, bool active)
     {
-       // PatternsbarElements[emplacement].GetChild(3).GetComponent<Image>().color = active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
+        if (!active)
+        {
+            patternItems[emplacement].background.GetComponent<Animator>().SetBool("IsActive",false);
+        }
+        else
+        {
+            patternItems[emplacement].background.GetComponent<Animator>().SetBool("IsActive", true); 
+        }
+
+        // PatternsbarElements[emplacement].GetChild(3).GetComponent<Image>().color = active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
+    }
+
+    public void CancelAllMarkerIcon()
+    {
+         foreach(PatternItem markerToCancel in patternItems)
+        {
+            markerToCancel.background.GetComponent<Animator>().SetTrigger("DesactivateColor");
+        }
     }
 
     // ---------------------
@@ -295,12 +312,12 @@ public class Ma_UiManager : MonoBehaviour
 
     private IEnumerator UpdateFunkBarCoroutine(float funkPercentage)
     {
-        print("MATERIAL :" + funkbarMatInstance);
+
+        funkbarMatInstance.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
+        funkbarMatInstance.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
 
         if (funkPercentage >= funkbarMatInstance.GetFloat("_STEP"))
         {
-            funkbarMatInstance.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
-            funkbarMatInstance.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
 
             yield return new WaitForSeconds(FunkBarFillSpeed);
 
@@ -310,7 +327,7 @@ public class Ma_UiManager : MonoBehaviour
                 funkBarKey[i].SetTrigger("isGoingUp");
             }
         }
-        else if (funkPercentage < funkbarMatInstance.GetFloat("_STEP"))
+        else
         {
             Animator[] funkBarKeyClone = new Animator[funkBarKey.Length];
             funkBarKey.CopyTo(funkBarKeyClone, 0);
@@ -374,7 +391,6 @@ public class Ma_UiManager : MonoBehaviour
 
     public void EnableDisableEndturnButton(bool status)
     {
-        Debug.Log("Endturn button = " + status);
         endturnButton.interactable = status;
     }
 

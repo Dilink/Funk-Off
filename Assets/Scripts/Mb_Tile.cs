@@ -94,7 +94,7 @@ public class Mb_Tile : MonoBehaviour
 
          if ((newTileType & TileModifier.WalledUp) == TileModifier.WalledUp)
         {
-            print("WalledUp");
+
             tileProperties.type  = (tileProperties.type | TileModifier.WalledUp);
         }
 
