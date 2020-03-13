@@ -37,7 +37,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] Animator animBruno;
     
     [Header("FunkRule")]
-    private float _funkAmount = 0.5f;
+    private float _funkAmount = 0f;
     private Mb_Tile lastTileMousedOver;
 
     private float funkAmount
