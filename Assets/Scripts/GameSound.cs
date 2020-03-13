@@ -26,4 +26,8 @@ public enum GameSound
     S_RichardMove, // DONE
     S_GrooveBarDown, // DONE
     S_GrooveBarUp, // DONE
+    S_WallUp, // DONE
+    S_LDTileAppear, // DONE
+    S_AntiGrooveTileEffect, // DONE
+    S_IceTileEffect, // DONE
 }
