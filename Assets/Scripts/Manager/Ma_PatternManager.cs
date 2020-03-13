@@ -161,7 +161,6 @@ public class Ma_PatternManager : MonoBehaviour
         Func<int, Sc_Pattern, Optional<Tuple<int, Sc_Pattern>>> Validation = (index, pattern) => {
             if (PatternValidation(allTiles, pattern, isPreview))
             {
-                GameManager.Instance.comboManager.OnPatternAccomplished(index);
                 return new Optional<Tuple<int, Sc_Pattern>>(new Tuple<int, Sc_Pattern>(index, pattern));
             }
             return new Optional<Tuple<int, Sc_Pattern>>();

@@ -98,6 +98,15 @@ public class Mb_PlayerController : MonoBehaviour
 
         }
 
+        if(GameManager.Instance.currentPlayerSelectionned == this)
+        {
+            foreach (Mb_Tile tile in allTilesAvaibleToWalkOn())
+            {
+                tile.canWalkOn = true;
+
+                tile.ActivateAvaibleFeedback();
+            }
+        }
     }
 
     //MOUVEMENT PAYANT
