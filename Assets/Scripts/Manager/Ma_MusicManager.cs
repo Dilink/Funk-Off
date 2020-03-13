@@ -40,7 +40,7 @@ public class Ma_MusicManager : MonoBehaviour
     [ReadOnly] [SerializeField] [ShowInInspector] private List<MusicLayerItem> MusicLayers;
     private int CurrentLayerIndex = -1;
 
-    void Awake()
+    void Start()
     {
         PlayLayer(0, true);
     }
@@ -75,6 +75,13 @@ public class Ma_MusicManager : MonoBehaviour
                 item.Play();
 
         CurrentLayerIndex = newLayerIndex;
+    }
+
+    void Update()
+    {
+        for (int i = 0; i < 5; i++)
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+                PlayLayer(i + 1);
     }
 
 #if UNITY_EDITOR
