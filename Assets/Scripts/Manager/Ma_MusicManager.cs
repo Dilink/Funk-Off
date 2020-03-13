@@ -81,7 +81,7 @@ public class Ma_MusicManager : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
-                PlayLayer(i + 1);
+                PlayLayer(i);
     }
 
 #if UNITY_EDITOR
