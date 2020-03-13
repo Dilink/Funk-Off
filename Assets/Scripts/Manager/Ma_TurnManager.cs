@@ -28,7 +28,6 @@ public class Ma_TurnManager : MonoBehaviour
             GameManager.Instance.allPlayers[i]..ResetMove();
         }
         */
-        Debug.LogWarning("Turn " + CurrentTurn + " has begun");
     }
 
     public void EndTurn()
@@ -71,11 +70,12 @@ public class Ma_TurnManager : MonoBehaviour
 
     private IEnumerator PreventPlayerFromActing()
     {
-        Debug.LogError("PreventPlayerFromActing()");
         GameManager game = GameManager.Instance;
+        GameManager.Instance.soundManager.PlaySound(GameSound.S_NewTurnIn);
         game.canActForced = true;
         game.DisableActing();
         yield return new WaitForSeconds(game.timeBetweenTurns);
+        GameManager.Instance.soundManager.PlaySound(GameSound.S_NewTurnOut);
         game.canActForced = false;
         game.EnableActing();
     }
@@ -93,7 +93,6 @@ public class Ma_TurnManager : MonoBehaviour
 
     public bool IsLastRoundFinished()
     {
-        Debug.LogError("IsLastRoundFinished() " + CurrentTurn + ">" + MaxTurn);
         return CurrentTurn > MaxTurn;
     }
 }

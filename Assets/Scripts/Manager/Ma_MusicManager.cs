@@ -47,6 +47,8 @@ public class Ma_MusicManager : MonoBehaviour
 
     public void PlayLayer(int newLayerIndex, bool ignoreTimeLimit=false)
     {
+        newLayerIndex -= 1;
+        newLayerIndex = Mathf.Clamp(newLayerIndex, 0, 4);
         List<Mb_MusicLayerInstrument> oldSources;
         if (CurrentLayerIndex > -1)
         {
