@@ -1,10 +1,16 @@
 ﻿using System.IO;
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
 using UnityEditor;
+
+[System.Serializable]
+struct MusicLayerItem
+{
+    public List<Mb_MusicLayerInstrument> instruments;
+}
 
 public class Ma_MusicManager : MonoBehaviour
 {
@@ -23,47 +29,57 @@ public class Ma_MusicManager : MonoBehaviour
     [ReadOnly] [SerializeField] [ShowInInspector] private AudioClip SampleClip;
 
     [Header("[Debug] Audio Clips")]
-    [ReadOnly] [SerializeField] [ShowInInspector] private List<AudioClip> BaseAudioClip;
-    [ReadOnly] [SerializeField] [ShowInInspector] private List<AudioClip> BassAudioClip;
-    [ReadOnly] [SerializeField] [ShowInInspector] private List<AudioClip> DrumsAudioClip;
-    [ReadOnly] [SerializeField] [ShowInInspector] private List<AudioClip> GuitarAudioClip;
-    [ReadOnly] [SerializeField] [ShowInInspector] private List<AudioClip> SynthAudioClip;
+    [ReadOnly] [SerializeField] [ShowInInspector] private List<Mb_MusicLayerInstrument> AllAudioInstruments;
+    [ReadOnly] [SerializeField] [ShowInInspector] private List<Mb_MusicLayerInstrument> BaseAudioClip;
+    [ReadOnly] [SerializeField] [ShowInInspector] private List<Mb_MusicLayerInstrument> BassAudioClip;
+    [ReadOnly] [SerializeField] [ShowInInspector] private List<Mb_MusicLayerInstrument> DrumsAudioClip;
+    [ReadOnly] [SerializeField] [ShowInInspector] private List<Mb_MusicLayerInstrument> GuitarAudioClip;
+    [ReadOnly] [SerializeField] [ShowInInspector] private List<Mb_MusicLayerInstrument> SynthAudioClip;
 
     [Header("[Debug] Other")]
-    [ReadOnly] [SerializeField] [ShowInInspector] [InlineEditor] private List<Mb_MusicLayer> MusicLayers;
+    [ReadOnly] [SerializeField] [ShowInInspector] private List<MusicLayerItem> MusicLayers;
+    private int CurrentLayerIndex = -1;
 
-    void Awake()
+    void Start()
     {
-        if (MusicLayers == null || MusicLayers.Count == 0 || MusicLayers[0] == null)
-        {
-            throw new InvalidDataException("No MusicLayer found, you perhaps have to populate the MusicManager.");
-        }
-
-        MusicLayers[0].PlayWithoutManagingTime();
-
-        for (int i = 1; i <= 5; i++)
-            MusicLayers[i].StartPlay();
+        PlayLayer(0, true);
     }
 
-    public void PlayerLayer(int layerIndex)
+    public void PlayLayer(int newLayerIndex, bool ignoreTimeLimit=false)
     {
-        if (layerIndex < 0 && layerIndex >= MusicLayers.Count)
+        List<Mb_MusicLayerInstrument> oldSources;
+        if (CurrentLayerIndex > -1)
         {
-            throw new IndexOutOfRangeException("Invalid layer index!");
+            oldSources = MusicLayers[CurrentLayerIndex].instruments;
+        }
+        else
+        {
+            oldSources = new List<Mb_MusicLayerInstrument>();
         }
 
-        MusicLayers[layerIndex].Play();
+        var newSources = MusicLayers[newLayerIndex].instruments;
+
+        // Fade out those AudioSource that are not inside the new layer
+        var before = oldSources.Where(p => newSources.All(p2 => p2 != p)).ToList();
+        foreach (var item in before)
+            item.Stop();
+
+        // Fade in those AudioSource that are inside the current layer and not inside the old one
+        var current = newSources.Where(p => oldSources.All(p2 => p2 != p)).ToList();
+        foreach (var item in current)
+            if (ignoreTimeLimit)
+                item.PlayWithoutManagingTime();
+            else
+                item.Play();
+
+        CurrentLayerIndex = newLayerIndex;
     }
 
     void Update()
     {
         for (int i = 0; i < 5; i++)
-        {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
-                MusicLayers[i + 1].Play();
-            else if (Input.GetKeyDown(KeyCode.Alpha6 + i) || Input.GetKeyDown(KeyCode.Alpha0))
-                MusicLayers[i + 1].Stop();
-        }
+                PlayLayer(i);
     }
 
 #if UNITY_EDITOR
@@ -84,12 +100,12 @@ public class Ma_MusicManager : MonoBehaviour
             }
         }
 
-        MusicLayers = new List<Mb_MusicLayer>();
-        BaseAudioClip = new List<AudioClip>();
-        BassAudioClip = new List<AudioClip>();
-        DrumsAudioClip = new List<AudioClip>();
-        GuitarAudioClip = new List<AudioClip>();
-        SynthAudioClip = new List<AudioClip>();
+        AllAudioInstruments = new List<Mb_MusicLayerInstrument>();
+        BaseAudioClip = new List<Mb_MusicLayerInstrument>();
+        BassAudioClip = new List<Mb_MusicLayerInstrument>();
+        DrumsAudioClip = new List<Mb_MusicLayerInstrument>();
+        GuitarAudioClip = new List<Mb_MusicLayerInstrument>();
+        SynthAudioClip = new List<Mb_MusicLayerInstrument>();
 
         string[] guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Sounds/Music" });
         foreach (var i in guids)
@@ -102,44 +118,43 @@ public class Ma_MusicManager : MonoBehaviour
             switch (name)
             {
                 case "base":
-                    BaseAudioClip.Add(clip);
+                    BaseAudioClip.Add(InitAudioInstrument(fullname, clip));
                     break;
                 case "bass":
-                    BassAudioClip.Add(clip);
+                    BassAudioClip.Add(InitAudioInstrument(fullname, clip));
                     break;
                 case "drums":
-                    DrumsAudioClip.Add(clip);
+                    DrumsAudioClip.Add(InitAudioInstrument(fullname, clip));
                     break;
                 case "guitar":
-                    GuitarAudioClip.Add(clip);
+                    GuitarAudioClip.Add(InitAudioInstrument(fullname, clip));
                     break;
                 case "synth":
-                    SynthAudioClip.Add(clip);
+                    SynthAudioClip.Add(InitAudioInstrument(fullname, clip));
                     break;
             }
         }
 
-        SampleClip = BaseAudioClip.Count > 0 ? BaseAudioClip[0] : null;
+        SampleClip = BaseAudioClip.Count > 0 ? BaseAudioClip[0].audioSource.clip : null;
 
-        for (int i = 0; i <= 5; i++)
+        MusicLayers = new List<MusicLayerItem>();
+        for (int i = 0; i < 5; i++)
         {
-            MusicLayers.Add(InitAudioSource("Layer " + i, GetAudioClipsForLayer(i)));
+            MusicLayerItem item = new MusicLayerItem();
+            item.instruments = GetAudioSourcesForLayer(i);
+            MusicLayers.Add(item);
         }
     }
 
-    private List<AudioClip> GetAudioClipsForLayer(int index)
+    private List<Mb_MusicLayerInstrument> GetAudioSourcesForLayer(int index)
     {
         switch (index)
         {
             case 0:
-                return new List<AudioClip>()
+                return new List<Mb_MusicLayerInstrument>()
                 {
                     // Base_01
                     BaseAudioClip[0],
-                };
-            case 1:
-                return new List<AudioClip>()
-                {
                     // Bass_01
                     BassAudioClip[0],
                     // Drums_01
@@ -151,9 +166,11 @@ public class Ma_MusicManager : MonoBehaviour
                     // Synth_02
                     SynthAudioClip[1],
                 };
-            case 2:
-                return new List<AudioClip>()
+            case 1:
+                return new List<Mb_MusicLayerInstrument>()
                 {
+                    // Base_01
+                    BaseAudioClip[0],
                     // Bass_02
                     BassAudioClip[1],
                     // Drums_02
@@ -165,9 +182,11 @@ public class Ma_MusicManager : MonoBehaviour
                     // Synth_02
                     SynthAudioClip[1],
                 };
-            case 3:
-                return new List<AudioClip>()
+            case 2:
+                return new List<Mb_MusicLayerInstrument>()
                 {
+                    // Base_01
+                    BaseAudioClip[0],
                     // Bass_03
                     BassAudioClip[2],
                     // Drums_03
@@ -179,9 +198,11 @@ public class Ma_MusicManager : MonoBehaviour
                     // Synth_03
                     SynthAudioClip[2],
                 };
-            case 4:
-                return new List<AudioClip>()
+            case 3:
+                return new List<Mb_MusicLayerInstrument>()
                 {
+                    // Base_01
+                    BaseAudioClip[0],
                     // Bass_01
                     BassAudioClip[0],
                     // Bass_02
@@ -195,9 +216,11 @@ public class Ma_MusicManager : MonoBehaviour
                     // Synth_03
                     SynthAudioClip[2],
                 };
-            case 5:
-                return new List<AudioClip>()
+            case 4:
+                return new List<Mb_MusicLayerInstrument>()
                 {
+                    // Base_01
+                    BaseAudioClip[0],
                     // Bass_04
                     BassAudioClip[3],
                     // Drums_04
@@ -216,24 +239,22 @@ public class Ma_MusicManager : MonoBehaviour
         }
     }
 
-    private Mb_MusicLayer InitAudioSource(string name, List<AudioClip> audioClips)
+    private Mb_MusicLayerInstrument InitAudioInstrument(string name, AudioClip clip)
     {
         GameObject go = new GameObject(name);
         go.transform.SetParent(transform);
 
-        Mb_MusicLayer layer = go.AddComponent<Mb_MusicLayer>();
+        AudioSource audioSource = go.AddComponent<AudioSource>();
+        audioSource.volume = volume;
+        audioSource.clip = clip;
+        audioSource.loop = true;
+        audioSource.mute = true;
 
-        foreach (var clip in audioClips)
-        {
-            AudioSource audioSource = go.AddComponent<AudioSource>();
-            audioSource.volume = volume;
-            audioSource.clip = clip;
-            audioSource.loop = true;
-            audioSource.mute = true;
-            layer.AddAudioSource(audioSource);
-        }
+        Mb_MusicLayerInstrument instrument = go.AddComponent<Mb_MusicLayerInstrument>();
+        instrument.Init(audioSource);
 
-        return layer;
+        AllAudioInstruments.Add(instrument);
+        return instrument;
     }
 
     private void ClearChildren()
