@@ -94,8 +94,9 @@ public class Ma_UiManager : MonoBehaviour
 
     private void Start()
     {
+        /*
         maxMoveText.text = GameManager.Instance.maxMovesPerTurn.ToString();
-        RemoveAllMultiplierIcon();
+       // RemoveAllMultiplierIcon();
         funkbarMatBase = funkbarRend.material;
         funkbarMatInstance = new Material(funkbarMatBase);
 
@@ -106,7 +107,7 @@ public class Ma_UiManager : MonoBehaviour
 
         funkbarMatInstance.SetFloat("_STEP", 0);
 
-        UpdateFunkBar(0);
+        UpdateFunkBar(0);*/
     }
 
     // ---------------------

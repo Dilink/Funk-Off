@@ -16,7 +16,7 @@ public class Deploy : MonoBehaviour
         if (isDeployed == true)
         {
             isDeployed = false;
-            posOnScreen.DOMoveX(posOnScreen.position.x  + 220, 1);
+            posOnScreen.DOMoveX(posOnScreen.position.x  + 200, 1);
         }
         else 
         {
