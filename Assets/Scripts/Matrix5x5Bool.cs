@@ -7,6 +7,10 @@ using UnityEngine;
 [StructLayout(LayoutKind.Sequential)]
 public class Matrix5x5Bool : IEquatable<Matrix5x5Bool>
 {
+    public static int ROW_LENGTH = 5;
+    public static int COL_LENGTH = 5;
+    public static int LENGTH = ROW_LENGTH * COL_LENGTH;
+
     // memory layout:
     //
     //                row no (=vertical)
