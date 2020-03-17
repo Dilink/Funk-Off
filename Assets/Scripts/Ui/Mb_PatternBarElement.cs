@@ -41,5 +41,6 @@ public class Mb_PatternBarElement : MonoBehaviour
     public void ClearMutliplier()
     {
         multiplierText.text = "";
+        backGroundColor.color = GameManager.Instance.comboManager.colorNone;
     }
 }
