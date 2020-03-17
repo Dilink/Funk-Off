@@ -218,7 +218,7 @@ public class GameManager : Singleton<GameManager>
     {
         for (int i =0; i < allTiles.Length; i++)
         {
-            if (Mathf.Clamp(allTiles[i].posX,-1,1) == x && Mathf.Clamp(allTiles[i].posZ,-1,1) == z)
+            if (Mathf.Clamp(allTiles[i].posX,-2,2) == x && Mathf.Clamp(allTiles[i].posZ,-2,2) == z)
             {
                 return allTiles[i];
                 

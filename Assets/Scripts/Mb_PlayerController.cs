@@ -126,8 +126,8 @@ public class Mb_PlayerController : MonoBehaviour
     //MOUVEMENT PAYANT
     public void CheckCostingMovement(Mb_Tile tileToMoveTo)
     {
-        int directionX = Mathf.Clamp(tileToMoveTo.posX - currentTile.posX, -1, 1);
-        int directionZ = Mathf.Clamp(tileToMoveTo.posZ - currentTile.posZ, -1, 1);
+        int directionX = Mathf.Clamp(tileToMoveTo.posX - currentTile.posX, -2, 2);
+        int directionZ = Mathf.Clamp(tileToMoveTo.posZ - currentTile.posZ, -2, 2);
 
         int distanceBetweenTilesX = Mathf.Abs(currentTile.posX - tileToMoveTo.posX);
         int distanceBetweenTilesZ = Mathf.Abs(currentTile.posZ - tileToMoveTo.posZ);
@@ -138,7 +138,7 @@ public class Mb_PlayerController : MonoBehaviour
         {
 
 
-            if (GameManager.Instance.GetTile(Mathf.Clamp(currentTile.posX + directionX * 2, -1, 1), Mathf.Clamp(currentTile.posZ + directionZ * 2, -1, 1)).avaible == true &&
+            if (GameManager.Instance.GetTile(currentTile.posX + directionX * 2, currentTile.posZ + directionZ * 2).avaible == true &&
                 GameManager.Instance.moveLeftForTurn() >= tileToMoveTo.tileProperties.cost)
             {
                 GameManager.Instance.DecreaseMovesLeft(tileToMoveTo.tileProperties.cost);
@@ -306,8 +306,8 @@ public class Mb_PlayerController : MonoBehaviour
 
     public void Drift()
     {
-        int z = Mathf.Clamp(currentTile.posZ + velZ, -1, 1);
-        int x = Mathf.Clamp(currentTile.posX + velX, -1, 1);
+        int z = Mathf.Clamp(currentTile.posZ + velZ, -2, 2);
+        int x = Mathf.Clamp(currentTile.posX + velX, -2, 2);
 
         if ((characterBaseCharacteristics.characterSkills & CharacterSkills.Swift) != 0)
         {
@@ -427,7 +427,7 @@ public class Mb_PlayerController : MonoBehaviour
                 else if ((characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff)
                 {
                
-                    if (GameManager.Instance.GetTile(Mathf.Clamp(tile.posX + DirectionX(tile), -1, 1), Mathf.Clamp(tile.posZ + DirectionZ(tile), -1, 1)).avaible == true)
+                    if (GameManager.Instance.GetTile(tile.posX + DirectionX(tile), tile.posZ + DirectionZ(tile)).avaible == true)
                     {
                         temporaryList.Add(tile);
                     }
