@@ -7,7 +7,7 @@ using Sirenix.Utilities;
 using UnityEngine;
 using UnityEditor;
 
-public class CustomMatrix3x3Bitwise : OdinValueDrawer<Matrix3x3Int>
+public class CustomMatrix5x5Bitwise : OdinValueDrawer<Matrix5x5Int>
 {
     private float validSize = 0;
 
@@ -33,13 +33,13 @@ public class CustomMatrix3x3Bitwise : OdinValueDrawer<Matrix3x3Int>
         return result;
     }
 
-    void CalculateValue(int xCoord, int yCoord, Matrix3x3Int value)
+    void CalculateValue(int xCoord, int yCoord, Matrix5x5Int value)
     {
-        int patternValue=0;
+        int patternValue = 0;
 
-        for (int y=0; y<3; y++)
+        for (int y = 0; y < Matrix5x5Bool.ROW_LENGTH; y++)
         {
-            for (int x = 0; x < 3; x++)
+            for (int x = 0; x < Matrix5x5Bool.COL_LENGTH; x++)
             {
                 int tileValue = 0;
 
@@ -75,7 +75,7 @@ public class CustomMatrix3x3Bitwise : OdinValueDrawer<Matrix3x3Int>
                     tileValue += 1;
                 }
 
-                int coordAddition = Mathf.Abs(x-1) + Mathf.Abs( y-1);
+                int coordAddition = Mathf.Abs(x - 2) + Mathf.Abs(y - 2);
 
                 if ((value[x, y] & (int)TileModifier.WalledUp) != 0 || 
                     (value[x, y] & (int)TileModifier.WalledDown) != 0 ||
@@ -106,7 +106,7 @@ public class CustomMatrix3x3Bitwise : OdinValueDrawer<Matrix3x3Int>
 
     protected override void DrawPropertyLayout(GUIContent label)
     {
-        Matrix3x3Int value = this.ValueEntry.SmartValue;
+        Matrix5x5Int value = this.ValueEntry.SmartValue;
 
         Color defaultColor = GUI.color;
         Rect iniRect = EditorGUILayout.GetControlRect(GUILayout.Height(0));
@@ -137,19 +137,19 @@ public class CustomMatrix3x3Bitwise : OdinValueDrawer<Matrix3x3Int>
 
         EditorGUILayout.GetControlRect(GUILayout.Height(validSize));
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < Matrix5x5Bool.ROW_LENGTH; i++)
         {
             EditorGUILayout.BeginHorizontal();
-            for (int j = 0; j < 3; j++)
+            for (int j = 0; j < Matrix5x5Bool.COL_LENGTH; j++)
             {
                 int activatedCount = 0;
                 float r = 0, g = 0, b = 0;
                 Rect rect = new Rect();
 
-                rect.width = rect.height = iniRect.width / 3.0f;
+                rect.width = rect.height = iniRect.width / Matrix5x5Bool.COL_LENGTH;
                 rect.x = iniRect.x + i * rect.width;
                 rect.y = iniRect.y + j * rect.height;
-                rect = rect.Padding(rect.width / 3.0f * 0.1f);
+                rect = rect.Padding(rect.width / Matrix5x5Bool.COL_LENGTH * 0.1f);
 
                 var menu = new GenericMenu();
                 menu.AddDisabledItem(new GUIContent("Tile Modifier"));

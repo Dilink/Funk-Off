@@ -14,7 +14,7 @@ public class Sc_Pattern : ScriptableObject
     public string Title;
     [PreviewField(70, ObjectFieldAlignment.Left)]
     public Sprite sprite;
-    public Matrix3x3Bool Matrix;
+    public Matrix5x5Bool Matrix;
     public List<PatternModifier> modifiers;
     public int danceToPlay=1;
     [ReadOnly]

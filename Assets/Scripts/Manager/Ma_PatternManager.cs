@@ -61,7 +61,7 @@ public class Ma_PatternManager : MonoBehaviour
 
     public void OnTurnEnd(bool isLevelFinished = false, bool ignoreDamages = false)
     {
-        GameManager.Instance.uiManager.RemoveAllMultiplierIcon();
+        GameManager.Instance.uiManager.ClearAllMultiplierUi();
 
         if (ignoreDamages == false && patternsForCancellation.Count() != 0)
         {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class Sc_AIPattern : ScriptableObject
 {
     public string Title;
-    public Matrix3x3Int Matrix;
+    public Matrix5x5Int Matrix;
     [ReadOnly]
     public string Name;
     public int difficultyLevel;

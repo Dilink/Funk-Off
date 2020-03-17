@@ -29,6 +29,7 @@ public class Ma_ComboManager : MonoBehaviour
     private void Awake()
     {
         funkBonus = 0;
+        GameManager.Instance.uiManager.ClearAllMultiplierUi();
     }
 
 
@@ -53,7 +54,7 @@ public class Ma_ComboManager : MonoBehaviour
 
     public void OnNewTurn(int indexOfPatern, bool isPatternDestroyed = false)
     {
-      
+        GameManager.Instance.uiManager.RemoveAllMultiplierIcon();
 
         if (isPatternDestroyed)
             return;
@@ -106,35 +107,33 @@ public class Ma_ComboManager : MonoBehaviour
             switch(multiplierIndex)
             {
                 case 0:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX2, colorMX2, "x1",Color.white);
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX2, colorX2 , "Good");
                     break;
 
                 case 1:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX3, colorMX3, "x2", Color.white);
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX3, colorX3, "Nice");
                     break;
 
                 case 2:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX4, colorMX4, "x3", Color.white);
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX4, colorX4, "Great");
                     break;
 
                 case 3:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX5, colorMX5, "x4", Color.white);
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX5, colorX5, "Perfect");
                     break;
 
                 case 4:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX6, colorMX6, "x5", Color.white);
+                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX6, colorX6, "Funkulouss");
                     break;
             }
 
         }
         else
         {
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Color.red, "error", Color.clear);
+            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Color.red, "error");
         }
         
         GameManager.Instance.UpdateFeedBackAutourGrid(multiplierIndex+1);
 
     }
-
-   
 }
