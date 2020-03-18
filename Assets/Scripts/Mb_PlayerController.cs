@@ -115,12 +115,7 @@ public class Mb_PlayerController : MonoBehaviour
 
         if(GameManager.Instance.currentPlayerSelectionned == this)
         {
-            foreach (Mb_Tile tile in allTilesAvaibleToWalkOn())
-            {
-                tile.canWalkOn = true;
-
-                tile.ActivateAvaibleFeedback();
-            }
+            UpdatePreview(currentTile);
         }
     }
 
@@ -157,6 +152,7 @@ public class Mb_PlayerController : MonoBehaviour
     
         }
 
+        #region
         /*
         if (tileToMoveTo.avaible == false && (characterBaseCharacteristics.characterSkills & CharacterSkills.JumpOff) == CharacterSkills.JumpOff &&
             distanceBetweenTilesXZ == 1)
@@ -195,7 +191,7 @@ public class Mb_PlayerController : MonoBehaviour
                 Move(tileToMoveTo);
             }
         }*/
-
+        #endregion
     }
 
     bool IsNotWalled(Mb_Tile tileToCheck, int directionX, int directionZ)
@@ -391,17 +387,26 @@ public class Mb_PlayerController : MonoBehaviour
         {
             SetOutline();
            // GameManager.Instance.uiManager.DeployUi(UiAssociated);
-
         }
-        foreach(Mb_Tile tile  in allTilesAvaibleToWalkOn())
-        {
-            tile.canWalkOn = true;
 
-            tile.ActivateAvaibleFeedback();
-        }
+        UpdatePreview(currentTile);
 
         anim.SetTrigger("OnPick");
         isSelected = true;
+    }
+
+    public void UpdatePreview(Mb_Tile tileToPreviewFrom)
+    {
+        foreach (Mb_Tile tile in GameManager.Instance.allTiles)
+        {
+            tile.DesctivateCanWalkFeedBack();
+        }
+
+        foreach (Mb_Tile tile in allTilesAvaibleToWalkOn())
+        {
+            tile.canWalkOn = true;
+            tile.ActivateAvaibleFeedback();
+        }
     }
 
     void SetOutline()
