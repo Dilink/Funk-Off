@@ -78,6 +78,8 @@ public class GameManager : Singleton<GameManager>
         EnableActing();
         ResetMove();
         UpdateFeedBackAutourGrid(0);
+
+        StartCoroutine(OnGameStartPost());
     }
 
     //ACTING
@@ -305,7 +307,7 @@ public class GameManager : Singleton<GameManager>
             if (currentRoundCountFinished < levelConfig.rounds.Count)
             {
                 _funkAmount = 0.5f;
-                turnManager.OnNextRound();
+                OnNextRoundPre();
             }
             else
             {
@@ -402,7 +404,7 @@ public class GameManager : Singleton<GameManager>
                     {
                          tilesToCheck[i].PrecompletionFeedback(true);
                     }
-                    uiManager.ShakePattern(patternToBeAccomplished.Value.Item1);
+                    uiManager.GetPatternElement(patternToBeAccomplished.Value.Item1).ShakePattern();
                 }
                 else
                 {
@@ -469,5 +471,86 @@ public class GameManager : Singleton<GameManager>
                 break;
 
         }
+    }
+
+    
+
+    public void OnTurnEndPre()
+    {
+        uiManager.ClearAllMultiplierUi();
+        uiManager.EnableDisableEndturnButton(false);
+    }
+
+    public void OnTurnEndPost(bool isLevelFinished)
+    {
+        uiManager.ClearAllMultiplierUi();
+        patternManager.OnTurnEnd(isLevelFinished: isLevelFinished);
+        if (!isLevelFinished)
+        {
+            uiManager.UpdateTurnsbarText(turnManager.GetCurrentTurn(), turnManager.GetMaxTurn());
+        }
+    }
+
+    public void OnNextRoundPre()
+    {
+        turnManager.OnNextRound();
+        UpdateFeedBackAutourGrid(0);
+        uiManager.ClearAllMultiplierUi();
+        OnNextRoundPost();
+    }
+
+    public void OnNextRoundPost()
+    {
+        patternManager.OnTurnEnd(isLevelFinished: true, ignoreDamages: true);
+        uiManager.UpdateTurnsbarText(turnManager.GetCurrentTurn(), turnManager.GetMaxTurn());
+        ResetMove();
+        comboManager.ResetMultiplier();
+    }
+
+    public void UpdatePatternsBarIcon(int indexInList, Sc_Pattern pattern)
+    {
+        uiManager.GetPatternElement(indexInList).UpdatePatternsBarIcon(pattern);
+    }
+
+    public void OnMovePatterns(int indexInList)
+    {
+        uiManager.GetPatternElement(indexInList).MovePattern();
+    }
+
+    public void OnRemovePattern(int indexInList, bool isPatternDestroyed = false)
+    {
+        uiManager.GetPatternElement(indexInList).RemovePattern(isPatternDestroyed);
+    }
+
+    public void OnRespawnPattern(int indexInList)
+    {
+
+    }
+
+    public IEnumerator OnGameStartPost()
+    {
+        yield return new WaitForEndOfFrame();
+
+        uiManager.UpdateTurnsbarText(turnManager.GetCurrentTurn(), turnManager.GetMaxTurn());
+        uiManager.ClearAllMultiplierUi();
+    }
+
+    public void OnNewTurnPre(int indexOfPatern, bool isPatternDestroyed = false)
+    {
+        uiManager.RemoveAllMultiplierIcon();
+    }
+
+    public void OnMultiplierAppear(int indexOfPatern, Color color, Color colorbkg, string text, int multiplierIndex)
+    {
+        uiManager.GetPatternElement(indexOfPatern).PlayFX(multiplierIndex);
+        uiManager.GetPatternElement(indexOfPatern).UpdateMultiplierIcon(Color.white, Color.red, "error");
+
+        musicManager.PlayLayer(multiplierIndex + 1);
+        soundManager.PlaySound(GameSound.S_MultiplierAppear);
+    }
+
+    public void OnUpdateCancelMarker(int index, bool flag = false)
+    {
+        uiManager.GetPatternElement(index).UpdateCancelMarkerIcon(flag);
     }
 }
