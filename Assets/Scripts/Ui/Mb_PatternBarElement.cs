@@ -23,7 +23,7 @@ public class Mb_PatternBarElement : MonoBehaviour
 
     private void Start()
     {
-        rectTransform = gameObject.GetComponent<RectTransform>();
+        rectTransform = GetComponent<RectTransform>();
         basePosTorwardPatternBar = multiplierImg.localPosition;
     }
 

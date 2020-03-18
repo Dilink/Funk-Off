@@ -34830,7 +34830,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2681015317910259798}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.138, y: 0, z: -0.41}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
@@ -34853,7 +34853,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.7, z: 0}
 --- !u!114 &2238783227117907270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34866,14 +34866,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a2ae82cf7b9af4c8dc308da8d2e89f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTile: {fileID: 0}
+  currentTile: {fileID: 8023776061783416700, guid: b4907cd18c6e01c42aa7e55f11eb5c99,
+    type: 3}
   oldTile: {fileID: 0}
   characterBaseCharacteristics: {fileID: 11400000, guid: 2ee2d220afba1f24fa9a89939b8f80b1,
     type: 2}
   characterRenderer: {fileID: 3801895685138825831}
   anim: {fileID: 7032444088796509506}
   particleFeedback: {fileID: 1027778789523348210}
-  UiAssociated: {fileID: 0}
+  UiAssociated: {fileID: 9100044585709015396, guid: b4907cd18c6e01c42aa7e55f11eb5c99,
+    type: 3}
 --- !u!1 &2907458837065991834
 GameObject:
   m_ObjectHideFlags: 0
@@ -36226,7 +36228,7 @@ GameObject:
   - component: {fileID: 1415862650053905768}
   - component: {fileID: 7032444088796509506}
   m_Layer: 0
-  m_Name: Anim
+  m_Name: DaveAnim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

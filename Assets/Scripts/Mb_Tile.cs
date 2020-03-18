@@ -87,6 +87,8 @@ public class Mb_Tile : MonoBehaviour
 
         if ((newTileType & TileModifier.WalledRight) == TileModifier.WalledRight)
         {
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_WallUp);
+            feedBackWallUp.SetBool("Appear", true);
             tileProperties.type = (tileProperties.type| TileModifier.WalledRight);
         }
 
@@ -97,7 +99,8 @@ public class Mb_Tile : MonoBehaviour
 
          if ((newTileType & TileModifier.WalledUp) == TileModifier.WalledUp)
         {
-
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_WallUp);
+            feedBackWallRight.SetBool("Appear", true);
             tileProperties.type  = (tileProperties.type | TileModifier.WalledUp);
         }
 
@@ -107,25 +110,8 @@ public class Mb_Tile : MonoBehaviour
         }
 
 
-        UpdateWallFeedBack();
     }
 
-    void UpdateWallFeedBack()
-    {
-
-        if ((tileProperties.type & TileModifier.WalledUp) == TileModifier.WalledUp)
-        {
-            GameManager.Instance.soundManager.PlaySound(GameSound.S_WallUp);
-            feedBackWallUp.SetBool("Appear", true);
-        }
-        
-        if ((tileProperties.type & TileModifier.WalledRight) == TileModifier.WalledRight )
-        {
-            GameManager.Instance.soundManager.PlaySound(GameSound.S_WallUp);
-            feedBackWallRight.SetBool("Appear", true);
-        }
-        
-    }
 
     public void ResetNoFeedBack()
     {
@@ -166,7 +152,6 @@ public class Mb_Tile : MonoBehaviour
         {
             GameManager.Instance.soundManager.PlaySound(GameSound.S_IceTileEffect);
             playerOnTile.Drift();
-
         }
 
 
@@ -174,6 +159,8 @@ public class Mb_Tile : MonoBehaviour
 
     public void ResetOccupent()
     {
+        print("ResetÔccupent"+ name);
+        avaible = true;
         playerOnTile = null;
     }
 
