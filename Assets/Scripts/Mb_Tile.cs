@@ -23,13 +23,12 @@ public class Mb_Tile : MonoBehaviour
     [SerializeField] Animator feedBackIce;
     [SerializeField] Animator feedBackSlow;
     [SerializeField] Animator feedBackDestruction;
-
+    [SerializeField] Animator feedBackTp;
 
     public ParticleSystem onCompleteFeedBack;
     [SerializeField] float timeBeforeDeasaparence = 1;
     [SerializeField] GameObject feedBackTilePrecompletion;
     [SerializeField] GameObject tileAvaibleFeedBack;
-
 
     private void Awake()
     {
@@ -72,6 +71,14 @@ public class Mb_Tile : MonoBehaviour
             GameManager.Instance.soundManager.PlaySound(GameSound.S_LDTileAppear);
         }
 
+        else if ((newTileType & TileModifier.Tp) == TileModifier.Tp)
+        {
+            feedBackTp.SetTrigger("Appear");
+            
+            tileProperties.type = TileModifier.Tp;
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_LDTileAppear);
+        }
+
         else if ((newTileType & TileModifier.Slow) == TileModifier.Slow)
         {
             feedBackSlow.SetBool("Appear", true);
@@ -87,6 +94,8 @@ public class Mb_Tile : MonoBehaviour
 
         if ((newTileType & TileModifier.WalledRight) == TileModifier.WalledRight)
         {
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_WallUp);
+            feedBackWallUp.SetBool("Appear", true);
             tileProperties.type = (tileProperties.type| TileModifier.WalledRight);
         }
 
@@ -97,7 +106,8 @@ public class Mb_Tile : MonoBehaviour
 
          if ((newTileType & TileModifier.WalledUp) == TileModifier.WalledUp)
         {
-
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_WallUp);
+            feedBackWallRight.SetBool("Appear", true);
             tileProperties.type  = (tileProperties.type | TileModifier.WalledUp);
         }
 
@@ -107,25 +117,8 @@ public class Mb_Tile : MonoBehaviour
         }
 
 
-        UpdateWallFeedBack();
     }
 
-    void UpdateWallFeedBack()
-    {
-
-        if ((tileProperties.type & TileModifier.WalledUp) == TileModifier.WalledUp)
-        {
-            GameManager.Instance.soundManager.PlaySound(GameSound.S_WallUp);
-            feedBackWallUp.SetBool("Appear", true);
-        }
-        
-        if ((tileProperties.type & TileModifier.WalledRight) == TileModifier.WalledRight )
-        {
-            GameManager.Instance.soundManager.PlaySound(GameSound.S_WallUp);
-            feedBackWallRight.SetBool("Appear", true);
-        }
-        
-    }
 
     public void ResetNoFeedBack()
     {
@@ -159,21 +152,30 @@ public class Mb_Tile : MonoBehaviour
 
         if ((tileProperties.type & TileModifier.Tp) == TileModifier.Tp && fromTP == false)
         {
-            playerOnTile.CheckTp(GameManager.Instance.TpTile(this));
+            StartCoroutine(TpCoroutine());
         }
 
         if ((tileProperties.type & TileModifier.Ice) == TileModifier.Ice)
         {
             GameManager.Instance.soundManager.PlaySound(GameSound.S_IceTileEffect);
             playerOnTile.Drift();
-
         }
 
 
     }
 
+    IEnumerator TpCoroutine()
+    {
+        Mb_PlayerController playerToUpdate = playerOnTile;
+        playerOnTile.anim.SetTrigger("Tp");
+        yield return new WaitForSeconds(.3f);
+        playerOnTile.CheckTp(GameManager.Instance.TpTile(this));
+        playerToUpdate.UpdatePreview(this);
+    }
+
     public void ResetOccupent()
     {
+        avaible = true;
         playerOnTile = null;
     }
 
@@ -225,7 +227,7 @@ public struct Modifier
 [System.Serializable]
 public enum TileModifier
 {
-    Destroyer    = 1 << 0,
+    Destroyer   = 1 << 0,
     Ice         = 1 << 1,
     Tp          = 1 << 2,
     Slow        = 1 << 3,
