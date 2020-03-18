@@ -14,7 +14,6 @@ public class Ma_TurnManager : MonoBehaviour
     private void Start()
     {
         MaxTurn = GameManager.Instance.levelConfig.rounds[0].turnLimit;
-        GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
         //AI PART A CHANGER
         GameManager.Instance.aiManager.ChoosePattern();
     }
@@ -34,8 +33,7 @@ public class Ma_TurnManager : MonoBehaviour
     {
         GameManager.Instance.UpdateFeedBackAutourGrid(0);
 
-        GameManager.Instance.uiManager.ClearAllMultiplierUi();
-        GameManager.Instance.uiManager.EnableDisableEndturnButton(false);
+        GameManager.Instance.OnTurnEndPre();
         // Pass to the next turn
         if (CurrentTurn <= MaxTurn)
         {
@@ -51,20 +49,15 @@ public class Ma_TurnManager : MonoBehaviour
             // If not game end
             if (CurrentTurn <= MaxTurn)
             {
-                GameManager.Instance.patternManager.OnTurnEnd();
-                GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
                 GameManager.Instance.ResetMove();
                 GameManager.Instance.comboManager.ResetMultiplier();
 
                 //AI PART A CHANGER
                 GameManager.Instance.aiManager.ChoosePattern();
-            }
-            else
-            {
-                GameManager.Instance.patternManager.OnTurnEnd(true);
-            }
 
-            StartCoroutine(PreventPlayerFromActing());
+                StartCoroutine(PreventPlayerFromActing());
+            }
+            GameManager.Instance.OnTurnEndPost(isLevelFinished: true);
         }
     }
 
@@ -84,16 +77,20 @@ public class Ma_TurnManager : MonoBehaviour
         GameManager.Instance.FunkVariation(-1);
         CurrentTurn = 1;
         MaxTurn = GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].turnLimit;
-        GameManager.Instance.UpdateFeedBackAutourGrid(0);
-
-        GameManager.Instance.patternManager.OnTurnEnd(true, true);
-        GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, MaxTurn);
-        GameManager.Instance.ResetMove();
-        GameManager.Instance.comboManager.ResetMultiplier();
     }
 
     public bool IsLastRoundFinished()
     {
         return CurrentTurn > MaxTurn;
+    }
+
+    public int GetMaxTurn()
+    {
+        return MaxTurn;
+    }
+
+    public int GetCurrentTurn()
+    {
+        return CurrentTurn;
     }
 }

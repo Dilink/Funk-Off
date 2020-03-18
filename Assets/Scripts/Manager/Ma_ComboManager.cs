@@ -29,7 +29,6 @@ public class Ma_ComboManager : MonoBehaviour
     private void Awake()
     {
         funkBonus = 0;
-        GameManager.Instance.uiManager.ClearAllMultiplierUi();
     }
 
 
@@ -54,7 +53,7 @@ public class Ma_ComboManager : MonoBehaviour
 
     public void OnNewTurn(int indexOfPatern, bool isPatternDestroyed = false)
     {
-        GameManager.Instance.uiManager.RemoveAllMultiplierIcon();
+        GameManager.Instance.OnNewTurnPre(indexOfPatern, isPatternDestroyed);
 
         if (isPatternDestroyed)
             return;
@@ -98,41 +97,35 @@ public class Ma_ComboManager : MonoBehaviour
                 funkBonus = Multipliers[multiplierIndex];
             }
 
-            GameManager.Instance.musicManager.PlayLayer(multiplierIndex + 1);
-
-            GameManager.Instance.uiManager.DisplayFX(indexOfPatern, multiplierIndex);
-
-            GameManager.Instance.soundManager.PlaySound(GameSound.S_MultiplierAppear);
-
             switch(multiplierIndex)
             {
                 case 0:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX2, colorX2 , "Good");
+                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX2, colorX2 , "Good", multiplierIndex);
                     break;
 
                 case 1:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX3, colorX3, "Nice");
+                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX3, colorX3, "Nice", multiplierIndex);
                     break;
 
                 case 2:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX4, colorX4, "Great");
+                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX4, colorX4, "Great", multiplierIndex);
                     break;
 
                 case 3:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX5, colorX5, "Perfect");
+                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX5, colorX5, "Perfect", multiplierIndex);
                     break;
 
                 case 4:
-                    GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, colorMX6, colorX6, "Funkulouss");
+                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX6, colorX6, "Funkulouss", multiplierIndex);
                     break;
             }
 
         }
         else
         {
-            GameManager.Instance.uiManager.UpdateMultiplierIcon(indexOfPatern, Color.white, Color.red, "error");
+            GameManager.Instance.OnMultiplierAppear(indexOfPatern, Color.white, Color.red, "error", multiplierIndex);
         }
-        
+
         GameManager.Instance.UpdateFeedBackAutourGrid(multiplierIndex+1);
 
     }
