@@ -386,7 +386,7 @@ public class Mb_PlayerController : MonoBehaviour
         if (isSelected == false)
         {
             SetOutline();
-           // GameManager.Instance.uiManager.DeployUi(UiAssociated);
+            GameManager.Instance.uiManager.DeployUi(UiAssociated);
         }
 
         UpdatePreview(currentTile);

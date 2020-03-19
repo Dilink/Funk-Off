@@ -52,21 +52,12 @@ public class Ma_UiManager : MonoBehaviour
         // PlayerStateBar elements
     }
 
-    private void Start()
-    {
+    
         /*
         maxMoveText.text = GameManager.Instance.maxMovesPerTurn.ToString();
        // RemoveAllMultiplierIcon();
         funkbarMatBase = funkbarRend.material;
-        funkbarMatInstance = new Material(funkbarMatBase);
-
-        for(int i=0; i < allSquare.Length; i++)
-        {
-            allSquare[i].material = funkbarMatInstance;
-        }
-
-        funkbarMatInstance.SetFloat("_STEP", 0);
-
+       
         UpdateFunkBar(0);*
     }
 
@@ -169,6 +160,7 @@ public class Ma_UiManager : MonoBehaviour
     public Renderer funkbarRend;
     private Material funkbarMatBase;
     private Material funkbarMatInstance;
+    [SerializeField] MeshRenderer[] allBars;
 
     [Header("PARAMETERS")]
     public float FunkBarFillSpeed = 0.5f;
@@ -193,6 +185,16 @@ public class Ma_UiManager : MonoBehaviour
         return patternElements[index];
     }
 
+    private void Start()
+    {
+        funkbarMatInstance = new Material(funkbarRend.material);
+        for (int i = 0; i < allBars.Length; i++)
+        {
+            allBars[i].material = funkbarMatInstance;
+        }
+
+        funkbarMatInstance.SetFloat("_STEP", 0);
+    }
     // ---------------------
     // ENDGAME SCREEN UI FUNCTIONS
     // ---------------------
@@ -209,7 +211,7 @@ public class Ma_UiManager : MonoBehaviour
 
     public void EnableDisableEndturnButton(bool status)
     {
-        endturnButton.interactable = status;
+     // endturnButton.interactable = status;
     }
 
     // ---------------------
@@ -296,6 +298,7 @@ public class Ma_UiManager : MonoBehaviour
 
     private IEnumerator UpdateFunkBarCoroutine(float funkPercentage)
     {
+        print("Mat = " +funkbarMatInstance);
         funkbarMatInstance.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
         funkbarMatInstance.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
 
