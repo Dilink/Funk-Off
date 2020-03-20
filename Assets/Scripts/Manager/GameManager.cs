@@ -78,7 +78,7 @@ public class GameManager : Singleton<GameManager>
         EnableActing();
         ResetMove();
         UpdateFeedBackAutourGrid(0);
-
+        uiManager.UpdateMaxMoveUi(maxMovesPerTurn);
         StartCoroutine(OnGameStartPost());
     }
 
@@ -172,6 +172,7 @@ public class GameManager : Singleton<GameManager>
     public void DecreaseMovesLeft(int toDecrease)
     {
         moveLeft -= toDecrease;
+
         uiManager.UpdateMovesUi(moveLeft);
 
         if (moveLeft < totalMoveReseted)

@@ -45,7 +45,7 @@ public class Ma_PatternManager : MonoBehaviour
         var copy = new List<Sc_Pattern>(currentPatternsList);
         RandomizeList(ref copy);
         var queue = new Queue<Sc_Pattern>(copy);
-        print(count);
+
         for (int i = 0; i < count; i++)
         {
             var pattern = queue.Dequeue();

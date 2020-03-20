@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class Deploy : MonoBehaviour
 {
-
+    [SerializeField] float distanceToDeploy=100;
     [SerializeField] RectTransform posOnScreen;
 
     bool isDeployed =false;
@@ -16,12 +16,12 @@ public class Deploy : MonoBehaviour
         if (isDeployed == true)
         {
             isDeployed = false;
-            posOnScreen.DOMoveX(posOnScreen.position.x  + 200, 1);
+            posOnScreen.DOMoveX(posOnScreen.position.x  + distanceToDeploy, 1);
         }
         else 
         {
             isDeployed = true;
-            posOnScreen.DOMoveX(posOnScreen.position.x - 200, 1);
+            posOnScreen.DOMoveX(posOnScreen.position.x - distanceToDeploy, 1);
         }
     }
 }

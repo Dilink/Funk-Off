@@ -69,6 +69,7 @@ public class Mb_PlayerController : MonoBehaviour
         }
 
 
+
         //set de la nouvelle tuile
         currentTile = tileToMoveTo;
         currentTile.setOccupent(this);
