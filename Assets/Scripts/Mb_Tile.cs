@@ -66,15 +66,15 @@ public class Mb_Tile : MonoBehaviour
 
         else if ((newTileType & TileModifier.Ice) == TileModifier.Ice)
         {
-            feedBackIce.SetBool("Appear",true);
+            feedBackIce.SetBool("Appear", true);
             tileProperties.type = TileModifier.Ice;
             GameManager.Instance.soundManager.PlaySound(GameSound.S_LDTileAppear);
         }
 
         else if ((newTileType & TileModifier.Tp) == TileModifier.Tp)
         {
-            feedBackTp.SetTrigger("Appear");
-            
+            feedBackTp.SetBool("Appear", true);
+
             tileProperties.type = TileModifier.Tp;
             GameManager.Instance.soundManager.PlaySound(GameSound.S_LDTileAppear);
         }
@@ -127,6 +127,7 @@ public class Mb_Tile : MonoBehaviour
         feedBackIce.SetBool("Appear", false);
         feedBackDestruction.SetBool("Appear", false);
         feedBackSlow.SetBool("Appear", false);
+        feedBackTp.SetBool("Appear", false);
     }
 
     public void ResetBaseTile()
