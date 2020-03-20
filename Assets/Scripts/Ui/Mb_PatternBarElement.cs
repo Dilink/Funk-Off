@@ -9,6 +9,7 @@ public class Mb_PatternBarElement : MonoBehaviour
     [Header("Gameplay")]
     public Image patternSprite;
     [HideInInspector] public RectTransform rectTransform;
+    [SerializeField] Animator animWarning;
 
     [Header("ComboPart")]
     public ParticleSystem[] FX;
@@ -85,14 +86,12 @@ public class Mb_PatternBarElement : MonoBehaviour
     {
         if (!active)
         {
-            backGroundColor.GetComponent<Animator>().SetBool("IsActive", false);
+            animWarning.SetBool("IsActive", false);
         }
         else
         {
-            backGroundColor.GetComponent<Animator>().SetBool("IsActive", true);
+            animWarning.SetBool("IsActive", true);
         }
-
-        // PatternsbarElements[emplacement].GetChild(3).GetComponent<Image>().color = active ? new Color(0.88f, 0.11f, 0.59f, 1.0f) : Color.clear;
     }
 
     public void ClearAllMutliplierUi()
