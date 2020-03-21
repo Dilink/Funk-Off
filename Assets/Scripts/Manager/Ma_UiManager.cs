@@ -299,7 +299,6 @@ public class Ma_UiManager : MonoBehaviour
 
     private IEnumerator UpdateFunkBarCoroutine(float funkPercentage)
     {
-
         funkbarMatInstance.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
         funkbarMatInstance.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
 
@@ -334,7 +333,7 @@ public class Ma_UiManager : MonoBehaviour
     {
         moveMaxText.text = MaxMoves.ToString();
     }
-
+    
     public void UpdateMovesUi(int moveForTheTurn)
     {
         //Animation
