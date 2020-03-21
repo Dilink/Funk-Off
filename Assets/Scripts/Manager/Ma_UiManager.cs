@@ -162,6 +162,9 @@ public class Ma_UiManager : MonoBehaviour
     public RectTransform EndGameScreen_looseBackgroundRect;
     public RectTransform EndGameScreen_looseTextRect;
 
+    [ReadOnly]
+    public List<RectTransform> RoundsRects = new List<RectTransform>();
+
     [Header("Funkbar elements")]
     public Renderer funkbarRend;
     private Material funkbarMatBase;
@@ -206,7 +209,7 @@ public class Ma_UiManager : MonoBehaviour
     // ENDGAME SCREEN UI FUNCTIONS
     // ---------------------
 
-    [Title("End game")]
+    [Title("[Debug] End game")]
 
     [Button]
     public void TestVictoryAnimation()
@@ -237,6 +240,31 @@ public class Ma_UiManager : MonoBehaviour
             EndGameScreen_looseTextRect.DOAnchorPosY(-400, speed, false).SetDelay(speed).SetEase(Ease.OutBounce);
             EndGameScreen_looseTextRect.DORotate(new Vector3(0, 0, -20), speed).SetDelay(speed * 2).SetEase(Ease.OutBounce);
         }
+    }
+
+    [Title("[Debug] Round")]
+
+    [Button]
+    public void TestChangeRoundAnimation()
+    {
+        DisplayRoundIntermediateScreen(0);
+    }
+
+    public void DisplayRoundIntermediateScreen(int index)
+    {
+        if (index < 0 || index >= RoundsRects.Count())
+            return;
+
+        GameManager.Instance.soundManager.PlaySound(GameSound.S_NewTurnIn);
+        RectTransform el = RoundsRects[index];
+
+        float midScreen = 1920 / 2.0f - el.sizeDelta.x / 2.0f;
+        el.DOMoveX(midScreen, 0.7f, false).SetEase(Ease.OutQuint);
+        el.DOMoveX(0, 0.3f, false).SetDelay(0.7f).SetEase(Ease.InQuint).OnComplete(() =>
+        {
+            el.DOMoveX(1260 + el.sizeDelta.x / 2.0f, 0);
+            GameManager.Instance.soundManager.PlaySound(GameSound.S_NewTurnOut);
+        });
     }
 
     // ---------------------
@@ -467,7 +495,12 @@ public class Ma_UiManager : MonoBehaviour
         // EndgameScreen elements
         Transform mainUiCanvas = gameObject.transform.Find("MainUICanvas");
         EndGameScreen = mainUiCanvas.Find("EndGameScreen").gameObject;
+        Transform RoundsCtnr = mainUiCanvas.Find("Rounds").transform;
         Transform endGameScreenCtnr = EndGameScreen.transform;
+        
+        RoundsRects.Clear();
+        for (int i = 0; i < 3; i++)
+            RoundsRects.Add(RoundsCtnr.GetChild(i).GetComponent<RectTransform>());
 
         var winCtnr = endGameScreenCtnr.Find("EndGameScreen_Win").GetComponent<RectTransform>();
         var looseCtnr = endGameScreenCtnr.Find("EndGameScreen_Loose").GetComponent<RectTransform>();

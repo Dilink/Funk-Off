@@ -85,8 +85,8 @@ public class GameManager : Singleton<GameManager>
     //ACTING
     #region
 
-    public bool canAct=true;
-    public bool canActForced=false;
+    public bool canAct = false;
+    public bool canActForced = true;
 
     public void EnableActing()
     {
@@ -535,10 +535,12 @@ public class GameManager : Singleton<GameManager>
 
     public IEnumerator OnGameStartPost()
     {
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.1f);
 
         uiManager.UpdateTurnsbarText(turnManager.GetCurrentTurn(), turnManager.GetMaxTurn());
         uiManager.ClearAllMultiplierUi();
+        
+        StartCoroutine(turnManager.PreventPlayerFromActing());
     }
 
     public void OnNewTurnPre(int indexOfPatern, bool isPatternDestroyed = false)
