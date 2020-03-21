@@ -59,22 +59,17 @@ public class Mb_PatternBarElement : MonoBehaviour
     // Update the multipliers visuals
     public void UpdateMultiplierIcon(Color color, Color colorbkg, string text)
     {
-        /*PatternItem item = patternItems[emplacement];
-        Image img = multiplierImg;
-        TMP_Text tex = multiplierText;
         // Animation
-        img.transform.localScale = new Vector3(0, 0, 0);
-        tex.transform.localScale = new Vector3(0, 0, 0);
-        img.transform.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
-        tex.transform.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
+        multiplierImg.localScale = new Vector3(0, 0, 0);
+        multiplierText.transform.localScale = new Vector3(0, 0, 0);
+        multiplierImg.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
+        multiplierText.transform.DOScale(new Vector3(1f, 1f, 1f), 0.8f).SetEase(Ease.OutElastic);
 
         // Color and text
-        img.color = color;
-        item.color.color = colorbkg;
-        tex.text = text;
-        tex.color = Color.black;*/
-
-
+        //img.color = color;
+        backGroundColor.color = colorbkg;
+        multiplierText.text = text;
+        multiplierText.color = Color.black;
     }
 
     public void RemoveMultiplierIcon()
@@ -162,7 +157,7 @@ public class Mb_PatternBarElement : MonoBehaviour
         else // Si le pattern concerné est le plus à gauche, le renvoit sur la case grise
         {
             RespawnAnimation();
-            GameManager.Instance.uiManager.RespawnPattern(this);
+            GameManager.Instance.OnRespawnPattern(this);
         }
     }
 
