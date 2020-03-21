@@ -73,6 +73,8 @@ public class Mb_PatternBarElement : MonoBehaviour
         item.color.color = colorbkg;
         tex.text = text;
         tex.color = Color.black;*/
+
+
     }
 
     public void RemoveMultiplierIcon()

@@ -344,17 +344,17 @@ public class GameManager : Singleton<GameManager>
     //FEEDBACK BRUNO
     void FunkAddingAnim()
     {
-     //   animBruno.SetTrigger("Damaged");
+        animBruno.SetTrigger("Damaged");
     }
 
     void DealDamageAnim()
     {
-       // animBruno.SetTrigger("Attack");
+        animBruno.SetTrigger("Attack");
     }
 
     void ActingAnim()
     {
-        //animBruno.SetTrigger("Acting");
+        animBruno.SetTrigger("Acting");
     }
 
     //PATTERN COMPLETION PREVIEW
