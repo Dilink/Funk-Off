@@ -156,8 +156,11 @@ public class Ma_UiManager : MonoBehaviour
 
     [Header("EndgameScreen elements")]
     public GameObject EndGameScreen;
-    public RectTransform EndGameScreen_winRect;
-    public RectTransform EndGameScreen_looseRect;
+    public RectTransform EndGameScreen_winBackgroundRect;
+    public RectTransform EndGameScreen_winTextRect;
+    public Image EndGameScreen_winTextImage;
+    public RectTransform EndGameScreen_looseBackgroundRect;
+    public RectTransform EndGameScreen_looseTextRect;
 
     [Header("Funkbar elements")]
     public Renderer funkbarRend;
@@ -203,10 +206,37 @@ public class Ma_UiManager : MonoBehaviour
     // ENDGAME SCREEN UI FUNCTIONS
     // ---------------------
 
+    [Title("End game")]
+
+    [Button]
+    public void TestVictoryAnimation()
+    {
+        DisplayEndgameScreen(true);
+    }
+
+    [Button]
+    public void TestDefeatAnimation()
+    {
+        DisplayEndgameScreen(false);
+    }
+
     public void DisplayEndgameScreen(bool issue)
     {
         EndGameScreen.SetActive(true);
-        (issue ? EndGameScreen_winRect : EndGameScreen_looseRect).DOAnchorPosY(0, 0.4f, false);
+        if (issue)
+        {
+            float speed = 0.6f;
+            EndGameScreen_winBackgroundRect.DOAnchorPosY(-1080, speed, false).SetEase(Ease.OutBounce);
+            EndGameScreen_winTextImage.DOFade(1, speed).SetDelay(speed / 2.0f);
+            EndGameScreen_winTextRect.DOScale(new Vector3(1, 1, 1), speed).SetDelay(speed / 2.0f).SetEase(Ease.OutBounce);
+        }
+        else
+        {
+            float speed = 0.6f;
+            EndGameScreen_looseBackgroundRect.DOAnchorPosY(0, speed, false).SetEase(Ease.OutBounce);
+            EndGameScreen_looseTextRect.DOAnchorPosY(-400, speed, false).SetDelay(speed).SetEase(Ease.OutBounce);
+            EndGameScreen_looseTextRect.DORotate(new Vector3(0, 0, -20), speed).SetDelay(speed * 2).SetEase(Ease.OutBounce);
+        }
     }
 
     // ---------------------
@@ -438,8 +468,14 @@ public class Ma_UiManager : MonoBehaviour
         Transform mainUiCanvas = gameObject.transform.Find("MainUICanvas");
         EndGameScreen = mainUiCanvas.Find("EndGameScreen").gameObject;
         Transform endGameScreenCtnr = EndGameScreen.transform;
-        EndGameScreen_winRect = endGameScreenCtnr.Find("EndGameScreen_Win").GetComponent<RectTransform>();
-        EndGameScreen_looseRect = endGameScreenCtnr.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
+
+        var winCtnr = endGameScreenCtnr.Find("EndGameScreen_Win").GetComponent<RectTransform>();
+        var looseCtnr = endGameScreenCtnr.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
+        EndGameScreen_winBackgroundRect = winCtnr.GetChild(0).GetComponent<RectTransform>();
+        EndGameScreen_winTextRect = winCtnr.GetChild(1).GetComponent<RectTransform>();
+        EndGameScreen_winTextImage = winCtnr.GetChild(1).GetComponent<Image>();
+        EndGameScreen_looseBackgroundRect = looseCtnr.GetChild(0).GetComponent<RectTransform>();
+        EndGameScreen_looseTextRect = looseCtnr.GetChild(1).GetComponent<RectTransform>();
 
         TurnsbarText = mainUiCanvas.Find("Image/TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
         endturnButton = mainUiCanvas.Find("EndTurnButtonPart/EndTurnButton").GetComponent<Button>();
