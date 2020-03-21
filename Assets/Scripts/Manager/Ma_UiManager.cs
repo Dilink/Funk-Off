@@ -145,7 +145,7 @@ public class Ma_UiManager : MonoBehaviour
     public List<RectTransform> patternAnchors = new List<RectTransform>();
 
     [Header("Endturn Button elements")]
-    [SerializeField] Button endturnButton;
+    [SerializeField] Deploy endturnButton;
 
     [Header("PauseMenus elements")]
     public GameObject PauseMenu;
@@ -283,9 +283,9 @@ public class Ma_UiManager : MonoBehaviour
     // ENDTURN BUTTON UI FUNCTIONS
     // ---------------------
 
-    public void EnableDisableEndturnButton(bool status)
-    {
-     // endturnButton.interactable = status;
+    public void DeployEndTurnButton()
+    {   
+      endturnButton.Deploying();
     }
 
     // ---------------------
@@ -559,7 +559,7 @@ public class Ma_UiManager : MonoBehaviour
         EndGameScreen_looseTextRect = looseCtnr.GetChild(1).GetComponent<RectTransform>();
 
         TurnsbarText = mainUiCanvas.Find("Image/TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
-        endturnButton = mainUiCanvas.Find("EndTurnButtonPart/EndTurnButton").GetComponent<Button>();
+        endturnButton = mainUiCanvas.Find("EndTurnButtonPart/EndTurnButton").GetComponent<Deploy>();
     }
 #endif
 }
