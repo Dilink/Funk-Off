@@ -164,6 +164,9 @@ public class Ma_UiManager : MonoBehaviour
 
     [ReadOnly]
     public List<RectTransform> RoundsRects = new List<RectTransform>();
+    [ReadOnly]
+    public RectTransform MovementLimitAnchor;
+    public Vector3 InitialRoundImageTransform;
 
     [Header("Funkbar elements")]
     public Renderer funkbarRend;
@@ -193,6 +196,15 @@ public class Ma_UiManager : MonoBehaviour
         }
 
         return patternElements[index];
+    }
+
+    private void Awake()
+    {
+        if (RoundsRects.Count() > 0)
+        {
+            Vector3 v = RoundsRects[0].position;
+            InitialRoundImageTransform = new Vector3(v.x, v.y, v.z);
+        }
     }
 
     private void Start()
@@ -258,11 +270,11 @@ public class Ma_UiManager : MonoBehaviour
         GameManager.Instance.soundManager.PlaySound(GameSound.S_NewTurnIn);
         RectTransform el = RoundsRects[index];
 
-        float midScreen = 1920 / 2.0f - el.sizeDelta.x / 2.0f;
+        float midScreen = ((InitialRoundImageTransform.x - MovementLimitAnchor.position.x) / 2.0f) - (el.sizeDelta.x / 2.0f);
         el.DOMoveX(midScreen, 0.7f, false).SetEase(Ease.OutQuint);
-        el.DOMoveX(0, 0.3f, false).SetDelay(0.7f).SetEase(Ease.InQuint).OnComplete(() =>
+        el.DOMoveX(MovementLimitAnchor.position.x, 0.3f, false).SetDelay(0.7f).SetEase(Ease.InQuint).OnComplete(() =>
         {
-            el.DOMoveX(1260 + el.sizeDelta.x / 2.0f, 0);
+            el.DOMoveX(InitialRoundImageTransform.x + el.sizeDelta.x / 2.0f, 0);
             GameManager.Instance.soundManager.PlaySound(GameSound.S_NewTurnOut);
         });
     }
@@ -492,15 +504,20 @@ public class Ma_UiManager : MonoBehaviour
         patternAnchors.Clear();
 
         Transform patternElementsContainer = GameObject.Find("PatternsBar_elements").transform;
-        Transform patternAnchorsContainer = GameObject.Find("PatternsBar_anchors").transform;
 
         for (int i = 0; i < patternElementsContainer.childCount; i++)
         {
-            Mb_PatternBarElement pattern = patternElementsContainer.GetChild(i).GetComponent<Mb_PatternBarElement>();
-            patternElements.Add(pattern);
-
-            RectTransform rect = patternAnchorsContainer.GetChild(i).GetComponent<RectTransform>();
-            patternAnchors.Add(rect);
+            var el = patternElementsContainer.GetChild(i);
+            Mb_PatternBarElement pattern = el.GetComponent<Mb_PatternBarElement>();
+            if (pattern != null)
+            {
+                patternElements.Add(pattern);
+            }
+            else
+            {
+                RectTransform rect = el.GetComponent<RectTransform>();
+                patternAnchors.Add(rect);
+            }
         }
 
         // Pausemenu elements
@@ -518,8 +535,20 @@ public class Ma_UiManager : MonoBehaviour
         Transform endGameScreenCtnr = EndGameScreen.transform;
         
         RoundsRects.Clear();
-        for (int i = 0; i < 3; i++)
-            RoundsRects.Add(RoundsCtnr.GetChild(i).GetComponent<RectTransform>());
+        for (int i = 0; i < RoundsCtnr.childCount; i++)
+        {
+            Transform el = RoundsCtnr.GetChild(i);
+            RectTransform rt = el.GetComponent<RectTransform>();
+
+            if (el.name.ToLower().StartsWith("Round".ToLower()))
+            {
+                RoundsRects.Add(rt);
+            }
+            else if (el.name.ToLower() == "MovementLimitAnchor".ToLower())
+            {
+                MovementLimitAnchor = rt;
+            }
+        }
 
         var winCtnr = endGameScreenCtnr.Find("EndGameScreen_Win").GetComponent<RectTransform>();
         var looseCtnr = endGameScreenCtnr.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
