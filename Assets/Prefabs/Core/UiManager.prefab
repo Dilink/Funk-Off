@@ -1339,6 +1339,7 @@ RectTransform:
   - {fileID: 8037487775751040754}
   - {fileID: 8298050643667854794}
   - {fileID: 168028986681310184}
+  - {fileID: 3808888258269260129}
   m_Father: {fileID: 8823646777549139135}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2425,54 +2426,7 @@ MonoBehaviour:
   - {fileID: 8037487775751040754}
   - {fileID: 8298050643667854794}
   - {fileID: 168028986681310184}
-  RoundsAnimationCurveOut:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 10.022862
-      outSlope: 4.945576
-      tangentMode: 1
-      weightedMode: 2
-      inWeight: 0
-      outWeight: 0.2014751
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: -0.00067712687
-      outSlope: -0.00067712687
-      tangentMode: 0
-      weightedMode: 1
-      inWeight: 0.6063218
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  RoundsAnimationCurveIn:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 10.022862
-      outSlope: 0.1319532
-      tangentMode: 1
-      weightedMode: 2
-      inWeight: 0
-      outWeight: 0.7010456
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 4.489269
-      outSlope: 4.489269
-      tangentMode: 0
-      weightedMode: 1
-      inWeight: 0.19011223
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  MovementLimitAnchor: {fileID: 3808888258269260129}
   funkbarRend: {fileID: 0}
   allBars:
   - {fileID: 0}
@@ -5720,6 +5674,41 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &4502702875958505234
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3808888258269260129}
+  m_Layer: 5
+  m_Name: MovementLimitAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3808888258269260129
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4502702875958505234}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5344130376431435106}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -1520, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4617343813558451921
 GameObject:
   m_ObjectHideFlags: 0
@@ -9174,41 +9163,6 @@ RectTransform:
   m_AnchoredPosition: {x: 81, y: -29}
   m_SizeDelta: {x: 18, y: 58}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &8147721270586760538
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1311353666119686393}
-  m_Layer: 5
-  m_Name: PatternsBar_anchors
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1311353666119686393
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8147721270586760538}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 3187311957986220254}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8169390923520847246
 GameObject:
   m_ObjectHideFlags: 0
@@ -9279,7 +9233,6 @@ RectTransform:
   - {fileID: 8810682963559025034}
   - {fileID: 5696355531598517399}
   - {fileID: 8380055488782194767}
-  - {fileID: 1311353666119686393}
   m_Father: {fileID: 3657443057629752226}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
