@@ -285,7 +285,7 @@ public class Ma_UiManager : MonoBehaviour
 
     public void DeployEndTurnButton()
     {   
-      endturnButton.Deploying();
+     // endturnButton.Deploying();
     }
 
     // ---------------------
@@ -372,8 +372,11 @@ public class Ma_UiManager : MonoBehaviour
 
     private IEnumerator UpdateFunkBarCoroutine(float funkPercentage)
     {
-        funkbarMatInstance.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
-        funkbarMatInstance.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
+        if (funkPercentage != funkbarMatInstance.GetFloat("_STEP"))
+        {
+            funkbarMatInstance.DOFloat(funkPercentage, "_STEP", FunkBarFillSpeed).SetEase(Ease.OutQuint);
+            funkbarMatInstance.DOColor(funkBarGradient.Evaluate(funkPercentage), "_COLO", FunkBarFillSpeed);
+        }
 
         if (funkPercentage >= funkbarMatInstance.GetFloat("_STEP"))
         {

@@ -39,7 +39,11 @@ public class Ma_PatternManager : MonoBehaviour
         {
             UpdateCancelMarker(j, false);
         }
+        GenerateAttackPattern();
+    }
 
+    public void GenerateAttackPattern()
+    {
         var level = GameManager.Instance.levelConfig;
         int count = rand.Next(level.minPatternsToCancelAttack, level.maxPatternsToCancelAttack);
         var copy = new List<Sc_Pattern>(currentPatternsList);

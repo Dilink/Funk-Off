@@ -32,7 +32,7 @@ public class Ma_TurnManager : MonoBehaviour
     public void EndTurn()
     {
         GameManager.Instance.UpdateFeedBackAutourGrid(0);
-
+        
         GameManager.Instance.OnTurnEndPre();
         // Pass to the next turn
         if (CurrentTurn <= MaxTurn)
@@ -59,7 +59,11 @@ public class Ma_TurnManager : MonoBehaviour
                 StartCoroutine(PreventPlayerFromActing());
             }
             GameManager.Instance.OnTurnEndPost(isLevelFinished: true);
+
+            GameManager.Instance.patternManager.GenerateAttackPattern();
         }
+        else
+            GameManager.Instance.CheckGameEnd();
     }
 
     public IEnumerator PreventPlayerFromActing()

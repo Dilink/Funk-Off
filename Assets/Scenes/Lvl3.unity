@@ -284,18 +284,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3122911203944100988}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &308097392 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 255255818921503961, guid: 11bcb817f734a444980e43c524adb5ea,
-    type: 3}
-  m_PrefabInstance: {fileID: 721981988743132045}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90d812d19e2bbd04fa4218fc1f49695f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &324359587 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4330376640574940473, guid: 53f763a5073151a418c115a7d8c60da7,
@@ -2901,7 +2889,7 @@ MonoBehaviour:
   sceneManager: {fileID: 565886725654018414}
   animBruno: {fileID: 1409712401338884741}
   funkDamagesEnemi: 0.1
-  funkAddingPlayer: 0.015
+  funkAddingPlayer: 0.25
   levelConfig: {fileID: 11400000, guid: eab3a38ac505f604ea0d491347a9a644, type: 2}
   currentRoundCountFinished: 0
   isGameFinished: 0
@@ -3326,7 +3314,7 @@ PrefabInstance:
         type: 3}
       propertyPath: endturnButton
       value: 
-      objectReference: {fileID: 308097392}
+      objectReference: {fileID: 0}
     - target: {fileID: 1334909659154423306, guid: 11bcb817f734a444980e43c524adb5ea,
         type: 3}
       propertyPath: patternElements.Array.data[0]
@@ -3387,6 +3375,16 @@ PrefabInstance:
       propertyPath: patternAnchors.Array.data[5]
       value: 
       objectReference: {fileID: 1594337076}
+    - target: {fileID: 1366024941643796552, guid: 11bcb817f734a444980e43c524adb5ea,
+        type: 3}
+      propertyPath: m_text
+      value: MENU
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366024941643796552, guid: 11bcb817f734a444980e43c524adb5ea,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1434731952161647597, guid: 11bcb817f734a444980e43c524adb5ea,
         type: 3}
       propertyPath: m_Sprite
@@ -3498,7 +3496,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 308097392}
+      objectReference: {fileID: 0}
     - target: {fileID: 6887815745633899072, guid: 11bcb817f734a444980e43c524adb5ea,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -3547,7 +3545,22 @@ PrefabInstance:
     - target: {fileID: 7256501246941236252, guid: 11bcb817f734a444980e43c524adb5ea,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: -1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256501246941236252, guid: 11bcb817f734a444980e43c524adb5ea,
+        type: 3}
+      propertyPath: m_text
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256501246941236252, guid: 11bcb817f734a444980e43c524adb5ea,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256501246941236252, guid: 11bcb817f734a444980e43c524adb5ea,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7347716411510239012, guid: 11bcb817f734a444980e43c524adb5ea,
         type: 3}
@@ -3589,6 +3602,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Anchor4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8554227330862751343, guid: 11bcb817f734a444980e43c524adb5ea,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 565886725654018414}
+    - target: {fileID: 8554227330862751343, guid: 11bcb817f734a444980e43c524adb5ea,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 8554227330862751343, guid: 11bcb817f734a444980e43c524adb5ea,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9031596368259122200, guid: 11bcb817f734a444980e43c524adb5ea,
         type: 3}
@@ -4616,11 +4644,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multipliers:
-  - 0.012
-  - 0.024
-  - 0.036
-  - 0.048
+  - 0.016
+  - 0.025
+  - 0.04
   - 0.06
+  - 0.072
   colorNone: {r: 0.504717, g: 1, b: 0.8359039, a: 1}
   colorX2: {r: 0.68944526, g: 1, b: 0, a: 1}
   colorX3: {r: 1, g: 0.95132554, b: 0, a: 1}
