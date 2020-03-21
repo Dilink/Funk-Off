@@ -140,7 +140,10 @@ public class Ma_UiManager : MonoBehaviour
 {
     [Header("Patternsbar elements")]
     [ReadOnly] [ShowInInspector] [SerializeField] private List<Mb_PatternBarElement> patternElements = new List<Mb_PatternBarElement>();
-    
+
+    [ReadOnly]
+    public List<RectTransform> patternAnchors = new List<RectTransform>();
+
     [Header("Endturn Button elements")]
     [SerializeField] Button endturnButton;
 
@@ -384,6 +387,14 @@ public class Ma_UiManager : MonoBehaviour
         patternElements.Add(element);
     }
 
+    public void RespawnPattern(int index)
+    {
+        Mb_PatternBarElement element = patternElements[index];
+        // Réarrange la liste pour qu'elle match le nouvel ordre visuel
+        patternElements.RemoveAt(index);
+        patternElements.Add(element);
+    }
+
     public void DeployUi(Mb_PlayerCard uiToDeploy)
     {
         uiToDeploy.transform.DOLocalMoveX(uiToDeploy.cardTransform.localPosition.x + 70, 0.2f).SetEase(Ease.OutQuint);
@@ -401,12 +412,18 @@ public class Ma_UiManager : MonoBehaviour
     private void Populate()
     {
         patternElements.Clear();
+        patternAnchors.Clear();
 
         Transform patternElementsContainer = GameObject.Find("PatternsBar_elements").transform;
+        Transform patternAnchorsContainer = GameObject.Find("PatternsBar_anchors").transform;
+
         for (int i = 0; i < patternElementsContainer.childCount; i++)
         {
             Mb_PatternBarElement pattern = patternElementsContainer.GetChild(i).GetComponent<Mb_PatternBarElement>();
             patternElements.Add(pattern);
+
+            RectTransform rect = patternAnchorsContainer.GetChild(i).GetComponent<RectTransform>();
+            patternAnchors.Add(rect);
         }
 
         // Pausemenu elements
@@ -424,7 +441,8 @@ public class Ma_UiManager : MonoBehaviour
         EndGameScreen_winRect = endGameScreenCtnr.Find("EndGameScreen_Win").GetComponent<RectTransform>();
         EndGameScreen_looseRect = endGameScreenCtnr.Find("EndGameScreen_Loose").GetComponent<RectTransform>();
 
-        TurnsbarText = mainUiCanvas.Find("TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
+        TurnsbarText = mainUiCanvas.Find("Image/TurnsBar_TextTurnsCount").GetComponent<TMP_Text>();
+        endturnButton = mainUiCanvas.Find("EndTurnButtonPart/EndTurnButton").GetComponent<Button>();
     }
 #endif
 }

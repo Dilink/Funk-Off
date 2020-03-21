@@ -525,7 +525,12 @@ public class GameManager : Singleton<GameManager>
 
     public void OnRespawnPattern(int indexInList)
     {
+        uiManager.RespawnPattern(indexInList);
+    }
 
+    public void OnRespawnPattern(Mb_PatternBarElement element)
+    {
+        uiManager.RespawnPattern(element);
     }
 
     public IEnumerator OnGameStartPost()
