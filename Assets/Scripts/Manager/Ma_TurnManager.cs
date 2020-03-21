@@ -47,23 +47,23 @@ public class Ma_TurnManager : MonoBehaviour
                 GameManager.Instance.allPlayers[i].ResetMove();
             }*/
 
-            // If not game end
-            if (CurrentTurn <= MaxTurn)
-            {
-                GameManager.Instance.ResetMove();
-                GameManager.Instance.comboManager.ResetMultiplier();
+            GameManager.Instance.ResetMove();
+            GameManager.Instance.comboManager.ResetMultiplier();
 
-                //AI PART A CHANGER
-                GameManager.Instance.aiManager.ChoosePattern();
+            GameManager.Instance.aiManager.ChoosePattern();
 
-                StartCoroutine(PreventPlayerFromActing());
-            }
-            GameManager.Instance.OnTurnEndPost(isLevelFinished: true);
+            StartCoroutine(PreventPlayerFromActing());
+
+
 
             GameManager.Instance.patternManager.GenerateAttackPattern();
         }
         else
+        {
+            GameManager.Instance.OnTurnEndPost(isLevelFinished: true);
+
             GameManager.Instance.CheckGameEnd();
+        }
     }
 
     public IEnumerator PreventPlayerFromActing()

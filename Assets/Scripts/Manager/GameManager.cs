@@ -307,7 +307,7 @@ public class GameManager : Singleton<GameManager>
     public void CheckGameEnd()
     {
 
-        if (funkAmount > 0.999f)
+        if (funkAmount > 0.98f)
         {
             currentRoundCountFinished += 1;
 
