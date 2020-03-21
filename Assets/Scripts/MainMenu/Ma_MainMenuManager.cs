@@ -242,7 +242,7 @@ public class Ma_MainMenuManager : MonoBehaviour
     // -------------
     #region levels
 
-    public void CheckLevelValidation(int levelClick)
+ /*   public void CheckLevelValidation(int levelClick)
     {
         //Check si on a débloqué le niveau que lequel on clique et si l'on a pas déja cliqué dessus
         if(currentLevel >= levelClick && levelPlayButtonsGameobjects[levelClick].activeInHierarchy == false)
@@ -259,7 +259,7 @@ public class Ma_MainMenuManager : MonoBehaviour
             levelPlayButtonsGameobjects[levelClick].SetActive(true);
             
         }
-    }
+    }*/
     public void LevelDoneBtn()
     {
         GradeLevel(levelDone, gradeLevelDone);
