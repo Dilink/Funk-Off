@@ -61,14 +61,14 @@ public class Ma_TurnManager : MonoBehaviour
         }
     }
 
-    private IEnumerator PreventPlayerFromActing()
+    public IEnumerator PreventPlayerFromActing()
     {
         GameManager game = GameManager.Instance;
-        GameManager.Instance.soundManager.PlaySound(GameSound.S_NewTurnIn);
+        game.uiManager.DisplayRoundIntermediateScreen(game.currentRoundCountFinished);
         game.canActForced = true;
         game.DisableActing();
-        yield return new WaitForSeconds(game.timeBetweenTurns);
-        GameManager.Instance.soundManager.PlaySound(GameSound.S_NewTurnOut);
+        //yield return new WaitForSeconds(game.timeBetweenTurns);
+        yield return new WaitForSeconds(1.0f);
         game.canActForced = false;
         game.EnableActing();
     }
