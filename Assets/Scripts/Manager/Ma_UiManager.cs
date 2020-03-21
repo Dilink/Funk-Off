@@ -433,8 +433,10 @@ public class Ma_UiManager : MonoBehaviour
 
     public void ClearAllMultiplierUi()
     {
-        for (int i = 0; i < patternElements.Count; i++)
-            patternElements[i].ClearAllMutliplierUi();
+        foreach (Mb_PatternBarElement patternElement in patternElements)
+        {
+            patternElement.UpdateMultiplierIcon(Color.clear, GameManager.Instance.comboManager.colorNone, "");
+        }
     }
 
     public void RespawnPattern(Mb_PatternBarElement element)
@@ -463,6 +465,23 @@ public class Ma_UiManager : MonoBehaviour
     {
         uiToClean.transform.DOLocalMoveX(uiToClean.cardTransform.localPosition.x - 70, 0.2f).SetEase(Ease.OutQuint);
         uiToClean.CleanName();
+    }
+
+
+    public void MovePatterns(int FinishedPattern)
+    {
+        for (int i = FinishedPattern; i < patternElements.Count(); i ++)
+        {
+            if (i == FinishedPattern)
+            {
+                patternElements[FinishedPattern].RespawnAnimation();
+            }
+           else
+           {
+                patternElements[i].rectTransform.DOScale(1, .4f);
+                patternElements[i].rectTransform.DOMove(patternAnchors[i - 1].transform.position, .5f).SetEase(Ease.InOutQuart);
+           }
+        }
     }
 
 #if UNITY_EDITOR

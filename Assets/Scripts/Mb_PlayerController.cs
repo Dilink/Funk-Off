@@ -301,8 +301,6 @@ public class Mb_PlayerController : MonoBehaviour
         return temporaryBool;
     }
 
-
-
     //MOUVEMENT GRATUIT
     public void CheckFreeMovement(Mb_Tile tileToMoveTo)
     {

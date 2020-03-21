@@ -100,23 +100,23 @@ public class Ma_ComboManager : MonoBehaviour
             switch(multiplierIndex)
             {
                 case 0:
-                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX2, colorX2 , "Good", multiplierIndex);
+                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX2, colorX2 , "X2", multiplierIndex);
                     break;
 
                 case 1:
-                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX3, colorX3, "Nice", multiplierIndex);
+                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX3, colorX3, "X3", multiplierIndex);
                     break;
 
                 case 2:
-                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX4, colorX4, "Great", multiplierIndex);
+                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX4, colorX4, "X4", multiplierIndex);
                     break;
 
                 case 3:
-                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX5, colorX5, "Perfect", multiplierIndex);
+                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX5, colorX5, "X5", multiplierIndex);
                     break;
 
                 case 4:
-                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX6, colorX6, "Funkulouss", multiplierIndex);
+                    GameManager.Instance.OnMultiplierAppear(indexOfPatern, colorMX6, colorX6, "X6", multiplierIndex);
                     break;
             }
 
