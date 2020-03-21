@@ -10,6 +10,7 @@ public class Mb_PatternBarElement : MonoBehaviour
     public Image patternSprite;
     [HideInInspector] public RectTransform rectTransform;
     [SerializeField] Animator animWarning;
+    public RectTransform patternElementTransform;
 
     [Header("ComboPart")]
     public ParticleSystem[] FX;
@@ -20,9 +21,11 @@ public class Mb_PatternBarElement : MonoBehaviour
     
     [Header("AnimTweaking")]
     [SerializeField] Vector2 posToAddOnCompletion;
+    Vector2 basePosArrowBonus;
     
     private void Start()
     {
+        basePosArrowBonus = multiplierImg.localPosition;
         rectTransform = GetComponent<RectTransform>();
         basePosTorwardPatternBar = multiplierImg.localPosition;
     }
@@ -91,29 +94,28 @@ public class Mb_PatternBarElement : MonoBehaviour
         }
     }
 
-    public void ClearAllMutliplierUi()
-    {
-        UpdateMultiplierIcon(Color.clear, GameManager.Instance.comboManager.colorNone, "");
-    }
     
     public void UpdatePatternsBarIcon(Sc_Pattern pattern)
     {
         patternSprite.sprite = pattern.sprite;
     }
 
-    public void RemovePattern(bool isPatternDestroyed = false)
+    public void MovePatterns(bool isPatternDestroyed, int indexOfPattern)
     {
-        StartCoroutine(RemovePatternAnimations(isPatternDestroyed));
+        StartCoroutine(RemovePatternAnimations(isPatternDestroyed, indexOfPattern));
     }
 
-    private IEnumerator RemovePatternAnimations(bool isPatternDestroyed)
+    public void RemovePattern(int indexOfPatternRemoved, bool isPatternDestroyed = false)
+    {
+        StartCoroutine(RemovePatternAnimations(isPatternDestroyed, indexOfPatternRemoved));
+    }
+
+    private IEnumerator RemovePatternAnimations(bool isPatternDestroyed, int indexOfPattern)
     {
         if (!isPatternDestroyed)
         {
             multiplierImg.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
             multiplierImg.transform.DOLocalMoveY(rectTransform.anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
-            multiplierText.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
-            multiplierText.transform.DOLocalMoveY(rectTransform.anchoredPosition.y + 85, 0.2f, false).SetEase(Ease.OutCirc);
 
             rectTransform.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.2f).SetEase(Ease.OutCirc);
             rectTransform.transform.DOLocalMoveY(rectTransform.anchoredPosition.y + 75, 0.2f, false).SetEase(Ease.OutCirc);
@@ -131,10 +133,13 @@ public class Mb_PatternBarElement : MonoBehaviour
 
             multiplierImg.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
             multiplierImg.transform.DOLocalMoveY(rectTransform.anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
-            multiplierText.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f).SetEase(Ease.InCubic);
-            multiplierText.transform.DOLocalMoveY(rectTransform.anchoredPosition.y - 85, 0.18f, false).SetEase(Ease.InCubic);
 
-            rectTransform.transform.DOLocalMoveY(rectTransform.anchoredPosition.y - 275, 0.25f, false).SetEase(Ease.InCubic);
+            rectTransform.transform.DOLocalMoveY(rectTransform.anchoredPosition.y - 275, 0.25f, false).SetEase(Ease.InCubic).OnComplete(() => {
+                multiplierImg.localPosition = basePosArrowBonus;
+                GameManager.Instance.uiManager.MovePatterns(indexOfPattern);
+            });
+            
+
         }
         else
         {
@@ -142,29 +147,11 @@ public class Mb_PatternBarElement : MonoBehaviour
         }
     }
 
-    public void MovePattern()
-    {
-        // Déplace le pattern concerné d'une case vers la gauche
-        if (rectTransform.anchoredPosition.x >= -350)
-        {
-            // Déplacement du pattern
-            rectTransform.transform.DOLocalMoveX(rectTransform.anchoredPosition.x - 200, 0.4f, false).SetEase(Ease.InOutQuart);
 
-            // Couleur du background et scale, pour qu'il se reset après avoir été sur la case grise
-            rectTransform.localScale = new Vector3(1, 1, 1);
-            backGroundColor.color = Color.white;
-        }
-        else // Si le pattern concerné est le plus à gauche, le renvoit sur la case grise
-        {
-            RespawnAnimation();
-            GameManager.Instance.OnRespawnPattern(this);
-        }
-    }
-
-    private void RespawnAnimation()
+    public void RespawnAnimation()
     {
         // Remet le pattern sur la case grise
-        rectTransform.anchoredPosition = new Vector2(600, 0);
+        rectTransform.DOMove(GameManager.Instance.uiManager.patternAnchors[5].transform.position,0.1f, true);
 
         // Change le background et le scale pour qu'il s'adapte à la case grise 
         rectTransform.localScale = new Vector3(0, 0, 0);

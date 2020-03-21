@@ -361,13 +361,13 @@ public class Ma_PatternManager : MonoBehaviour
 
         for (int i = indexInList + 1; i < currentPatternsList.Count() + 1; i++)
         {
-            GameManager.Instance.OnMovePatterns(i);
+           // GameManager.Instance.OnMovePatterns(i);
             yield return new WaitForSeconds(0.05f);
         }
 
         yield return new WaitForSeconds(0.3f);
 
-        GameManager.Instance.OnRespawnPattern(indexInList);
+        GameManager.Instance.uiManager.RespawnPattern(indexInList);
 
         if (indexInList < currentPatternsList.Count() && patternsForCancellation.Contains(currentPatternsList[indexInList]))
         {

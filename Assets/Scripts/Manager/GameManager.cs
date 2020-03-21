@@ -515,18 +515,15 @@ public class GameManager : Singleton<GameManager>
 
     public void OnMovePatterns(int indexInList)
     {
-        uiManager.GetPatternElement(indexInList).MovePattern();
+        uiManager.GetPatternElement(indexInList).MovePatterns(false,indexInList);
     }
 
     public void OnRemovePattern(int indexInList, bool isPatternDestroyed = false)
     {
-        uiManager.GetPatternElement(indexInList).RemovePattern(isPatternDestroyed);
+        uiManager.GetPatternElement(indexInList).RemovePattern(indexInList,isPatternDestroyed);
     }
 
-    public void OnRespawnPattern(int indexInList)
-    {
-        uiManager.RespawnPattern(indexInList);
-    }
+
 
     public void OnRespawnPattern(Mb_PatternBarElement element)
     {
@@ -549,7 +546,7 @@ public class GameManager : Singleton<GameManager>
     public void OnMultiplierAppear(int indexOfPatern, Color color, Color colorbkg, string text, int multiplierIndex)
     {
         uiManager.GetPatternElement(indexOfPatern).PlayFX(multiplierIndex);
-        uiManager.GetPatternElement(indexOfPatern).UpdateMultiplierIcon(Color.white, Color.red, "error");
+        uiManager.GetPatternElement(indexOfPatern).UpdateMultiplierIcon(Color.white, Color.red, text);
 
         musicManager.PlayLayer(multiplierIndex + 1);
         soundManager.PlaySound(GameSound.S_MultiplierAppear);
