@@ -99,7 +99,6 @@ public class Mb_PlayerController : MonoBehaviour
         }
         currentTile.OnMove(false);
         GameManager.Instance.EnableActing();
-        CheckPatternCallBack();
 
         if ((characterBaseCharacteristics.characterSkills & CharacterSkills.RandomizerFirstMove) == CharacterSkills.RandomizerFirstMove)
         {
@@ -113,8 +112,12 @@ public class Mb_PlayerController : MonoBehaviour
                 GameManager.Instance.isTheFirstMove = false;
 
         }
+        if ((currentTile.tileProperties.type & TileModifier.Tp) == 0)
+        {
+            CheckPatternCallBack();
+        }
 
-        if(GameManager.Instance.currentPlayerSelectionned == this)
+        if (GameManager.Instance.currentPlayerSelectionned == this)
         {
             UpdatePreview(currentTile);
         }

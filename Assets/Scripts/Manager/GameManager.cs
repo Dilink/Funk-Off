@@ -10,9 +10,9 @@ public class GameManager : Singleton<GameManager>
 {
     [Header("PLAYER PARAMETERS")]
     private int movePerTurn;
-    [HideInInspector] public int maxMovesPerTurn;
+    [HideInInspector] public int maxMovesPerTurn=9;
     private int moveLeft;
-    int totalMoveReseted = 0;
+    int maxMovesReseted = 9;
     [HideInInspector] public bool isTheFirstMove = true;
 
     public Mb_PlayerController currentPlayerSelectionned;
@@ -32,6 +32,7 @@ public class GameManager : Singleton<GameManager>
     public Ma_AIManager aiManager;
     public Ma_SoundManager soundManager;
     public Ma_MusicManager musicManager;
+    public Ma_SceneLoader sceneManager;
 
     [Header("BrunoPart")]
     [SerializeField] Animator animBruno;
@@ -73,8 +74,8 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        SetupMovementLimit();
-        EnableActing();
+        DefineMaxMoves();
+        EnableActing(); 
         ResetMove();
         UpdateFeedBackAutourGrid(0);
         uiManager.UpdateMaxMoveUi(maxMovesPerTurn);
@@ -157,11 +158,7 @@ public class GameManager : Singleton<GameManager>
 
     //MOVEPART
     //definir la limte de début
-    private void SetupMovementLimit()
-    {
-        foreach (Mb_PlayerController player in allPlayers)
-            totalMoveReseted += player.characterBaseCharacteristics.movementGiven;
-    }
+
 
     public int moveLeftForTurn()
     {
@@ -186,12 +183,21 @@ public class GameManager : Singleton<GameManager>
         uiManager.UpdateMovesUi(moveLeft);
     }
 
+    void DefineMaxMoves()
+    {
+        int tempInt=0;
+        foreach(Mb_PlayerController player in allPlayers)
+        {
+            tempInt += player.characterBaseCharacteristics.movementGiven;
+        }
+        maxMovesPerTurn = tempInt;
+    }
+
     public void ResetMove()
     {
         isTheFirstMove = true;
-        int reservedMoves = moveLeft;
 
-        moveLeft = totalMoveReseted;
+        moveLeft = maxMovesPerTurn;
 
         uiManager.UpdateMovesUi(moveLeft);
     }

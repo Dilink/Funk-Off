@@ -38,6 +38,7 @@ public class Ma_TurnManager : MonoBehaviour
         if (CurrentTurn <= MaxTurn)
         {
             CurrentTurn++;
+            GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, GameManager.Instance.levelConfig.rounds[0].turnLimit);
 
             //old deplacement System
             /*
@@ -76,6 +77,8 @@ public class Ma_TurnManager : MonoBehaviour
     public void OnNextRound() {
         GameManager.Instance.FunkVariation(-1);
         CurrentTurn = 1;
+        GameManager.Instance.uiManager.UpdateTurnsbarText(CurrentTurn, GameManager.Instance.levelConfig.rounds[0].turnLimit);
+
         MaxTurn = GameManager.Instance.levelConfig.rounds[GameManager.Instance.currentRoundCountFinished].turnLimit;
     }
 
