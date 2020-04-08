@@ -278,6 +278,7 @@ public class GameManager : Singleton<GameManager>
             DealDamageAnim();
 
         funkAmount = Mathf.Clamp(funkAmount + funkToAdd, 0, 1);
+
     }
 
     //DAMAGES PART
@@ -306,7 +307,6 @@ public class GameManager : Singleton<GameManager>
 
     public void CheckGameEnd()
     {
-
         if (funkAmount > 0.98f)
         {
             currentRoundCountFinished += 1;
@@ -314,12 +314,15 @@ public class GameManager : Singleton<GameManager>
             // If there is another round
             if (currentRoundCountFinished < levelConfig.rounds.Count)
             {
-                _funkAmount = 0.5f;
+                _funkAmount = 0f;
+                uiManager.UpdateFunkBar(0);
                 OnNextRoundPre();
             }
             else
             {
                 _funkAmount = 1.0f;
+                uiManager.UpdateFunkBar(1);
+
                 uiManager.DisplayEndgameScreen(true);
                 isGameFinished = true;
             }
@@ -327,7 +330,11 @@ public class GameManager : Singleton<GameManager>
         else if (turnManager.IsLastRoundFinished())
         {
             // Set value to 0 to re-check if game end
-            funkAmount = 0.0f;
+            _funkAmount = 0.0f;
+            //uiManager.UpdateFunkBar(0);
+            uiManager.DisplayEndgameScreen(false);
+            isGameFinished = true;
+
         }
     }
 
@@ -487,6 +494,7 @@ public class GameManager : Singleton<GameManager>
     {
         uiManager.ClearAllMultiplierUi();
         uiManager.DeployEndTurnButton();
+        OnTurnEndPost(turnManager.IsLastRoundFinished());
     }
 
     public void OnTurnEndPost(bool isLevelFinished)
@@ -505,13 +513,14 @@ public class GameManager : Singleton<GameManager>
         UpdateFeedBackAutourGrid(0);
         uiManager.ClearAllMultiplierUi();
         OnNextRoundPost();
+        ResetMove();
     }
 
     public void OnNextRoundPost()
     {
         patternManager.OnTurnEnd(isLevelFinished: true, ignoreDamages: true);
         uiManager.UpdateTurnsbarText(turnManager.GetCurrentTurn(), turnManager.GetMaxTurn());
-        ResetMove();
+
         comboManager.ResetMultiplier();
     }
 

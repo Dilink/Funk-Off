@@ -113,7 +113,7 @@ public class Mb_PlayerController : MonoBehaviour
 
         }
         if ((currentTile.tileProperties.type & TileModifier.Tp) == 0 || (currentTile.tileProperties.type & TileModifier.Ice) == 0 )
-        {
+        {   
             CheckPatternCallBack();
         }
 

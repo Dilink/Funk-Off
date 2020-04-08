@@ -244,6 +244,7 @@ public class Ma_UiManager : MonoBehaviour
             EndGameScreen_winBackgroundRect.DOAnchorPosY(-1080, speed, false).SetEase(Ease.OutBounce);
             EndGameScreen_winTextImage.DOFade(1, speed).SetDelay(speed / 2.0f);
             EndGameScreen_winTextRect.DOScale(new Vector3(1, 1, 1), speed).SetDelay(speed / 2.0f).SetEase(Ease.OutBounce);
+            StartCoroutine(GoBackToMenu());
         }
         else
         {
@@ -251,7 +252,14 @@ public class Ma_UiManager : MonoBehaviour
             EndGameScreen_looseBackgroundRect.DOAnchorPosY(0, speed, false).SetEase(Ease.OutBounce);
             EndGameScreen_looseTextRect.DOAnchorPosY(-400, speed, false).SetDelay(speed).SetEase(Ease.OutBounce);
             EndGameScreen_looseTextRect.DORotate(new Vector3(0, 0, -20), speed).SetDelay(speed * 2).SetEase(Ease.OutBounce);
+            StartCoroutine(GoBackToMenu());
         }
+    }
+
+    IEnumerator GoBackToMenu()
+    {
+        yield return new WaitForSeconds(4);
+        GameManager.Instance.sceneManager.LoadScene(0);
     }
 
     [Title("[Debug] Round")]
@@ -388,6 +396,8 @@ public class Ma_UiManager : MonoBehaviour
                 yield return new WaitForSeconds(0.008f);
                 funkBarKey[i].SetTrigger("isGoingUp");
             }
+            GameManager.Instance.CheckGameEnd();
+
         }
         else
         {
